@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg-base: #030406;
+  --bg-surface: rgba(255, 255, 255, 0.04);
+  --bg-surface-hover: rgba(255, 255, 255, 0.08);
+  --bg-panel: rgba(10, 12, 16, 0.85);
+  --accent: #D4FF00;
+  --accent-dim: rgba(212, 255, 0, 0.15);
+  --accent2: #00F0FF;
+  --blue: #4A9EFF; --blue-dim: rgba(74, 158, 255, 0.15);
+  --red: #FF4A4A; --red-dim: rgba(255, 74, 74, 0.15);
+  --green: #00E676; --green-dim: rgba(0, 230, 118, 0.15);
+  --orange: #FF8A00; --orange-dim: rgba(255, 138, 0, 0.15);
+  --purple: #B57BFF; --purple-dim: rgba(181,123,255,0.15);
+  --txt1: #FFFFFF;
+  --txt2: #A0A5B5;
+  --txt3: #5C6275;
+  --border: rgba(255, 255, 255, 0.08);
+  --border2: rgba(255, 255, 255, 0.15);
+  --r: 20px; --rs: 12px;
+  --tab-h: 110px;
+  --glass-blur: blur(24px);
+}
+
+html, body {
+  height: 100%; background: var(--bg-base);
+  font-family: 'Outfit', 'Pretendard', sans-serif;
+  overflow: hidden; letter-spacing: -0.01em;
+}
+
+.phone {
+  width: 100%; height: 100vh;
+  background: var(--bg-base);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(74, 158, 255, 0.05), transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(212, 255, 0, 0.03), transparent 40%);
+  border-radius: 0; overflow: hidden; position: relative;
+  display: flex; flex-direction: column;
+}
+
+::-webkit-scrollbar { display: none; }
+
+.hdr { 
+  display: flex; align-items: center; justify-content: space-between; 
+  padding: 12px 24px 16px; flex-shrink: 0; z-index: 35; 
+  background: linear-gradient(to bottom, var(--bg-base) 60%, transparent);
+}
+.hdr-logo { font-size: 22px; font-weight: 800; color: var(--txt1); cursor: pointer; letter-spacing: -0.03em; }
+.hdr-logo span { color: var(--accent); }
+.hdr-right { display: flex; align-items: center; gap: 10px; }
+.hdr-lang { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 24px; padding: 6px 12px; font-size: 12px; font-weight: 600; color: var(--txt2); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 4px; }
+.hdr-lang:active { background: var(--bg-surface-hover); color: var(--txt1); }
+.hdr-tour-badge { background: var(--accent-dim); border: 1px solid rgba(212,255,0,0.25); border-radius: 24px; padding: 6px 12px; display: flex; align-items: center; gap: 5px; }
+.hdr-tour-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); flex-shrink: 0; }
+.hdr-tour-lbl { font-size: 11px; font-weight: 700; color: var(--accent); max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hdr-menu { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+.hdr-menu:active { background: var(--bg-surface-hover); }
+.hdr-menu svg { width: 18px; height: 18px; stroke: var(--txt1); fill: none; stroke-width: 2; stroke-linecap: round; }
+
+.content { flex: 1; position: relative; overflow: hidden; min-height: 0; }
+.view { display: none; flex-direction: column; height: 100%; overflow-y: auto; padding-bottom: var(--tab-h); }
+.view.active { display: flex; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.tabbar {
+  position: absolute; bottom: 30px; left: 24px; right: 24px;
+  height: 68px; display: flex; align-items: center; justify-content: space-between;
+  background: rgba(20, 22, 28, 0.75); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 34px;
+  padding: 0 16px; z-index: 35;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+}
+.tab-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; padding: 8px 0; color: var(--txt3); transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
+.tab-btn.active { color: var(--accent); transform: translateY(-2px); }
+.tab-btn::after { content: ''; position: absolute; bottom: -4px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); opacity: 0; transition: 0.3s; }
+.tab-btn.active::after { opacity: 1; bottom: 0px; }
+.tab-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: 0.3s; }
+.tab-label { font-size: 10px; font-weight: 600; letter-spacing: 0.02em; }
+
+.btn-primary { width: 100%; background: var(--accent); border: none; border-radius: var(--rs); padding: 14px; font-size: 15px; font-weight: 700; color: #000; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(212,255,0,0.25); }
+.btn-primary:active { opacity: 0.8; transform: scale(0.98); }
+
+/* HOME */
+#view-home { padding: 0; }
+.home-hero { position: relative; height: 220px; flex-shrink: 0; overflow: hidden; margin: 0 24px; border-radius: 28px; }
+.home-hero-bg { position: absolute; inset: 0; background: url('https://picsum.photos/id/1043/800/400') center/cover no-repeat; filter: brightness(0.6) contrast(1.1); transition: transform 3s ease-out; }
+.home-hero:hover .home-hero-bg { transform: scale(1.05); }
+.home-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,4,6,0.95) 0%, rgba(3,4,6,0) 100%); }
+.home-hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; }
+.home-hero-eye { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.home-hero-eye::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; display: inline-block; box-shadow: 0 0 8px var(--accent); }
+.home-hero-title { font-size: 26px; font-weight: 800; color: var(--txt1); line-height: 1.25; margin-bottom: 6px; }
+.home-hero-sub { font-size: 13px; color: var(--txt2); font-weight: 500; }
+
+.home-stats { display: flex; gap: 10px; padding: 20px 24px 0; flex-shrink: 0; }
+.home-stat { flex: 1; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--rs); padding: 14px 10px; text-align: center; backdrop-filter: var(--glass-blur); }
+.hstat-val { font-size: 18px; font-weight: 700; color: var(--txt1); margin-bottom: 2px; }
+.hstat-lbl { font-size: 10px; color: var(--txt3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.home-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+/* Tour Card (replaces pass-banner) */
+.tour-card { background: linear-gradient(135deg, rgba(212,255,0,0.12) 0%, rgba(74,158,255,0.06) 100%); border: 1px solid rgba(212,255,0,0.25); border-radius: 28px; padding: 20px; cursor: pointer; transition: 0.3s; }
+.tour-card:active { transform: scale(0.98); }
+.tc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.tc-agency { font-size: 10px; font-weight: 700; background: var(--accent); color: #000; padding: 4px 10px; border-radius: 20px; }
+.tc-free { font-size: 11px; font-weight: 700; color: var(--green); background: var(--green-dim); border: 1px solid rgba(0,230,118,0.2); padding: 4px 10px; border-radius: 20px; }
+.tc-name { font-size: 18px; font-weight: 700; color: var(--txt1); margin-bottom: 6px; }
+.tc-sub { font-size: 13px; color: var(--txt2); margin-bottom: 14px; }
+.tc-prog-wrap { margin-bottom: 12px; }
+.tc-prog-bar { height: 4px; background: var(--border2); border-radius: 2px; margin-bottom: 6px; }
+.tc-prog-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 1s ease; }
+.tc-prog-text { font-size: 11px; font-weight: 600; color: var(--txt2); }
+.tc-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tc-tag { background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; font-size: 11px; font-weight: 600; color: var(--txt2); }
+
+.how-strip { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 28px; padding: 20px; }
+.how-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt3); margin-bottom: 16px; }
+.how-steps { display: flex; flex-direction: column; gap: 14px; }
+.how-step { display: flex; align-items: flex-start; gap: 12px; }
+.how-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; color: #000; background: var(--accent); flex-shrink: 0; margin-top: 2px; }
+.how-text-title { font-size: 14px; font-weight: 600; color: var(--txt1); margin-bottom: 2px; }
+.how-text-sub { font-size: 12px; color: var(--txt2); line-height: 1.5; }
+
+.sec-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: -4px; }
+.sec-title { font-size: 16px; font-weight: 700; color: var(--txt1); }
+.sec-link { font-size: 13px; font-weight: 600; color: var(--txt2); cursor: pointer; transition: 0.2s; }
+
+.cat-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.cat-row::-webkit-scrollbar { display: none; }
+.cat-pill { flex-shrink: 0; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 24px; padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--txt2); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+.cat-pill.on { background: var(--txt1); border-color: var(--txt1); color: #000; }
+.cat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+.spot-list { display: flex; flex-direction: column; gap: 12px; }
+.scard { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 24px; padding: 12px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: 0.3s; }
+.scard:active { transform: scale(0.97); background: var(--bg-surface-hover); border-color: var(--border2); }
+.scard-img { width: 90px; height: 90px; border-radius: var(--rs); object-fit: cover; flex-shrink: 0; }
+.scard-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.scard-type { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-bottom: 6px; width: fit-content; }
+.scard-name { font-size: 16px; font-weight: 700; color: var(--txt1); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scard-sub { font-size: 12px; color: var(--txt2); font-weight: 500; }
+.scard-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.scard-pts { font-size: 13px; font-weight: 700; }
+.trigger-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 8px; }
+
+.t-gps { background: var(--blue-dim); color: var(--blue); }
+.t-cam { background: var(--accent-dim); color: var(--accent); }
+.t-food { background: var(--orange-dim); color: var(--orange); }
+
+/* MAP */
+#view-map { padding: 0; overflow: hidden; }
+.map-wrap { position: absolute; inset: 0; }
+#leaflet-map { position: absolute; inset: 0; z-index: 1; }
+.leaflet-container { background: #030406 !important; }
+.leaflet-control-attribution, .leaflet-control-zoom { display: none; }
+.map-top { position: absolute; top: 12px; left: 16px; right: 16px; z-index: 20; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.map-search { display: flex; align-items: center; gap: 12px; background: rgba(10,12,16,0.85); border: 1px solid var(--border2); border-radius: 30px; padding: 14px 18px; backdrop-filter: var(--glass-blur); pointer-events: all; }
+.map-search svg { width: 16px; height: 16px; stroke: var(--txt2); fill: none; stroke-width: 2; flex-shrink: 0; }
+.map-search-txt { font-size: 14px; color: var(--txt2); font-weight: 500; }
+.map-cats { display: flex; gap: 8px; overflow-x: auto; pointer-events: all; padding-bottom: 4px; }
+.map-cats::-webkit-scrollbar { display: none; }
+.map-cat { flex-shrink: 0; background: rgba(10,12,16,0.85); border: 1px solid var(--border2); border-radius: 20px; padding: 8px 16px; font-size: 12px; font-weight: 600; color: var(--txt2); cursor: pointer; backdrop-filter: var(--glass-blur); transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+.map-cat.on { border-color: var(--accent); color: #000; background: var(--accent); }
+
+.map-right { position: absolute; right: 16px; z-index: 20; display: flex; flex-direction: column; gap: 10px; }
+.map-ctrl { width: 44px; height: 44px; border-radius: 50%; background: rgba(10,12,16,0.9); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: var(--glass-blur); transition: 0.2s; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+.map-ctrl:active { transform: scale(0.93); }
+.map-ctrl svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+.map-ctrl.locate svg { stroke: var(--blue); }
+.map-ctrl.ar-c svg { stroke: var(--accent); }
+
+.prox-banner { position: absolute; left: 16px; right: 16px; z-index: 30; pointer-events: all; display: none; }
+.prox-banner.show { display: block; animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+.prox-card { border-radius: 20px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; backdrop-filter: var(--glass-blur); border: 1px solid; box-shadow: 0 12px 32px rgba(0,0,0,0.6); }
+.prox-card.outdoor { background: rgba(10,12,16,0.9); border-color: var(--blue); }
+.prox-card.indoor { background: rgba(10,12,16,0.9); border-color: var(--accent); }
+.prox-card.food { background: rgba(10,12,16,0.9); border-color: var(--orange); }
+
+.prox-ping { position: relative; width: 40px; height: 40px; flex-shrink: 0; }
+.prox-icon-el { position: absolute; inset: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; z-index: 1; }
+.prox-ring { position: absolute; inset: -5px; border-radius: 50%; border: 1.5px solid; animation: proxRing 1.5s ease-out infinite; opacity: 0; }
+.prox-ring:nth-child(2){animation-delay:0.4s} .prox-ring:nth-child(3){animation-delay:0.8s}
+@keyframes proxRing{0%{transform:scale(0.7);opacity:0.8}100%{transform:scale(2);opacity:0}}
+.outdoor .prox-icon-el{background:var(--blue-dim)}.outdoor .prox-ring{border-color:var(--blue)}
+.indoor .prox-icon-el{background:var(--accent-dim)}.indoor .prox-ring{border-color:var(--accent)}
+.food .prox-icon-el{background:var(--orange-dim)}.food .prox-ring{border-color:var(--orange)}
+
+.prox-info { flex: 1; min-width: 0; }
+.prox-dist { font-size: 11px; font-weight: 600; margin-bottom: 2px; }
+.outdoor .prox-dist{color:var(--blue)}.indoor .prox-dist{color:var(--accent)}.food .prox-dist{color:var(--orange)}
+.prox-name { font-size: 15px; font-weight: 700; color: var(--txt1); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prox-sub { font-size: 11px; color: var(--txt3); }
+.prox-action { flex-shrink: 0; border: 1px solid; border-radius: var(--rs); padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer; background: none; transition: 0.2s; }
+.outdoor .prox-action{border-color:var(--blue);color:var(--blue)}
+.indoor .prox-action{border-color:var(--accent);color:var(--accent)}
+.food .prox-action{border-color:var(--orange);color:var(--orange)}
+.prox-action:active{opacity:0.6}
+
+.drawer { 
+  position: absolute; left: 12px; right: 12px; bottom: 118px; z-index: 25;
+  background: rgba(10,12,16,0.96); border-radius: 20px;
+  border: 1px solid var(--border2); backdrop-filter: var(--glass-blur);
+  transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  height: 84px; overflow: hidden; display: flex; flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.drawer.half { height: 65%; }
+.drawer-drag { padding: 10px 0 2px; display: flex; justify-content: center; cursor: pointer; flex-shrink: 0; }
+@keyframes handlePulse { 0%,100%{opacity:0.45;width:36px} 50%{opacity:0.9;width:48px} }
+.drawer-handle { height: 4px; background: var(--txt2); border-radius: 3px; animation: handlePulse 2.4s ease-in-out infinite; }
+.drawer-peek-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 18px 10px; flex-shrink: 0; }
+.drawer-peek-title { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; color: var(--txt1); display: flex; align-items: center; gap: 6px; }
+.drawer-peek-title::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+.drawer-peek-right { display: flex; align-items: center; gap: 8px; }
+.drawer-count { font-size: 13px; font-weight: 600; color: var(--accent); }
+.drawer-expand-hint { font-size: 11px; color: var(--txt2); display: flex; align-items: center; gap: 3px; font-weight: 600; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px; }
+.drawer-list { overflow-y: auto; flex: 1; padding: 0 12px 16px; }
+.drawer-list::-webkit-scrollbar { display: none; }
+
+.dspot { display: flex; align-items: center; gap: 14px; padding: 12px 14px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--rs); margin-bottom: 8px; cursor: pointer; transition: 0.2s; }
+.dspot:active { background: var(--bg-surface-hover); transform: scale(0.98); }
+.dspot.near { border-color: rgba(212,255,0,0.3); background: rgba(212,255,0,0.05); }
+.dspot-icon { width: 44px; height: 44px; border-radius: var(--rs); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; border: 1px solid; }
+.dspot-icon.outdoor{background:var(--blue-dim);border-color:rgba(74,158,255,.2)}
+.dspot-icon.indoor{background:var(--accent-dim);border-color:rgba(212,255,0,.2)}
+.dspot-icon.food{background:var(--orange-dim);border-color:rgba(255,145,66,.2)}
+.dspot-mid { flex: 1; min-width: 0; }
+.dspot-name { font-size: 15px; font-weight: 700; color: var(--txt1); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dspot-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+.dspot-dist { font-size: 11px; font-weight: 500; color: var(--txt2); }
+.dspot-pts { font-size: 12px; font-weight: 700; }
+
+.spot-sheet { 
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 50;
+  background: var(--bg-base); border-radius: 32px 32px 0 0; border-top: 1px solid var(--border2);
+  display: none; flex-direction: column; max-height: 85%; overflow: hidden;
+}
+.spot-sheet.show { display: flex; animation: sheetUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes sheetUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.ss-handle-row { padding: 12px 0 4px; display: flex; justify-content: center; flex-shrink: 0; }
+.ss-handle { width: 40px; height: 5px; background: var(--txt3); border-radius: 3px; }
+.ss-img { position: relative; height: 180px; margin: 8px 16px 0; border-radius: 20px; overflow: hidden; flex-shrink: 0; }
+.ss-img img { width: 100%; height: 100%; object-fit: cover; }
+.ss-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,4,6,0.95) 0%, rgba(3,4,6,0.2) 60%, transparent 100%); }
+.ss-img-close { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: rgba(0,0,0,0.6); border-radius: 50%; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 2; backdrop-filter: blur(8px); }
+.ss-img-close svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.5; }
+.ss-img-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; }
+.ss-type-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 6px; }
+.ss-name { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.2; }
+.ss-scroll { overflow-y: auto; flex: 1; padding: 20px 20px 0; }
+.ss-scroll::-webkit-scrollbar { display: none; }
+.ss-stats { display: flex; gap: 10px; margin-bottom: 16px; }
+.ss-stat { flex: 1; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--rs); padding: 12px; text-align: center; }
+.ss-stat-val { font-size: 16px; font-weight: 700; color: var(--txt1); margin-bottom: 2px; }
+.ss-stat-lbl { font-size: 10px; color: var(--txt3); font-weight: 600; text-transform: uppercase; }
+.ss-desc { font-size: 14px; color: var(--txt2); line-height: 1.6; margin-bottom: 20px; }
+.trig-box { border-radius: var(--rs); padding: 16px; display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+.trig-icon { font-size: 22px; flex-shrink: 0; }
+.trig-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.trig-desc { font-size: 12px; color: var(--txt2); line-height: 1.5; }
+.trig-steps { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+.trig-step { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--txt2); }
+.trig-n { width: 18px; height: 18px; border-radius: 50%; border: 1px solid var(--txt3); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--txt2); flex-shrink: 0; margin-top: 1px; }
+.ss-ctas { padding: 16px 20px 30px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--border); background: var(--bg-base); }
+.ss-cta-sec { width: 100%; background: transparent; border: 1px solid var(--border2); border-radius: var(--rs); padding: 14px; font-size: 14px; font-weight: 600; color: var(--txt2); cursor: pointer; transition: 0.2s; }
+.ss-cta-sec:active { background: var(--bg-surface); }
+
+/* Map Leaflet */
+.lf-user{width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--blue);position:relative}
+.lf-user::after{content:'';position:absolute;inset:-6px;border-radius:50%;background:rgba(74,158,255,.25);animation:uPing 2s ease-out infinite}
+@keyframes uPing{0%{transform:scale(0.7);opacity:0.8}100%{transform:scale(2.5);opacity:0}}
+.lf-mk{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;border:2.5px solid;cursor:pointer;transition:transform .18s;position:relative}
+.lf-mk::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:1.5px solid;opacity:.22}
+.lf-mk:active{transform:scale(.88)}
+.lf-mk.outdoor{background:var(--blue-dim);border-color:var(--blue)}.lf-mk.outdoor::after{border-color:var(--blue)}
+.lf-mk.indoor{background:var(--accent-dim);border-color:var(--accent)}.lf-mk.indoor::after{border-color:var(--accent)}
+.lf-mk.food{background:var(--orange-dim);border-color:var(--orange)}.lf-mk.food::after{border-color:var(--orange)}
+.lf-mk.near{animation:mkGlow 1.4s ease-in-out infinite}
+@keyframes mkGlow{0%,100%{box-shadow:0 0 0 0 currentColor}50%{box-shadow:0 0 0 10px transparent}}
+.lf-popup .leaflet-popup-content-wrapper{background:rgba(10,12,16,.95);border:1px solid var(--border2);border-radius:16px;padding:0;overflow:hidden;box-shadow:0 14px 44px rgba(0,0,0,.8);backdrop-filter:blur(16px)}
+.lf-popup .leaflet-popup-content{margin:0;min-width:200px}
+.lf-popup .leaflet-popup-tip{background:rgba(10,12,16,.95)}
+.lf-popup .leaflet-popup-close-button{color:var(--txt3)!important;top:10px!important;right:12px!important;font-size:18px!important}
+.pop{padding:16px}
+.pop-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:4px 8px;border-radius:6px;margin-bottom:8px}
+.pop-tag.outdoor{background:var(--blue-dim);color:var(--blue)}
+.pop-tag.indoor{background:var(--accent-dim);color:var(--accent)}
+.pop-tag.food{background:var(--orange-dim);color:var(--orange)}
+.pop-name{font-size:16px;font-weight:700;color:var(--txt1);margin-bottom:4px}
+.pop-sub{font-size:12px;color:var(--txt3);margin-bottom:12px}
+.pop-trigger{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:6px 10px;border-radius:8px;margin-bottom:12px}
+.pop-btn{display:block;width:100%;padding:12px;border-radius:10px;border:none;font-family:'Pretendard',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;transition:0.2s}
+.pop-btn:active{opacity:0.75}
+
+.sim-panel{position:absolute;left:16px;z-index:22;display:flex;flex-direction:column;gap:8px}
+.sim-lbl{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt3);text-align:center;margin-bottom:2px}
+.sim-btn{background:rgba(10,12,16,.85);border:1px solid var(--border2);border-radius:10px;padding:10px 14px;font-size:11px;font-weight:600;color:var(--txt2);cursor:pointer;backdrop-filter:var(--glass-blur);transition:0.2s;display:flex;align-items:center;gap:6px}
+.sim-btn:active{background:var(--bg-surface-hover);color:var(--txt1)}
+
+/* AR OVERLAY */
+.ar-overlay{position:absolute;inset:0;z-index:50;display:none;flex-direction:column;background:#000}
+.ar-overlay.show{display:flex;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.ar-cam-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(0.5) contrast(1.1)}
+.ar-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px}
+.ar-top{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:54px 24px 12px}
+.ar-badge{background:rgba(10,12,16,.7);border:1px solid rgba(212,255,0,.3);border-radius:24px;padding:8px 16px;font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:8px;backdrop-filter:var(--glass-blur)}
+.ar-live{width:8px;height:8px;border-radius:50%;background:var(--red);animation:liveBlink 1s infinite}
+@keyframes liveBlink{0%,100%{opacity:1}50%{opacity:0.2}}
+.ar-x{background:rgba(10,12,16,.7);border:1px solid var(--border2);border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt1);backdrop-filter:var(--glass-blur)}
+.ar-x svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+.ar-finder{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);width:260px;height:260px;z-index:5}
+.arc{position:absolute;width:32px;height:32px;border-style:solid;border-color:var(--accent)}
+.arc.tl{top:0;left:0;border-width:3px 0 0 3px;border-radius:4px 0 0 0}
+.arc.tr{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 4px 0 0}
+.arc.bl{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 4px}
+.arc.br{bottom:0;right:0;border-width:0 3px 3px 0;border-radius:0 0 4px 0}
+.ar-sweep{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);box-shadow:0 0 12px 2px rgba(212,255,0,.5);animation:sweepMove 1.5s ease-in-out infinite}
+@keyframes sweepMove{0%{top:0}100%{top:calc(100% - 2px)}}
+.ar-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,120px);z-index:5;text-align:center}
+.ar-hint-pill{background:rgba(10,12,16,.8);border-radius:24px;padding:8px 20px;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:0.05em;backdrop-filter:var(--glass-blur);white-space:nowrap;display:inline-block}
+.ar-obj{position:absolute;top:50%;left:50%;transform:translate(-50%,-78%);z-index:6;text-align:center;display:none}
+.ar-obj.show{display:block;animation:objPop 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes objPop{from{opacity:0;transform:translate(-50%,-78%) scale(0.7)}to{opacity:1;transform:translate(-50%,-78%) scale(1)}}
+.ar-obj-lbl{background:rgba(10,12,16,.9);border:1px solid rgba(212,255,0,.4);border-radius:16px;padding:10px 20px;display:inline-block;margin-bottom:16px;backdrop-filter:var(--glass-blur)}
+.ar-obj-name{font-size:16px;font-weight:700;color:var(--txt1);margin-bottom:2px}
+.ar-obj-era{font-size:11px;font-weight:600;color:var(--accent)}
+.ar-obj-emoji{font-size:72px;filter:drop-shadow(0 0 32px rgba(212,255,0,.6));animation:objFloat 2s ease-in-out infinite}
+@keyframes objFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.ar-result{position:absolute;bottom:0;left:0;right:0;z-index:7;background:linear-gradient(transparent,rgba(3,4,6,.95) 20%);padding:30px 24px 40px;display:none}
+.ar-result.show{display:block;animation:sheetUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)}
+.ar-card{background:rgba(10,12,16,.9);border:1px solid var(--border2);border-radius:24px;padding:20px;backdrop-filter:var(--glass-blur)}
+.ar-card-hdr{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.ar-card-ico{width:52px;height:52px;border-radius:var(--rs);background:var(--accent-dim);border:1px solid rgba(212,255,0,.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.ar-card-type{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.ar-card-name{font-size:18px;font-weight:700;color:var(--txt1);line-height:1.2}
+.ar-card-desc{font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:20px}
+.ar-sim-btn{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:8;background:rgba(212,255,0,.15);border:1px solid rgba(212,255,0,.4);border-radius:30px;padding:12px 24px;font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;backdrop-filter:var(--glass-blur);white-space:nowrap;display:flex;align-items:center;gap:8px}
+.ar-sim-btn:active{background:rgba(212,255,0,.25)}
+
+/* QUEST OVERLAY */
+.quest-overlay{position:absolute;inset:0;z-index:55;background:var(--bg-base);display:none;flex-direction:column;overflow-y:auto}
+.quest-overlay.show{display:flex;animation:fadeIn 0.3s ease}
+.q-hero{position:relative;height:200px;flex-shrink:0;overflow:hidden}
+.q-hero img{width:100%;height:100%;object-fit:cover;filter:brightness(0.5)}
+.q-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,var(--bg-base) 0%,transparent 100%)}
+.q-hero-back{position:absolute;top:54px;left:24px;width:40px;height:40px;background:rgba(0,0,0,.6);border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:var(--glass-blur)}
+.q-hero-back svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.5}
+.q-hero-info{position:absolute;bottom:0;left:0;right:0;padding:20px 24px}
+.q-hero-loc{font-size:11px;font-weight:600;color:var(--txt3);margin-bottom:6px;letter-spacing:0.05em}
+.q-hero-name{font-size:24px;font-weight:800;color:#fff;line-height:1.2}
+.q-body{padding:24px;flex:1;display:flex;flex-direction:column;gap:16px}
+.q-prog{display:flex;gap:6px}
+.q-dot{flex:1;height:4px;border-radius:2px;background:var(--border2)}
+.q-dot.done{background:var(--green)}
+.q-dot.now{background:var(--accent)}
+.q-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:24px;padding:24px;flex:1;display:flex;flex-direction:column}
+.q-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.q-tag{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:var(--red-dim);color:var(--red);padding:4px 10px;border-radius:6px}
+.q-pts{font-size:24px;font-weight:700;color:var(--accent)}
+.q-question{font-size:18px;font-weight:600;color:var(--txt1);line-height:1.5;margin-bottom:24px}
+.q-opts{display:flex;flex-direction:column;gap:12px}
+.q-opt{background:var(--bg-surface-hover);border:1px solid var(--border2);border-radius:16px;padding:16px 20px;color:var(--txt1);font-size:15px;text-align:left;font-weight:500;cursor:pointer;transition:0.2s}
+.q-opt:active{transform:scale(0.98)}
+.q-opt.ok{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.q-opt.no{background:var(--red-dim);border-color:var(--red);color:var(--red);animation:shake 0.22s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.q-success{text-align:center;padding:10px 0;display:flex;flex-direction:column;align-items:center;flex:1;justify-content:center}
+.q-success-emoji{font-size:64px;animation:pop 0.5s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.q-success-pts{font-size:48px;font-weight:800;color:var(--accent);margin:12px 0 4px}
+.q-success-sub{font-size:14px;color:var(--txt2);margin-bottom:20px}
+.q-reward-pill{background:var(--green-dim);border:1px solid var(--green);border-radius:16px;padding:14px 20px;font-size:14px;font-weight:600;color:var(--green);text-align:center;width:100%}
+
+#view-mission { padding: 24px 24px var(--tab-h); }
+#view-rewards { padding: 24px 24px var(--tab-h); }
+
+/* MISSION VIEW */
+.ms-header { margin-bottom: 20px; }
+.ms-title { font-size: 28px; font-weight: 800; color: var(--txt1); margin-bottom: 6px; }
+.ms-sub { font-size: 13px; color: var(--txt2); margin-bottom: 18px; }
+.ms-overall { background: linear-gradient(135deg, rgba(212,255,0,0.08), rgba(74,158,255,0.04)); border: 1px solid rgba(212,255,0,0.2); border-radius: 20px; padding: 16px; margin-bottom: 4px; }
+.ms-overall-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.ms-overall-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--txt3); }
+.ms-overall-pct { font-size: 18px; font-weight: 800; color: var(--accent); }
+.ms-overall-bar { height: 6px; background: var(--border2); border-radius: 3px; margin-bottom: 8px; }
+.ms-overall-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), rgba(212,255,0,0.5)); transition: width 1s ease; }
+.ms-overall-stats { display: flex; gap: 16px; }
+.ms-overall-stat { font-size: 11px; font-weight: 600; color: var(--txt2); }
+.ms-overall-stat strong { color: var(--txt1); }
+.ms-group-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt3); margin: 20px 0 10px; display: flex; align-items: center; gap: 6px; }
+.ms-group-label::before { content:''; flex: 1; height: 1px; background: var(--border); }
+.mission-item { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: 0.2s; }
+.mission-item:active { transform: scale(0.98); background: var(--bg-surface-hover); }
+.mission-item.completed { border-color: rgba(0,230,118,0.2); background: rgba(0,230,118,0.03); }
+.mission-item.active-m { border-color: rgba(212,255,0,0.25); background: rgba(212,255,0,0.04); }
+.mission-item.locked { opacity: 0.4; pointer-events: none; }
+.mi-icon { width: 44px; height: 44px; border-radius: var(--rs); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.mi-icon.outdoor { background: var(--blue-dim); }
+.mi-icon.indoor { background: var(--accent-dim); }
+.mi-icon.food { background: var(--orange-dim); }
+.mi-body { flex: 1; min-width: 0; }
+.mi-name { font-size: 14px; font-weight: 700; color: var(--txt1); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mi-meta { font-size: 11px; color: var(--txt3); font-weight: 500; }
+.mi-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+.mi-pts { font-size: 12px; font-weight: 700; }
+.mi-status { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 8px; }
+.mi-status.done { background: var(--green-dim); color: var(--green); }
+.mi-status.now { background: var(--accent-dim); color: var(--accent); }
+.mi-status.wait { background: var(--border); color: var(--txt3); }
+.mi-status.lock { background: var(--border); color: var(--txt3); }
+.mi-prog { display: flex; gap: 3px; margin-top: 4px; }
+.mi-prog-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); }
+.mi-prog-dot.done { background: var(--green); }
+.mi-prog-dot.now { background: var(--accent); }
+
+/* REWARDS VIEW */
+.rw-title { font-size: 28px; font-weight: 800; color: var(--txt1); margin-bottom: 6px; }
+.rw-sub { font-size: 13px; color: var(--txt2); margin-bottom: 24px; }
+.tour-active {
+  background: linear-gradient(135deg, rgba(212,255,0,0.1) 0%, rgba(74,158,255,0.05) 100%);
+  border: 1px solid rgba(212,255,0,0.22); border-radius: 28px; padding: 20px;
+  margin-bottom: 20px; flex-shrink: 0;
+  box-shadow: inset -1px -1px 60px rgba(212,255,0,0.04), 0 0 0 1px rgba(212,255,0,0.22);
+}
+.ta-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.ta-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent); color: #000; padding: 5px 12px; border-radius: 20px; }
+.ta-agency { font-size: 11px; font-weight: 600; color: rgba(212,255,0,0.75); }
+.ta-name { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.ta-sub { font-size: 13px; color: var(--txt2); margin-bottom: 14px; }
+.ta-prog-bar { height: 4px; background: var(--border2); border-radius: 2px; margin-bottom: 6px; }
+.ta-prog-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 33%; }
+.ta-prog-text { font-size: 11px; color: var(--txt2); font-weight: 600; margin-bottom: 14px; }
+.ta-stats { display: flex; gap: 24px; }
+.ta-sv { font-size: 20px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+.ta-sl { font-size: 10px; font-weight: 600; color: var(--txt2); text-transform: uppercase; letter-spacing: 0.06em; }
+.rw-sec { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--txt2); margin-bottom: 12px; margin-top: 20px; }
+.coupon {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 16px 18px 16px 20px;
+  margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px;
+  flex-shrink: 0; border-left-width: 4px; border-left-style: solid;
+}
+.coupon.fc { border-left-color: var(--orange); }
+.coupon.cc { border-left-color: var(--blue); }
+.coupon.qc { border-left-color: var(--accent); }
+.coupon.used { opacity: 0.5; }
+.coupon::before { display: none; }
+.coupon-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.coupon-from { font-size: 12px; font-weight: 600; color: var(--txt1); letter-spacing: 0.03em; display: flex; align-items: center; gap: 6px; }
+.coupon-tag { font-size: 10px; font-weight: 700; padding: 5px 11px; border-radius: 10px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.08); color: var(--txt1); white-space: nowrap; }
+.coupon-name { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.4; }
+.coupon-earn { font-size: 11px; color: var(--txt3); }
+
+.partner-section { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-top: 20px; }
+.partner-title { font-size: 16px; font-weight: 700; color: var(--txt1); margin-bottom: 4px; }
+.partner-sub { font-size: 12px; color: var(--txt2); margin-bottom: 16px; }
+.partner-offer { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.partner-offer:last-child { border-bottom: none; padding-bottom: 0; }
+.po-icon { width: 40px; height: 40px; border-radius: var(--rs); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; background: var(--bg-surface-hover); border: 1px solid var(--border2); }
+.po-body { flex: 1; min-width: 0; }
+.po-name { font-size: 13px; font-weight: 700; color: var(--txt1); margin-bottom: 2px; }
+.po-cond { font-size: 11px; color: var(--txt3); }
+.po-status { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px; flex-shrink: 0; }
+.po-status.earn { background: var(--accent-dim); color: var(--accent); }
+.po-status.done2 { background: var(--green-dim); color: var(--green); }
+
+/* AGENCY ADMIN OVERLAY */
+.admin-overlay { position: absolute; inset: 0; z-index: 70; background: var(--bg-base); display: none; flex-direction: column; overflow-y: auto; }
+.admin-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+.admin-hdr { display: flex; align-items: center; gap: 14px; padding: 20px 24px 16px; flex-shrink: 0; border-bottom: 1px solid var(--border); }
+.admin-back { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.admin-back svg { width: 16px; height: 16px; stroke: var(--txt1); fill: none; stroke-width: 2.5; }
+.admin-hdr-info { flex: 1; }
+.admin-hdr-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--txt3); margin-bottom: 2px; }
+.admin-hdr-name { font-size: 16px; font-weight: 700; color: var(--txt1); }
+.admin-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; padding-bottom: 40px; }
+.admin-section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt3); margin-bottom: 10px; }
+.admin-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.admin-stat-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--rs); padding: 14px; }
+.asc-val { font-size: 22px; font-weight: 800; margin-bottom: 2px; }
+.asc-lbl { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--txt3); }
+.asc-chg { font-size: 11px; font-weight: 600; margin-top: 4px; }
+
+.insight-card { background: rgba(255,74,74,0.08); border: 1px solid rgba(255,74,74,0.25); border-radius: 20px; padding: 16px; }
+.ic-top { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.ic-icon { font-size: 16px; }
+.ic-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--red); }
+.ic-title { font-size: 15px; font-weight: 700; color: var(--txt1); margin-bottom: 6px; line-height: 1.4; }
+.ic-desc { font-size: 12px; color: var(--txt2); line-height: 1.5; margin-bottom: 14px; }
+.ic-action { background: var(--red); border: none; border-radius: var(--rs); padding: 10px 18px; font-size: 12px; font-weight: 700; color: #fff; cursor: pointer; }
+
+.perf-list { display: flex; flex-direction: column; gap: 10px; }
+.perf-item { display: flex; align-items: center; gap: 12px; }
+.perf-emoji { font-size: 16px; width: 24px; text-align: center; flex-shrink: 0; }
+.perf-name { font-size: 12px; font-weight: 600; color: var(--txt1); width: 80px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.perf-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; }
+.perf-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 1s ease; }
+.perf-pct { font-size: 11px; font-weight: 700; color: var(--accent); width: 32px; text-align: right; flex-shrink: 0; }
+
+.tour-programs { display: flex; flex-direction: column; gap: 10px; }
+.tp-item { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--rs); padding: 14px 16px; display: flex; align-items: center; gap: 14px; }
+.tp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.tp-dot.active-t { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.tp-dot.inactive { background: var(--txt3); }
+.tp-info { flex: 1; }
+.tp-name { font-size: 14px; font-weight: 700; color: var(--txt1); margin-bottom: 2px; }
+.tp-meta { font-size: 11px; color: var(--txt3); }
+.tp-badge { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 10px; }
+.tp-badge.on { background: var(--green-dim); color: var(--green); }
+.tp-badge.off { background: var(--border); color: var(--txt3); }
+
+.admin-qr-card { background: linear-gradient(135deg, rgba(212,255,0,0.1), rgba(74,158,255,0.06)); border: 1px solid rgba(212,255,0,0.2); border-radius: 20px; padding: 20px; text-align: center; }
+.qr-placeholder { width: 100px; height: 100px; margin: 0 auto 12px; border: 2px solid rgba(212,255,0,0.4); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+.qr-title { font-size: 14px; font-weight: 700; color: var(--txt1); margin-bottom: 4px; }
+.qr-sub { font-size: 12px; color: var(--txt2); margin-bottom: 14px; }
+
+/* SIDE MENU */
+.side-menu { position: absolute; inset: 0; background: var(--bg-base); z-index: 60; transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; }
+.side-menu.open { transform: translateX(0); }
+.sm-hdr { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border2); }
+.sm-logo { font-size: 20px; font-weight: 800; color: var(--accent); }
+.sm-logo span { color: var(--txt1); }
+.sm-close { background: var(--bg-surface); border: none; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--txt2); }
+.sm-close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+.sm-body { padding: 24px; flex: 1; overflow-y: auto; }
+.sm-section { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txt3); margin-bottom: 16px; margin-top: 32px; }
+.sm-section:first-child { margin-top: 0; }
+.sm-item { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
+.sm-item:active { opacity: 0.6; }
+.sm-item-icon { width: 44px; height: 44px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.sm-item-info { flex: 1; }
+.sm-item-name { font-size: 16px; font-weight: 600; color: var(--txt1); margin-bottom: 2px; }
+.sm-item-sub { font-size: 12px; color: var(--txt3); }
+.sm-item-arrow { font-size: 16px; color: var(--txt3); }
+.sm-lang-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+.sm-lang-pill { background: var(--bg-surface); border: 1px solid var(--border2); border-radius: 24px; padding: 10px 16px; font-size: 13px; font-weight: 600; color: var(--txt2); cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+.sm-lang-pill.sel { background: var(--accent-dim); border-color: rgba(212,255,0,0.4); color: var(--accent); }
+
+/* ONBOARDING */
+.onboard-overlay { position: absolute; inset: 0; z-index: 80; pointer-events: none; }
+.onboard-overlay.active { pointer-events: all; }
+.ob-dim { position: absolute; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s; }
+.ob-dim.show { opacity: 1; }
+.ob-tooltip { position: absolute; background: var(--bg-panel); border: 1px solid var(--border2); border-radius: 24px; padding: 20px; max-width: 280px; box-shadow: 0 16px 48px rgba(0,0,0,0.9); opacity: 0; transform: translateY(8px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.ob-tooltip.show { opacity: 1; transform: translateY(0); }
+.ob-tooltip::after { content: ''; position: absolute; width: 12px; height: 12px; background: var(--bg-panel); border: 1px solid var(--border2); transform: rotate(45deg); }
+.ob-tooltip.arrow-down::after { bottom: -7px; left: 50%; margin-left: -6px; border-top: none; border-left: none; }
+.ob-tooltip.arrow-up::after { top: -7px; left: 50%; margin-left: -6px; border-bottom: none; border-right: none; }
+.ob-step { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.ob-title { font-size: 16px; font-weight: 700; color: var(--txt1); margin-bottom: 8px; }
+.ob-desc { font-size: 13px; color: var(--txt2); line-height: 1.6; margin-bottom: 16px; }
+.ob-btns { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+.ob-skip { font-size: 12px; font-weight: 600; color: var(--txt3); cursor: pointer; background: none; border: none; padding: 6px; white-space: nowrap; flex-shrink: 0; }
+.ob-next { background: var(--accent); border: none; border-radius: 12px; padding: 10px 20px; font-size: 13px; font-weight: 700; color: #000; cursor: pointer; white-space: nowrap; }
+
+/* ===== DENSE MOCK DATA STYLES ===== */
+
+/* Live Activity Strip */
+.live-strip { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; flex-shrink: 0; }
+.live-strip::-webkit-scrollbar { display: none; }
+.live-pill { flex-shrink: 0; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 8px 12px; display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--txt2); }
+.live-pill .lp-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.live-pill.now .lp-dot { background: var(--green); box-shadow: 0 0 5px var(--green); animation: liveBlink 1.2s infinite; }
+.live-pill.hot .lp-dot { background: var(--red); }
+.live-pill.done .lp-dot { background: var(--accent); }
+
+/* XP Level Card */
+.xp-card { background: linear-gradient(135deg, rgba(181,123,255,0.12) 0%, rgba(74,158,255,0.06) 100%); border: 1px solid rgba(181,123,255,0.25); border-radius: 20px; padding: 16px 18px; margin-bottom: 4px; }
+.xp-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.xp-badge { font-size: 11px; font-weight: 700; background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(181,123,255,0.3); padding: 4px 10px; border-radius: 20px; }
+.xp-streak { font-size: 11px; font-weight: 700; color: var(--orange); background: var(--orange-dim); border: 1px solid rgba(255,138,0,0.2); padding: 4px 10px; border-radius: 20px; }
+.xp-bar-wrap { height: 6px; background: var(--border2); border-radius: 3px; margin-bottom: 6px; }
+.xp-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--purple), var(--blue)); }
+.xp-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--txt3); font-weight: 600; }
+
+/* Mission time estimate */
+.mi-time { font-size: 10px; color: var(--txt3); font-weight: 500; margin-top: 2px; }
+
+/* Recent completions feed */
+.feed-list { display: flex; flex-direction: column; gap: 8px; }
+.feed-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--rs); }
+.feed-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #000; flex-shrink: 0; }
+.feed-body { flex: 1; min-width: 0; }
+.feed-name { font-size: 12px; font-weight: 700; color: var(--txt1); margin-bottom: 2px; }
+.feed-action { font-size: 11px; color: var(--txt3); line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.feed-time { font-size: 10px; color: var(--txt3); flex-shrink: 0; }
+
+/* Points history */
+.pts-history { display: flex; flex-direction: column; gap: 0; }
+.pts-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 0; border-bottom: none; }
+.pts-row:first-child { border-radius: var(--rs) var(--rs) 0 0; }
+.pts-row:last-child { border-radius: 0 0 var(--rs) var(--rs); border-bottom: 1px solid var(--border); }
+.pts-row:only-child { border-radius: var(--rs); border-bottom: 1px solid var(--border); }
+.pts-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.pts-desc { flex: 1; }
+.pts-desc-main { font-size: 12px; font-weight: 600; color: var(--txt1); margin-bottom: 1px; }
+.pts-desc-sub { font-size: 10px; color: var(--txt3); }
+.pts-amount { font-size: 13px; font-weight: 700; flex-shrink: 0; }
+
+/* Coupon expiry / used badge */
+.coupon-expiry { font-size: 10px; color: var(--txt3); margin-top: 2px; }
+
+/* Weekly trend chart */
+.week-chart { display: flex; align-items: flex-end; gap: 8px; height: 60px; }
+.week-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.week-bar { width: 100%; border-radius: 4px 4px 0 0; background: var(--accent-dim); border: 1px solid rgba(212,255,0,0.2); transition: height 0.5s ease; min-height: 4px; }
+.week-bar.today { background: var(--accent); border-color: var(--accent); }
+.week-bar.low { background: rgba(255,255,255,0.06); border-color: var(--border); }
+.week-day { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--txt3); }
+.week-day.today { color: var(--accent); }
+.week-val { font-size: 9px; font-weight: 700; color: var(--txt2); }
+
+/* Nationality breakdown */
+.nat-list { display: flex; flex-direction: column; gap: 8px; }
+.nat-item { display: flex; align-items: center; gap: 10px; }
+.nat-flag { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; }
+.nat-name { font-size: 12px; font-weight: 600; color: var(--txt1); width: 52px; flex-shrink: 0; }
+.nat-bar-wrap { flex: 1; height: 5px; background: var(--border); border-radius: 3px; }
+.nat-bar-fill { height: 100%; border-radius: 3px; }
+.nat-pct { font-size: 11px; font-weight: 700; color: var(--txt2); width: 30px; text-align: right; flex-shrink: 0; }
+.nat-count { font-size: 10px; color: var(--txt3); width: 24px; text-align: right; flex-shrink: 0; }
+
+/* Activity feed (admin) */
+.admin-feed { display: flex; flex-direction: column; gap: 0; }
+.af-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: var(--bg-surface); border: 1px solid var(--border); border-bottom: none; }
+.af-item:first-child { border-radius: var(--rs) var(--rs) 0 0; }
+.af-item:last-child { border-radius: 0 0 var(--rs) var(--rs); border-bottom: 1px solid var(--border); }
+.af-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.af-body { flex: 1; min-width: 0; }
+.af-text { font-size: 12px; color: var(--txt1); line-height: 1.5; margin-bottom: 2px; }
+.af-text strong { font-weight: 700; }
+.af-time { font-size: 10px; color: var(--txt3); }
+.af-badge-sm { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 8px; display: inline-block; margin-left: 6px; vertical-align: middle; }
+
+/* Route mini timeline (home) */
+.route-timeline { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 20px; padding: 16px 18px; }
+.rt-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.rt-title { font-size: 13px; font-weight: 700; color: var(--txt1); }
+.rt-time { font-size: 11px; font-weight: 600; color: var(--txt3); }
+.rt-steps { display: flex; flex-direction: column; gap: 0; }
+.rt-step { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; position: relative; }
+.rt-step:not(:last-child)::before { content:''; position: absolute; left: 14px; top: 28px; bottom: -8px; width: 2px; background: var(--border); }
+.rt-circle { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; border: 1.5px solid; position: relative; z-index: 1; }
+.rt-circle.done { background: var(--green-dim); border-color: var(--green); }
+.rt-circle.now { background: var(--accent-dim); border-color: var(--accent); }
+.rt-circle.next { background: var(--border); border-color: var(--border2); }
+.rt-info { flex: 1; padding-top: 4px; }
+.rt-name { font-size: 13px; font-weight: 600; color: var(--txt1); margin-bottom: 1px; }
+.rt-meta { font-size: 11px; color: var(--txt3); }
+.rt-dist-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px; margin-left: auto; margin-top: 4px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- ===== AGENCY ADMIN OVERLAY ===== -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-hdr">
+    <button class="admin-back" onclick="closeAdmin()">
+      <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="admin-hdr-info">
+      <div class="admin-hdr-label">어드민 대시보드</div>
+      <div class="admin-hdr-name">솔앤비투어 × PlaySpot</div>
+    </div>
+    <div style="font-size:20px">⚙️</div>
+  </div>
+  <div class="admin-body">
+
+    <div>
+      <div class="admin-section-label">오늘 현황 · 실시간</div>
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <div class="asc-val" style="color:var(--accent)">47명</div>
+          <div class="asc-lbl">활성 여행자</div>
+          <div class="asc-chg" style="color:var(--green)">↑ 어제 대비 +12</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="asc-val" style="color:var(--green)">78%</div>
+          <div class="asc-lbl">미션 완료율</div>
+          <div class="asc-chg" style="color:var(--green)">↑ 지난주 대비 +5%</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="asc-val" style="color:var(--blue)">2h 14m</div>
+          <div class="asc-lbl">평균 체류 시간</div>
+          <div class="asc-chg" style="color:var(--txt3)">→ 변동 없음</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="asc-val" style="color:var(--orange)">34%</div>
+          <div class="asc-lbl">쿠폰 전환율</div>
+          <div class="asc-chg" style="color:var(--green)">↑ +8% 이번 달</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Trend Chart -->
+    <div>
+      <div class="admin-section-label">이번 주 여행자 추이</div>
+      <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--rs);padding:16px;">
+        <div class="week-chart">
+          <div class="week-bar-col">
+            <div class="week-val">18</div>
+            <div class="week-bar" style="height:22px"></div>
+            <div class="week-day">월</div>
+          </div>
+          <div class="week-bar-col">
+            <div class="week-val">31</div>
+            <div class="week-bar" style="height:38px"></div>
+            <div class="week-day">화</div>
+          </div>
+          <div class="week-bar-col">
+            <div class="week-val">27</div>
+            <div class="week-bar" style="height:33px"></div>
+            <div class="week-day">수</div>
+          </div>
+          <div class="week-bar-col">
+            <div class="week-val">42</div>
+            <div class="week-bar" style="height:51px"></div>
+            <div class="week-day">목</div>
+          </div>
+          <div class="week-bar-col">
+            <div class="week-val">47</div>
+            <div class="week-bar today" style="height:57px"></div>
+            <div class="week-day today">금</div>
+          </div>
+          <div class="week-bar-col">
+            <div class="week-val">—</div>
+            <div class="week-bar low" style="height:4px"></div>
+            <div class="week-day">토</div>
+          </div>
+          <div class="week-bar-col">
+            <div class="week-val">—</div>
+            <div class="week-bar low" style="height:4px"></div>
+            <div class="week-day">일</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--txt3);">
+          <span>이번 주 누계 <strong style="color:var(--txt1)">165명</strong></span>
+          <span>지난 주 대비 <strong style="color:var(--green)">+23%</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="ic-top">
+        <div class="ic-icon">⚠️</div>
+        <div class="ic-label">데이터 인사이트</div>
+      </div>
+      <div class="ic-title">트라팔가 광장 3번 미션<br>이탈률 67% 감지</div>
+      <div class="ic-desc">방문자의 67%가 3번 미션에서 이탈합니다. 퀴즈 난이도 조정 또는 힌트 추가 시 완료율이 약 40% 향상될 것으로 예측됩니다.</div>
+      <button class="ic-action">미션 수정하기 →</button>
+    </div>
+
+    <!-- Spot Performance -->
+    <div>
+      <div class="admin-section-label">스폿별 미션 완료율</div>
+      <div class="perf-list">
+        <div class="perf-item">
+          <div class="perf-emoji">🪨</div>
+          <div class="perf-name">로제타 스톤</div>
+          <div class="perf-bar-wrap"><div class="perf-bar-fill" style="width:92%"></div></div>
+          <div class="perf-pct">92%</div>
+        </div>
+        <div class="perf-item">
+          <div class="perf-emoji">🌉</div>
+          <div class="perf-name">타워 브리지</div>
+          <div class="perf-bar-wrap"><div class="perf-bar-fill" style="width:84%"></div></div>
+          <div class="perf-pct">84%</div>
+        </div>
+        <div class="perf-item">
+          <div class="perf-emoji">🏛</div>
+          <div class="perf-name">엘긴 마블스</div>
+          <div class="perf-bar-wrap"><div class="perf-bar-fill" style="width:71%;background:var(--blue)"></div></div>
+          <div class="perf-pct" style="color:var(--blue)">71%</div>
+        </div>
+        <div class="perf-item">
+          <div class="perf-emoji">🦁</div>
+          <div class="perf-name">트라팔가</div>
+          <div class="perf-bar-wrap"><div class="perf-bar-fill" style="width:33%;background:var(--red)"></div></div>
+          <div class="perf-pct" style="color:var(--red)">33% ⚠️</div>
+        </div>
+        <div class="perf-item">
+          <div class="perf-emoji">🥞</div>
+          <div class="perf-name">브렉퍼스트클럽</div>
+          <div class="perf-bar-wrap"><div class="perf-bar-fill" style="width:51%;background:var(--orange)"></div></div>
+          <div class="perf-pct" style="color:var(--orange)">51%</div>
+        </div>
+        <div class="perf-item">
+          <div class="perf-emoji">🧀</div>
+          <div class="perf-name">버로우 마켓</div>
+          <div class="perf-bar-wrap"><div class="perf-bar-fill" style="width:44%;background:var(--orange)"></div></div>
+          <div class="perf-pct" style="color:var(--orange)">44%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nationality Breakdown -->
+    <div>
+      <div class="admin-section-label">국적별 방문자 (오늘 47명)</div>
+      <div class="nat-list">
+        <div class="nat-item">
+          <div class="nat-flag">🇰🇷</div>
+          <div class="nat-name">한국</div>
+          <div class="nat-bar-wrap"><div class="nat-bar-fill" style="width:55%;background:var(--accent)"></div></div>
+          <div class="nat-pct" style="color:var(--accent)">55%</div>
+          <div class="nat-count">26명</div>
+        </div>
+        <div class="nat-item">
+          <div class="nat-flag">🇯🇵</div>
+          <div class="nat-name">일본</div>
+          <div class="nat-bar-wrap"><div class="nat-bar-fill" style="width:21%;background:var(--blue)"></div></div>
+          <div class="nat-pct" style="color:var(--blue)">21%</div>
+          <div class="nat-count">10명</div>
+        </div>
+        <div class="nat-item">
+          <div class="nat-flag">🇨🇳</div>
+          <div class="nat-name">중국</div>
+          <div class="nat-bar-wrap"><div class="nat-bar-fill" style="width:13%;background:var(--red)"></div></div>
+          <div class="nat-pct" style="color:var(--red)">13%</div>
+          <div class="nat-count">6명</div>
+        </div>
+        <div class="nat-item">
+          <div class="nat-flag">🇪🇸</div>
+          <div class="nat-name">스페인</div>
+          <div class="nat-bar-wrap"><div class="nat-bar-fill" style="width:6%;background:var(--purple)"></div></div>
+          <div class="nat-pct" style="color:var(--purple)">6%</div>
+          <div class="nat-count">3명</div>
+        </div>
+        <div class="nat-item">
+          <div class="nat-flag">🌍</div>
+          <div class="nat-name">기타</div>
+          <div class="nat-bar-wrap"><div class="nat-bar-fill" style="width:4%;background:var(--txt3)"></div></div>
+          <div class="nat-pct" style="color:var(--txt3)">4%</div>
+          <div class="nat-count">2명</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coupon Stats -->
+    <div>
+      <div class="admin-section-label">쿠폰 현황 · 오늘</div>
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <div class="asc-val" style="color:var(--txt1)">147개</div>
+          <div class="asc-lbl">발행된 쿠폰</div>
+          <div class="asc-chg" style="color:var(--txt3)">이번 달 누계</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="asc-val" style="color:var(--green)">50개</div>
+          <div class="asc-lbl">실제 사용</div>
+          <div class="asc-chg" style="color:var(--green)">전환율 34%</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="asc-val" style="color:var(--orange)">☕ 31%</div>
+          <div class="asc-lbl">뮤지엄 카페</div>
+          <div class="asc-chg" style="color:var(--txt3)">최다 사용</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="asc-val" style="color:var(--blue)">£240</div>
+          <div class="asc-lbl">파트너 혜택 총액</div>
+          <div class="asc-chg" style="color:var(--txt3)">여행자 수혜액</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Activity Feed -->
+    <div>
+      <div class="admin-section-label">실시간 활동 로그</div>
+      <div class="admin-feed">
+        <div class="af-item">
+          <div class="af-dot" style="background:var(--green)"></div>
+          <div class="af-body">
+            <div class="af-text"><strong>Yuki T.</strong> 🇯🇵 — 로제타 스톤 스캔 완료<span class="af-badge-sm" style="background:var(--green-dim);color:var(--green)">+150pt</span></div>
+            <div class="af-time">방금 전 · 대영박물관 4전시실</div>
+          </div>
+        </div>
+        <div class="af-item">
+          <div class="af-dot" style="background:var(--accent)"></div>
+          <div class="af-body">
+            <div class="af-text"><strong>수진 김</strong> 🇰🇷 — 뮤지엄 카페 쿠폰 사용<span class="af-badge-sm" style="background:var(--orange-dim);color:var(--orange)">쿠폰</span></div>
+            <div class="af-time">3분 전 · 대영박물관 내 카페</div>
+          </div>
+        </div>
+        <div class="af-item">
+          <div class="af-dot" style="background:var(--blue)"></div>
+          <div class="af-body">
+            <div class="af-text"><strong>Carlos R.</strong> 🇪🇸 — 타워 브리지 GPS 도착</div>
+            <div class="af-time">5분 전 · 타워 브리지 · 1.2km 이동</div>
+          </div>
+        </div>
+        <div class="af-item">
+          <div class="af-dot" style="background:var(--purple)"></div>
+          <div class="af-body">
+            <div class="af-text"><strong>Anna K.</strong> 🇩🇪 — 코스 전체 완료<span class="af-badge-sm" style="background:var(--accent-dim);color:var(--accent)">완주 🎉</span></div>
+            <div class="af-time">8분 전 · 총 소요 2h 34m · 560pt</div>
+          </div>
+        </div>
+        <div class="af-item">
+          <div class="af-dot" style="background:var(--orange)"></div>
+          <div class="af-body">
+            <div class="af-text"><strong>James L.</strong> 🇬🇧 — 버로우 마켓 £5 바우처 획득</div>
+            <div class="af-time">11분 전 · 버로우 마켓 구역</div>
+          </div>
+        </div>
+        <div class="af-item">
+          <div class="af-dot" style="background:var(--red)"></div>
+          <div class="af-body">
+            <div class="af-text"><strong>미사키 T.</strong> 🇯🇵 — 트라팔가 3번 미션 이탈<span class="af-badge-sm" style="background:var(--red-dim);color:var(--red)">이탈</span></div>
+            <div class="af-time">14분 전 · ⚠️ 이탈률 누적 67%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tour Programs -->
+    <div>
+      <div class="admin-section-label">투어 프로그램</div>
+      <div class="tour-programs">
+        <div class="tp-item">
+          <div class="tp-dot active-t"></div>
+          <div class="tp-info">
+            <div class="tp-name">웨스트민스터 코스</div>
+            <div class="tp-meta">6 스폿 · 12 미션 · 오늘 47명 · 완료율 78%</div>
+          </div>
+          <div class="tp-badge on">활성</div>
+        </div>
+        <div class="tp-item">
+          <div class="tp-dot active-t"></div>
+          <div class="tp-info">
+            <div class="tp-name">블룸즈버리 야간 코스</div>
+            <div class="tp-meta">4 스폿 · 8 미션 · 오늘 12명 · 신규</div>
+          </div>
+          <div class="tp-badge on">활성</div>
+        </div>
+        <div class="tp-item">
+          <div class="tp-dot inactive"></div>
+          <div class="tp-info">
+            <div class="tp-name">코츠월드 차량 투어</div>
+            <div class="tp-meta">8 스폿 · 16 미션 · 콘텐츠 제작 중</div>
+          </div>
+          <div class="tp-badge off">준비 중</div>
+        </div>
+        <div class="tp-item">
+          <div class="tp-dot inactive"></div>
+          <div class="tp-info">
+            <div class="tp-name">파리 한인 투어 (연동 예정)</div>
+            <div class="tp-meta">파리 파트너 여행사 협의 중</div>
+          </div>
+          <div class="tp-badge off">계획 중</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-qr-card">
+      <div class="qr-placeholder">📱</div>
+      <div class="qr-title">여행자 입장 QR 코드</div>
+      <div class="qr-sub">여행자에게 이 QR을 전달하면<br>앱 설치 없이 즉시 투어 시작</div>
+      <button class="btn-primary" style="font-size:14px">QR 코드 생성 · 출력</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== SIDE MENU ===== -->
+<div class="side-menu" id="side-menu">
+  <div class="sm-hdr">
+    <div class="sm-logo">Play<span>Spot</span></div>
+    <button class="sm-close" onclick="closeSM()"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <div class="sm-body">
+    <div class="sm-section">언어 · Language</div>
+    <div class="sm-lang-grid" id="lang-grid">
+      <div class="sm-lang-pill" onclick="setLang(this,'EN')">🇬🇧 EN</div>
+      <div class="sm-lang-pill sel" onclick="setLang(this,'KO')">🇰🇷 한국어</div>
+      <div class="sm-lang-pill" onclick="setLang(this,'JA')">🇯🇵 日本語</div>
+      <div class="sm-lang-pill" onclick="setLang(this,'ZH')">🇨🇳 中文</div>
+    </div>
+    <div class="sm-section">현재 투어</div>
+    <div class="sm-item">
+      <div class="sm-item-icon" style="background:var(--accent-dim)">🗺️</div>
+      <div class="sm-item-info">
+        <div class="sm-item-name">웨스트민스터 코스</div>
+        <div class="sm-item-sub">솔앤비투어 제공 · 6 스폿</div>
+      </div>
+      <div class="sm-item-arrow">✓</div>
+    </div>
+    <div class="sm-item" style="opacity:0.4;pointer-events:none">
+      <div class="sm-item-icon" style="background:var(--blue-dim)">🌿</div>
+      <div class="sm-item-info">
+        <div class="sm-item-name">코츠월드 코스</div>
+        <div class="sm-item-sub">준비 중 · 2026 Q3</div>
+      </div>
+    </div>
+    <div class="sm-section">여행사 파트너</div>
+    <div class="sm-item" onclick="closeSM();openAdmin()">
+      <div class="sm-item-icon" style="background:var(--purple-dim)">📊</div>
+      <div class="sm-item-info">
+        <div class="sm-item-name">어드민 대시보드</div>
+        <div class="sm-item-sub">미션 완료율 · 쿠폰 현황 · 인사이트</div>
+      </div>
+      <div class="sm-item-arrow">→</div>
+    </div>
+    <div class="sm-item">
+      <div class="sm-item-icon" style="background:var(--blue-dim)">📱</div>
+      <div class="sm-item-info">
+        <div class="sm-item-name">QR 코드 생성</div>
+        <div class="sm-item-sub">여행자 입장 QR 출력</div>
+      </div>
+      <div class="sm-item-arrow">→</div>
+    </div>
+    <div class="sm-section">앱 정보</div>
+    <div class="sm-item">
+      <div class="sm-item-icon" style="background:var(--green-dim)">❓</div>
+      <div class="sm-item-info">
+        <div class="sm-item-name">도움말</div>
+        <div class="sm-item-sub">이용 방법 · 자주 묻는 질문</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ONBOARDING ===== -->
+<div class="onboard-overlay" id="ob-overlay">
+  <div class="ob-dim" id="ob-dim"></div>
+  <div class="ob-tooltip" id="ob-tip"></div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<div class="hdr" id="main-hdr">
+  <div class="hdr-logo" onclick="switchTab('home')">Play<span>Spot</span></div>
+  <div class="hdr-right">
+    <div class="hdr-lang" id="hdr-lang" onclick="openSM()">🌐 KO</div>
+    <div class="hdr-tour-badge">
+      <div class="hdr-tour-dot"></div>
+      <div class="hdr-tour-lbl">솔앤비 투어</div>
+    </div>
+    <div class="hdr-menu" onclick="openSM()"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></div>
+  </div>
+</div>
+
+<!-- ===== VIEWS ===== -->
+<div class="content">
+
+  <!-- HOME VIEW -->
+  <div class="view active" id="view-home">
+    <div class="home-hero">
+      <div class="home-hero-bg"></div>
+      <div class="home-hero-overlay"></div>
+      <div class="home-hero-content">
+        <div class="home-hero-eye">솔앤비투어 × PlaySpot · 웨스트민스터</div>
+        <div class="home-hero-title">런던을<br>게임처럼 탐험하세요</div>
+        <div class="home-hero-sub">앱 설치 없이 · QR 스캔으로 즉시 시작</div>
+      </div>
+    </div>
+
+    <div class="home-stats">
+      <div class="home-stat"><div class="hstat-val">6</div><div class="hstat-lbl">미션 스폿</div></div>
+      <div class="home-stat"><div class="hstat-val">2h</div><div class="hstat-lbl">예상 소요</div></div>
+      <div class="home-stat"><div class="hstat-val" style="color:var(--orange)">47명</div><div class="hstat-lbl">지금 탐험 중</div></div>
+      <div class="home-stat"><div class="hstat-val" style="color:var(--green);font-size:13px">무료</div><div class="hstat-lbl">투어 제공</div></div>
+    </div>
+
+    <div class="home-body">
+
+      <!-- Live Activity Strip -->
+      <div class="live-strip">
+        <div class="live-pill now"><div class="lp-dot"></div>Yuki님 로제타 스톤 완료</div>
+        <div class="live-pill done"><div class="lp-dot"></div>수진님 쿠폰 3개 획득</div>
+        <div class="live-pill hot"><div class="lp-dot"></div>버로우 마켓 현재 혼잡</div>
+        <div class="live-pill now"><div class="lp-dot"></div>Carlos님 타워 브리지 도착</div>
+        <div class="live-pill done"><div class="lp-dot"></div>Anna님 전체 미션 완료 🎉</div>
+        <div class="live-pill now"><div class="lp-dot"></div>James님 엘긴 마블스 스캔 중</div>
+      </div>
+
+      <!-- Tour Card (replaces paywall) -->
+      <div class="tour-card" onclick="switchTab('mission')">
+        <div class="tc-top">
+          <div class="tc-agency">솔앤비투어 제공</div>
+          <div class="tc-free">🆓 무료</div>
+        </div>
+        <div class="tc-name">웨스트민스터 AR 어드벤처</div>
+        <div class="tc-sub">야외 GPS + 실내 AR 스캔 + 푸드 리워드</div>
+        <div class="tc-prog-wrap">
+          <div class="tc-prog-bar"><div class="tc-prog-fill" style="width:33%"></div></div>
+          <div class="tc-prog-text">스폿 2/6 완료 · 미션 2/6 달성 · 쿠폰 2개 획득</div>
+        </div>
+        <div class="tc-tags">
+          <div class="tc-tag">⏱ 약 2시간</div>
+          <div class="tc-tag">🎁 6개 리워드</div>
+          <div class="tc-tag">📍 런던 중심부</div>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="how-strip">
+        <div class="how-title">플레이 방법</div>
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="how-num">1</div>
+            <div class="how-text">
+              <div class="how-text-title">📱 여행사 QR 스캔으로 시작</div>
+              <div class="how-text-sub">앱 설치 불필요. QR 하나로 투어가 바로 열립니다.</div>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="how-num">2</div>
+            <div class="how-text">
+              <div class="how-text-title">🗺️ 스폿 찾아 미션 완료</div>
+              <div class="how-text-sub">야외는 GPS 자동 감지, 실내는 카메라로 스캔하세요.</div>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="how-num">3</div>
+            <div class="how-text">
+              <div class="how-text-title">🎁 무료 리워드 자동 발급</div>
+              <div class="how-text-sub">미션 완료 시 로컬 파트너 쿠폰이 즉시 발급됩니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Route Mini Timeline -->
+      <div class="route-timeline">
+        <div class="rt-header">
+          <div class="rt-title">오늘의 추천 루트</div>
+          <div class="rt-time">⏱ 약 2시간 소요</div>
+        </div>
+        <div class="rt-steps">
+          <div class="rt-step">
+            <div class="rt-circle done">✓</div>
+            <div class="rt-info">
+              <div class="rt-name">트라팔가 광장</div>
+              <div class="rt-meta">📍 GPS · 완료 · +80pt</div>
+            </div>
+          </div>
+          <div class="rt-step">
+            <div class="rt-circle done">✓</div>
+            <div class="rt-info">
+              <div class="rt-name">더 브렉퍼스트 클럽</div>
+              <div class="rt-meta">🍽 음식 파트너 · 완료 · 쿠폰 획득</div>
+            </div>
+          </div>
+          <div class="rt-step">
+            <div class="rt-circle now">→</div>
+            <div class="rt-info">
+              <div class="rt-name">타워 브리지</div>
+              <div class="rt-meta">📍 GPS · 진행 중 · 3단계 중 2단계</div>
+            </div>
+          </div>
+          <div class="rt-step">
+            <div class="rt-circle next">🪨</div>
+            <div class="rt-info">
+              <div class="rt-name">로제타 스톤 (대영박물관)</div>
+              <div class="rt-meta">📸 AR 스캔 · 다음 목적지 · 1.4km</div>
+            </div>
+          </div>
+          <div class="rt-step">
+            <div class="rt-circle next">🏛</div>
+            <div class="rt-info">
+              <div class="rt-name">엘긴 마블스</div>
+              <div class="rt-meta">📸 AR 스캔 · 잠김 · 이전 미션 필요</div>
+            </div>
+          </div>
+          <div class="rt-step">
+            <div class="rt-circle next">🧀</div>
+            <div class="rt-info">
+              <div class="rt-name">버로우 마켓</div>
+              <div class="rt-meta">🍽 음식 파트너 · 잠김 · 3.1km</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-hdr">
+        <div class="sec-title">투어 스폿</div>
+        <div class="sec-link" onclick="switchTab('map')">지도에서 보기 →</div>
+      </div>
+
+      <div class="cat-row" id="home-cats">
+        <div class="cat-pill on" onclick="filterHome(this,'all')">전체</div>
+        <div class="cat-pill" onclick="filterHome(this,'outdoor')"><span class="cat-dot" style="background:var(--blue)"></span>야외</div>
+        <div class="cat-pill" onclick="filterHome(this,'indoor')"><span class="cat-dot" style="background:var(--accent)"></span>실내</div>
+        <div class="cat-pill" onclick="filterHome(this,'food')"><span class="cat-dot" style="background:var(--orange)"></span>음식</div>
+      </div>
+
+      <div class="spot-list" id="home-list"></div>
+    </div>
+  </div>
+
+  <!-- MAP VIEW -->
+  <div class="view" id="view-map">
+    <div class="map-wrap" id="map-wrap">
+      <div id="leaflet-map"></div>
+      <div class="map-top">
+        <div class="map-search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35" stroke-linecap="round"/></svg>
+          <span class="map-search-txt">투어 스폿 검색...</span>
+        </div>
+        <div class="map-cats" id="map-cats">
+          <div class="map-cat on" onclick="filterMap(this,'all')">전체</div>
+          <div class="map-cat" onclick="filterMap(this,'outdoor')"><span style="color:var(--blue);margin-right:4px">●</span>야외 GPS</div>
+          <div class="map-cat" onclick="filterMap(this,'indoor')"><span style="color:var(--accent);margin-right:4px">●</span>실내 AR</div>
+          <div class="map-cat" onclick="filterMap(this,'food')"><span style="color:var(--orange);margin-right:4px">●</span>음식</div>
+        </div>
+      </div>
+
+      <div class="prox-banner" id="prox-banner" style="top:128px">
+        <div class="prox-card" id="prox-card">
+          <div class="prox-ping">
+            <div class="prox-ring"></div><div class="prox-ring"></div><div class="prox-ring"></div>
+            <div class="prox-icon-el" id="prox-icon">⚡</div>
+          </div>
+          <div class="prox-info">
+            <div class="prox-dist" id="prox-dist">18m 거리</div>
+            <div class="prox-name" id="prox-name">타워 브리지</div>
+            <div class="prox-sub" id="prox-sub">GPS 감지됨 · 미션 시작 가능</div>
+          </div>
+          <button class="prox-action" id="prox-action" onclick="proxGo()">시작 →</button>
+        </div>
+      </div>
+
+      <div class="map-right" id="map-right" style="bottom:216px">
+        <div class="map-ctrl locate" onclick="recenter()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke-linecap="round"/></svg></div>
+        <div class="map-ctrl ar-c" onclick="openAR(null)"><svg viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg></div>
+      </div>
+
+      <div class="sim-panel" id="sim-panel" style="bottom:216px">
+        <div class="sim-lbl">시뮬레이션</div>
+        <div class="sim-btn" onclick="triggerProx('outdoor')">📍 야외 도달</div>
+        <div class="sim-btn" onclick="triggerProx('indoor')">📸 실내 도달</div>
+        <div class="sim-btn" onclick="triggerProx('food')">🍽 음식 도달</div>
+      </div>
+
+      <div class="drawer" id="drawer">
+        <div class="drawer-drag" onclick="toggleDrawer()"><div class="drawer-handle"></div></div>
+        <div class="drawer-peek-row">
+          <div class="drawer-peek-title">투어 스폿</div>
+          <div class="drawer-peek-right">
+            <div class="drawer-count" id="drawer-count">6개</div>
+            <div class="drawer-expand-hint" id="expand-hint">↑ 더보기</div>
+          </div>
+        </div>
+        <div class="drawer-list" id="drawer-list"></div>
+      </div>
+
+      <div class="spot-sheet" id="spot-sheet">
+        <div class="ss-handle-row"><div class="ss-handle"></div></div>
+        <div class="ss-img">
+          <img id="ss-img" src="" alt="">
+          <div class="ss-img-overlay"></div>
+          <button class="ss-img-close" onclick="closeSpot()"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+          <div class="ss-img-info">
+            <div class="ss-type-badge" id="ss-type">야외</div>
+            <div class="ss-name" id="ss-name">타워 브리지</div>
+          </div>
+        </div>
+        <div class="ss-scroll">
+          <div class="ss-stats">
+            <div class="ss-stat"><div class="ss-stat-val" id="ss-dist">—</div><div class="ss-stat-lbl">거리</div></div>
+            <div class="ss-stat"><div class="ss-stat-val" id="ss-pts">—</div><div class="ss-stat-lbl">미션 점수</div></div>
+            <div class="ss-stat"><div class="ss-stat-val" id="ss-today">—</div><div class="ss-stat-lbl">방문자</div></div>
+          </div>
+          <div class="ss-desc" id="ss-desc">—</div>
+          <div class="trig-box" id="ss-trig">
+            <div class="trig-icon" id="ss-trig-icon">📍</div>
+            <div class="trig-body">
+              <div class="trig-title" id="ss-trig-title">GPS 감지</div>
+              <div class="trig-desc" id="ss-trig-desc">—</div>
+              <div class="trig-steps" id="ss-trig-steps"></div>
+            </div>
+          </div>
+        </div>
+        <div class="ss-ctas">
+          <button class="btn-primary" id="ss-cta" onclick="goFromSpot()">⚡ 미션 시작</button>
+          <button class="ss-cta-sec" onclick="closeSpot()">← 목록으로</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MISSION VIEW (replaces Rank) -->
+  <div class="view" id="view-mission">
+    <div class="ms-header">
+      <div class="ms-title">미션 보드 🎯</div>
+      <div class="ms-sub">웨스트민스터 코스 · 솔앤비투어</div>
+
+      <!-- XP Level Card -->
+      <div class="xp-card">
+        <div class="xp-top">
+          <div class="xp-badge">⚔️ 레벨 3 · 탐험가</div>
+          <div class="xp-streak">🔥 3일 연속</div>
+        </div>
+        <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:65%"></div></div>
+        <div class="xp-meta">
+          <span>130 XP</span>
+          <span>다음 레벨까지 70 XP</span>
+          <span>200 XP · 레벨 4</span>
+        </div>
+      </div>
+
+      <div class="ms-overall">
+        <div class="ms-overall-top">
+          <div class="ms-overall-label">코스 전체 진행률</div>
+          <div class="ms-overall-pct">33%</div>
+        </div>
+        <div class="ms-overall-bar"><div class="ms-overall-fill" style="width:33%"></div></div>
+        <div class="ms-overall-stats">
+          <div class="ms-overall-stat"><strong>2</strong> 완료</div>
+          <div class="ms-overall-stat"><strong>2</strong> 진행 중</div>
+          <div class="ms-overall-stat"><strong>2</strong> 잠김</div>
+          <div class="ms-overall-stat"><strong>130pt</strong> 획득</div>
+          <div class="ms-overall-stat"><strong>2개</strong> 쿠폰</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ms-group-label">진행 중</div>
+    <div class="mission-item active-m" onclick="openQuest(SPOTS[0])">
+      <div class="mi-icon outdoor">🌉</div>
+      <div class="mi-body">
+        <div class="mi-name">타워 브리지의 비밀</div>
+        <div class="mi-meta">📍 야외 GPS · 3단계 중 2단계</div>
+        <div class="mi-time">⏱ 약 15분 소요 · 1.2km</div>
+        <div class="mi-prog">
+          <div class="mi-prog-dot done"></div>
+          <div class="mi-prog-dot now"></div>
+          <div class="mi-prog-dot"></div>
+        </div>
+      </div>
+      <div class="mi-right">
+        <div class="mi-pts" style="color:var(--accent)">+100pt</div>
+        <div class="mi-status now">진행 중</div>
+      </div>
+    </div>
+    <div class="mission-item active-m" onclick="openQuest(SPOTS[1])">
+      <div class="mi-icon indoor">🪨</div>
+      <div class="mi-body">
+        <div class="mi-name">로제타 스톤 스캔</div>
+        <div class="mi-meta">📸 실내 AR · 대기 중</div>
+        <div class="mi-time">⏱ 약 20분 소요 · 실내</div>
+        <div class="mi-prog">
+          <div class="mi-prog-dot"></div>
+          <div class="mi-prog-dot"></div>
+          <div class="mi-prog-dot"></div>
+        </div>
+      </div>
+      <div class="mi-right">
+        <div class="mi-pts" style="color:var(--accent)">+150pt</div>
+        <div class="mi-status wait">대기</div>
+      </div>
+    </div>
+
+    <div class="ms-group-label">완료됨 ✓</div>
+    <div class="mission-item completed">
+      <div class="mi-icon outdoor">🦁</div>
+      <div class="mi-body">
+        <div class="mi-name">트라팔가 광장 퀴즈</div>
+        <div class="mi-meta">📍 야외 GPS · 완료 · 오후 2:14</div>
+        <div class="mi-time">소요 시간 12분 · 3/3 단계</div>
+        <div class="mi-prog">
+          <div class="mi-prog-dot done"></div>
+          <div class="mi-prog-dot done"></div>
+          <div class="mi-prog-dot done"></div>
+        </div>
+      </div>
+      <div class="mi-right">
+        <div class="mi-pts" style="color:var(--green)">+80pt</div>
+        <div class="mi-status done">완료 ✓</div>
+      </div>
+    </div>
+    <div class="mission-item completed">
+      <div class="mi-icon food">🥞</div>
+      <div class="mi-body">
+        <div class="mi-name">브렉퍼스트 클럽 방문</div>
+        <div class="mi-meta">📍 음식 GPS · 완료 · 오후 12:47</div>
+        <div class="mi-time">쿠폰 획득 · 10% 할인</div>
+        <div class="mi-prog">
+          <div class="mi-prog-dot done"></div>
+          <div class="mi-prog-dot done"></div>
+          <div class="mi-prog-dot done"></div>
+        </div>
+      </div>
+      <div class="mi-right">
+        <div class="mi-pts" style="color:var(--green)">+50pt</div>
+        <div class="mi-status done">완료 ✓</div>
+      </div>
+    </div>
+
+    <div class="ms-group-label">잠김 🔒</div>
+    <div class="mission-item locked">
+      <div class="mi-icon indoor">🏛</div>
+      <div class="mi-body">
+        <div class="mi-name">엘긴 마블스 탐험</div>
+        <div class="mi-meta">📸 실내 AR · 타워 브리지 완료 후 해금</div>
+        <div class="mi-time">⏱ 약 25분 소요 · 실내</div>
+      </div>
+      <div class="mi-right">
+        <div class="mi-pts" style="color:var(--txt3)">+120pt</div>
+        <div class="mi-status lock">🔒 잠김</div>
+      </div>
+    </div>
+    <div class="mission-item locked">
+      <div class="mi-icon food">🧀</div>
+      <div class="mi-body">
+        <div class="mi-name">버로우 마켓 푸드 트레일</div>
+        <div class="mi-meta">📍 음식 GPS · 엘긴 마블스 완료 후 해금</div>
+        <div class="mi-time">⏱ 약 30분 소요 · 3.1km</div>
+      </div>
+      <div class="mi-right">
+        <div class="mi-pts" style="color:var(--txt3)">+60pt</div>
+        <div class="mi-status lock">🔒 잠김</div>
+      </div>
+    </div>
+
+    <!-- Recent Completions Feed -->
+    <div style="margin-top:8px">
+      <div class="admin-section-label" style="margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3)">같은 투어 여행자 실시간</div>
+      <div class="feed-list">
+        <div class="feed-item">
+          <div class="feed-avatar" style="background:var(--accent)">Y</div>
+          <div class="feed-body">
+            <div class="feed-name">Yuki T. 🇯🇵</div>
+            <div class="feed-action">로제타 스톤 스캔 완료 · +150pt 획득</div>
+          </div>
+          <div class="feed-time">방금</div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-avatar" style="background:var(--blue)">C</div>
+          <div class="feed-body">
+            <div class="feed-name">Carlos R. 🇪🇸</div>
+            <div class="feed-action">타워 브리지 1단계 완료</div>
+          </div>
+          <div class="feed-time">3분 전</div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-avatar" style="background:var(--purple)">S</div>
+          <div class="feed-body">
+            <div class="feed-name">수진 김 🇰🇷</div>
+            <div class="feed-action">전체 코스 완료! 🎉 쿠폰 4개 획득</div>
+          </div>
+          <div class="feed-time">8분 전</div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-avatar" style="background:var(--orange)">A</div>
+          <div class="feed-body">
+            <div class="feed-name">Anna K. 🇩🇪</div>
+            <div class="feed-action">버로우 마켓 £5 바우처 획득</div>
+          </div>
+          <div class="feed-time">12분 전</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- REWARDS VIEW -->
+  <div class="view" id="view-rewards">
+    <div class="rw-title">내 리워드 🎁</div>
+    <div class="rw-sub">미션 완료로 획득한 무료 쿠폰</div>
+
+    <!-- Tour Active -->
+    <div class="tour-active">
+      <div class="ta-top">
+        <div class="ta-badge">웨스트민스터 코스 진행 중</div>
+        <div class="ta-agency">솔앤비투어 제공</div>
+      </div>
+      <div class="ta-name">탐험가 진행 현황</div>
+      <div class="ta-sub">런던 웨스트민스터 · 블룸즈버리 구역</div>
+      <div class="ta-prog-bar"><div class="ta-prog-fill"></div></div>
+      <div class="ta-prog-text">스폿 2/6 완료 · 미션 2/6 달성 · 다음 레벨까지 70pt</div>
+      <div class="ta-stats">
+        <div><div class="ta-sv" id="wallet-pts">130</div><div class="ta-sl">포인트</div></div>
+        <div><div class="ta-sv">2</div><div class="ta-sl">완료 미션</div></div>
+        <div><div class="ta-sv">2</div><div class="ta-sl">사용 가능</div></div>
+        <div><div class="ta-sv" style="font-size:14px">레벨3</div><div class="ta-sl">등급</div></div>
+      </div>
+    </div>
+
+    <div class="rw-sec">사용 가능한 쿠폰</div>
+    <div class="coupon fc">
+      <div class="coupon-header">
+        <div class="coupon-from">☕ 뮤지엄 카페</div>
+        <div class="coupon-tag">바로 사용</div>
+      </div>
+      <div class="coupon-name">무료 음료 — 사이즈 무관</div>
+      <div class="coupon-earn">로제타 스톤 미션 완료로 획득 · 오늘 11:32</div>
+      <div class="coupon-expiry">⏰ 5월 26일 만료 · 대영박물관 내 카페에서 사용</div>
+      <button class="btn-primary" style="padding:12px;font-size:13px">바코드 보기 →</button>
+    </div>
+    <div class="coupon cc">
+      <div class="coupon-header">
+        <div class="coupon-from">🥞 더 브렉퍼스트 클럽</div>
+        <div class="coupon-tag">7일 유효</div>
+      </div>
+      <div class="coupon-name">10% 할인 — 전 메뉴</div>
+      <div class="coupon-earn">브렉퍼스트 미션 완료로 획득 · 오늘 12:47</div>
+      <div class="coupon-expiry">⏰ 5월 28일 만료 · 전 지점 사용 가능</div>
+      <button class="btn-primary" style="padding:12px;font-size:13px;background:var(--txt1)">쿠폰 사용하기 →</button>
+    </div>
+
+    <div class="rw-sec">앞으로 획득 가능한 쿠폰</div>
+    <div class="partner-section">
+      <div class="partner-title">🏪 미션 완료 시 자동 발급</div>
+      <div class="partner-sub">다음 미션을 완료하면 이 리워드를 받을 수 있습니다</div>
+      <div class="partner-offer">
+        <div class="po-icon">🏛</div>
+        <div class="po-body">
+          <div class="po-name">내셔널 갤러리 오디오 가이드 무료</div>
+          <div class="po-cond">엘긴 마블스 미션 완료 시 · £12 상당</div>
+        </div>
+        <div class="po-status earn">미션 후 획득</div>
+      </div>
+      <div class="partner-offer">
+        <div class="po-icon">🧀</div>
+        <div class="po-body">
+          <div class="po-name">버로우 마켓 £5 스탠드 바우처</div>
+          <div class="po-cond">버로우 마켓 트레일 완료 시</div>
+        </div>
+        <div class="po-status earn">미션 후 획득</div>
+      </div>
+      <div class="partner-offer">
+        <div class="po-icon">🏰</div>
+        <div class="po-body">
+          <div class="po-name">타워 브리지 전시관 무료 입장</div>
+          <div class="po-cond">타워 브리지 미션 모두 완료 시 · £14 상당</div>
+        </div>
+        <div class="po-status earn">미션 후 획득</div>
+      </div>
+      <div class="partner-offer">
+        <div class="po-icon">🎖️</div>
+        <div class="po-body">
+          <div class="po-name">웨스트민스터 완주 배지 + 기념품 10%</div>
+          <div class="po-cond">전체 6 미션 완료 시 특별 보상</div>
+        </div>
+        <div class="po-status earn">전체 완료 시</div>
+      </div>
+    </div>
+
+    <div class="rw-sec">사용 완료된 쿠폰</div>
+    <div class="coupon qc used">
+      <div class="coupon-header">
+        <div class="coupon-from">🦁 트라팔가 탐험가 배지</div>
+        <div class="coupon-tag" style="background:var(--border);color:var(--txt3)">사용됨</div>
+      </div>
+      <div class="coupon-name" style="color:var(--txt3)">트라팔가 광장 퀴즈 완료 배지</div>
+      <div class="coupon-earn">사용 일시: 오늘 오후 2:26</div>
+    </div>
+
+    <div class="rw-sec">포인트 내역</div>
+    <div class="pts-history">
+      <div class="pts-row">
+        <div class="pts-icon">🥞</div>
+        <div class="pts-desc">
+          <div class="pts-desc-main">브렉퍼스트 클럽 방문</div>
+          <div class="pts-desc-sub">오늘 오후 12:47</div>
+        </div>
+        <div class="pts-amount" style="color:var(--green)">+50pt</div>
+      </div>
+      <div class="pts-row">
+        <div class="pts-icon">🦁</div>
+        <div class="pts-desc">
+          <div class="pts-desc-main">트라팔가 광장 퀴즈 완료</div>
+          <div class="pts-desc-sub">오늘 오후 2:14</div>
+        </div>
+        <div class="pts-amount" style="color:var(--green)">+80pt</div>
+      </div>
+      <div class="pts-row">
+        <div class="pts-icon">🌉</div>
+        <div class="pts-desc">
+          <div class="pts-desc-main">타워 브리지 1단계 완료</div>
+          <div class="pts-desc-sub">오늘 오후 3:05</div>
+        </div>
+        <div class="pts-amount" style="color:var(--accent)">+30pt</div>
+      </div>
+      <div class="pts-row">
+        <div class="pts-icon">🎯</div>
+        <div class="pts-desc">
+          <div class="pts-desc-main">투어 시작 보너스</div>
+          <div class="pts-desc-sub">오늘 오전 10:00 · 솔앤비투어 제공</div>
+        </div>
+        <div class="pts-amount" style="color:var(--blue)">+30pt</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== TABBAR ===== -->
+<div class="tabbar">
+  <button class="tab-btn active" id="tab-home" onclick="switchTab('home')">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span class="tab-label">탐험</span>
+  </button>
+  <button class="tab-btn" id="tab-map" onclick="switchTab('map')">
+    <svg viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+    <span class="tab-label">지도</span>
+  </button>
+  <button class="tab-btn" id="tab-ar" onclick="openAR(null)">
+    <div style="background: var(--accent); color: #000; border-radius: 50%; padding: 12px; margin-top: -28px; box-shadow: 0 8px 24px rgba(212,255,0,0.35);">
+      <svg viewBox="0 0 24 24" style="stroke: #000; width: 24px; height: 24px;"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
+    </div>
+    <span class="tab-label" style="margin-top:2px">AR 스캔</span>
+  </button>
+  <button class="tab-btn" id="tab-mission" onclick="switchTab('mission')">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+    <span class="tab-label">미션</span>
+  </button>
+  <button class="tab-btn" id="tab-rewards" onclick="switchTab('rewards')">
+    <svg viewBox="0 0 24 24"><path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+    <span class="tab-label">리워드</span>
+  </button>
+</div>
+
+<!-- ===== AR OVERLAY ===== -->
+<div class="ar-overlay" id="ar-overlay">
+  <div class="ar-cam-bg" id="ar-cam-bg"></div>
+  <div class="ar-grid"></div>
+  <div class="ar-top">
+    <div class="ar-badge"><div class="ar-live"></div>Gemini Vision · 활성화</div>
+    <button class="ar-x" onclick="closeAR()"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <div class="ar-finder">
+    <div class="arc tl"></div><div class="arc tr"></div>
+    <div class="arc bl"></div><div class="arc br"></div>
+    <div class="ar-sweep" id="ar-sweep"></div>
+  </div>
+  <div class="ar-hint"><div class="ar-hint-pill" id="ar-hint-txt">랜드마크나 전시물에 카메라를 가리키세요</div></div>
+  <div class="ar-obj" id="ar-obj">
+    <div class="ar-obj-lbl"><div class="ar-obj-name" id="ar-obj-name">—</div><div class="ar-obj-era" id="ar-obj-era">—</div></div>
+    <div class="ar-obj-emoji" id="ar-obj-emoji">🏛</div>
+  </div>
+  <div class="ar-result" id="ar-result">
+    <div class="ar-card">
+      <div class="ar-card-hdr">
+        <div class="ar-card-ico" id="ar-r-ico">🏛</div>
+        <div><div class="ar-card-type" id="ar-r-type">✨ 인식됨</div><div class="ar-card-name" id="ar-r-name">—</div></div>
+      </div>
+      <div class="ar-card-desc" id="ar-r-desc">—</div>
+      <button class="btn-primary" id="ar-r-btn" onclick="goQuestAR()">⚡ 미션 시작</button>
+    </div>
+  </div>
+  <button class="ar-sim-btn" id="ar-sim-btn" onclick="simAR()">
+    <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
+    시뮬레이션: 로제타 스톤
+  </button>
+</div>
+
+<!-- ===== QUEST OVERLAY ===== -->
+<div class="quest-overlay" id="quest-overlay">
+  <div class="q-hero">
+    <img id="q-img" src="" alt="">
+    <div class="q-hero-overlay"></div>
+    <button class="q-hero-back" onclick="closeQuest()"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
+    <div class="q-hero-info">
+      <div class="q-hero-loc" id="q-loc">📍 —</div>
+      <div class="q-hero-name" id="q-name">—</div>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-prog" id="q-prog"></div>
+    <div class="q-card" id="q-card"></div>
+  </div>
+</div>
+
+</div>
+<script>
+const SPOTS=[
+  {id:1,name:'타워 브리지',cat:'outdoor',emoji:'🌉',dist:'1.2km',pts:100,today:'8.4k',
+   lat:51.5055,lng:-0.0754,near:false,img:'https://picsum.photos/id/1043/400/300',
+   desc:'1894년에 개통된 두 개의 도개교는 각각 1,000톤이며 60초 만에 들어 올려집니다. 50m 이내로 걸어가면 GPS가 자동으로 도착을 감지합니다.',
+   trigger:'gps',steps:['타워 브리지 방향으로 걸어가세요','50m 이내에서 앱이 자동 감지합니다','미션 잠금 해제 — 탭 불필요'],
+   cta:'⚡ 미션 시작',ctaCls:'gps',
+   arData:{name:'타워 브리지',era:'1894 · 빅토리아 고딕',emoji:'🌉',type:'📍 GPS 감지됨 · 42m 거리',desc:'강철 11,000톤, 8년에 걸쳐 건설. 타워 내부에 숨겨진 빅토리아 문장을 찾아 4단계를 완료하세요.',pts:100},
+   quest:{loc:'📍 타워 브리지 · 사우스뱅크',name:'빅토리아의 비밀',img:'https://picsum.photos/id/1043/400/300',
+     q:'타워 브리지를 건설하는 데 얼마나 걸렸나요?',opts:['A. 4년','B. 6년','C. 8년','D. 12년'],ans:2,pts:100,reward:'🏰 타워 브리지 배지 + 전시관 무료 입장 쿠폰 획득!'}},
+  {id:2,name:'로제타 스톤',cat:'indoor',emoji:'🪨',dist:'실내',pts:150,today:'2.1k',
+   lat:51.5194,lng:-0.1270,near:true,img:'https://picsum.photos/id/1040/400/300',
+   desc:'기원전 196년에 새겨진 이 돌은 3,000년의 이집트 역사를 해독했습니다. AR 스캔을 열고 카메라를 가리키면 Gemini가 약 2초 만에 인식합니다.',
+   trigger:'cam',steps:['AR 스캔 탭을 누르세요','로제타 스톤에 카메라를 겨냥하세요','Gemini가 인식 → 미션 시작'],
+   cta:'📸 AR 카메라 열기',ctaCls:'cam',
+   arData:{name:'로제타 스톤',era:'기원전 196 · 이집트 조각',emoji:'🪨',type:'✨ 인식됨 · 대영박물관 4전시실',desc:'세 가지 문자로 새겨진 같은 칙령. 샹폴리옹이 해독하는 데 20년이 걸렸습니다.',pts:150},
+   quest:{loc:'📍 대영박물관 · 4전시실',name:'로제타 스톤의 미스터리',img:'https://picsum.photos/id/1040/400/300',
+     q:'로제타 스톤은 1799년에 발견되었습니다. 누가 발견했나요?',opts:['A. 영국 고고학자들','B. 나폴레옹의 병사들','C. 이집트 역사학자들','D. 토마스 영'],ans:1,pts:150,reward:'☕ 뮤지엄 카페 무료 음료 쿠폰 획득!'}},
+  {id:3,name:'엘긴 마블스',cat:'indoor',emoji:'🏛',dist:'실내',pts:120,today:'1.8k',
+   lat:51.5195,lng:-0.1268,near:true,img:'https://picsum.photos/id/1059/400/300',
+   desc:'기원전 447년에 조각되었습니다. AR 스캔을 열고 2,500년 된 프리즈에 겨냥하면 AI가 런던 vs 아테네 논쟁을 설명해 줍니다.',
+   trigger:'cam',steps:['AR 스캔 탭을 누르세요','대리석 조각에 카메라를 겨냥하세요','AI가 역사적 맥락을 설명합니다'],
+   cta:'📸 AR 카메라 열기',ctaCls:'cam',
+   arData:{name:'엘긴 마블스',era:'기원전 447 · 파르테논, 아테네',emoji:'🏛',type:'✨ 인식됨 · 대영박물관 18전시실',desc:'절반은 런던, 절반은 아테네. 당신은 어느 편인가요?',pts:120},
+   quest:{loc:'📍 대영박물관 · 18전시실',name:'누구의 마블스?',img:'https://picsum.photos/id/1059/400/300',
+     q:'엘긴 마블스는 원래 어떤 그리스 랜드마크를 장식했나요?',opts:['A. 콜로세움','B. 아크로폴리스','C. 올림피에이온','D. 헤파이스토스 신전'],ans:1,pts:120,reward:'🏛 내셔널 갤러리 오디오 가이드 무료 쿠폰 획득!'}},
+  {id:4,name:'트라팔가 광장',cat:'outdoor',emoji:'🦁',dist:'2.8km',pts:80,today:'12k',
+   lat:51.5080,lng:-0.1281,near:false,img:'https://picsum.photos/id/1036/400/300',
+   desc:'1844년부터 런던의 심장부입니다. 광장에 걸어 들어가면 GPS가 자동으로 입장을 감지하고 미션을 시작합니다.',
+   trigger:'gps',steps:['트라팔가 광장으로 이동하세요','광장 구역에 입장하세요','미션 자동 시작'],
+   cta:'⚡ 미션 시작',ctaCls:'gps',
+   arData:{name:'트라팔가 광장',era:'1844 · 런던 중심부',emoji:'🦁',type:'📍 GPS 감지됨 · 구역 입장',desc:'청동 사자 4마리는 1867년에 추가되었습니다.',pts:80},
+   quest:{loc:'📍 트라팔가 광장 · 중심부',name:'광장의 비밀',img:'https://picsum.photos/id/1036/400/300',
+     q:'넬슨 기둥의 높이는 밑에서 꼭대기까지 얼마인가요?',opts:['A. 33.5미터','B. 44.2미터','C. 51.6미터','D. 67.3미터'],ans:2,pts:80,reward:'🦁 트라팔가 탐험가 배지 획득!'}},
+  {id:5,name:'더 브렉퍼스트 클럽',cat:'food',emoji:'🥞',dist:'320m',pts:50,today:'340',
+   lat:51.5201,lng:-0.1285,near:true,img:'https://picsum.photos/id/1080/400/300',
+   desc:'런던에서 가장 인스타그래머블한 올데이 브렉퍼스트. 30m 이내로 걸어가면 10% 할인 쿠폰이 리워드 탭에 자동으로 나타납니다.',
+   trigger:'gps',steps:['레스토랑 30m 이내로 걸어가세요','10% 쿠폰이 리워드 탭에 자동 발급','계산대에서 화면을 보여주세요'],
+   cta:'🎟 미션 · 쿠폰 자동 발급',ctaCls:'food-c',
+   arData:{name:'더 브렉퍼스트 클럽',era:'레스토랑 · 블룸즈버리',emoji:'🥞',type:'📍 GPS 감지됨 · 28m 거리',desc:'10% 할인 쿠폰이 활성화됩니다.',pts:50},
+   quest:{loc:'📍 더 브렉퍼스트 클럽 · 블룸즈버리',name:'브렉퍼스트 트레일',img:'https://picsum.photos/id/1080/400/300',
+     q:'더 브렉퍼스트 클럽은 런던 전역에 몇 개의 지점이 있나요?',opts:['A. 3개','B. 5개','C. 7개','D. 9개'],ans:2,pts:50,reward:'🥞 10% 할인 쿠폰 — 리워드 탭에서 확인하세요!'}},
+  {id:6,name:'버로우 마켓',cat:'food',emoji:'🧀',dist:'3.1km',pts:60,today:'5.2k',
+   lat:51.5052,lng:-0.0910,near:false,img:'https://picsum.photos/id/1070/400/300',
+   desc:'12세기부터 거래해온 런던에서 가장 오래된 시장. 걸어 들어가면 5개 스탠드 푸드 트레일이 자동으로 시작됩니다.',
+   trigger:'gps',steps:['버로우 마켓으로 이동하세요','시장 구역에 입장하세요','5개 스탠드 트레일 자동 시작'],
+   cta:'🍽 미션 · 트레일 자동 시작',ctaCls:'food-c',
+   arData:{name:'버로우 마켓',era:'12세기 · 서더크',emoji:'🧀',type:'📍 GPS 감지됨 · 마켓 구역',desc:'5개 스탠드 스탬프를 모두 모으면 £5 바우처를 획득합니다.',pts:60},
+   quest:{loc:'📍 버로우 마켓 · 서더크',name:'푸드 트레일',img:'https://picsum.photos/id/1070/400/300',
+     q:'버로우 마켓은 몇 세기부터 이 자리에서 거래를 시작했나요?',opts:['A. 8세기','B. 10세기','C. 12세기','D. 14세기'],ans:2,pts:60,reward:'🧀 £5 버로우 마켓 바우처 획득!'}}
+];
+
+let map,mapInited=false,currentSpot=null,proxSpot=null;
+let arIdx=0,answered=false,drawerOpen=false,myScore=130,currentLang='KO';
+
+window.addEventListener('load',()=>{
+  buildHomeList(SPOTS);
+  buildDrawerList(SPOTS);
+  setTimeout(startOnboarding,800);
+});
+
+const OB_STEPS=[
+  {tab:'home',title:'여행사 AR 어드벤처 🎮',desc:'솔앤비투어가 제공하는 웨스트민스터 코스에 오신 것을 환영합니다. 앱 설치 없이, 무료로 즐기는 AR 게임입니다.',next:'시작!'},
+  {tab:'map',title:'투어 스폿 지도 🗺️',desc:'파란 마커 = 야외(GPS 자동 감지). 노란 마커 = 실내(AR 카메라). 주황 마커 = 음식 파트너. 가까이 가면 미션이 자동으로 열려요.',next:'다음 →'},
+  {tab:'ar',title:'카메라로 스캔하세요 📸',desc:'실내 스폿은 AR 카메라 탭을 열고 전시물을 가리키면 됩니다. Gemini AI가 인식해서 미션을 시작합니다. 완전 무료예요.',next:'다음 →'},
+  {tab:'mission',title:'미션 완료 → 무료 리워드 🎁',desc:'미션을 완료할수록 로컬 파트너 쿠폰이 자동 발급됩니다. 카페, 박물관, 마켓 할인권을 무료로 받으세요.',next:'탐험 시작 →'},
+];
+let obStep=0;
+function startOnboarding(){showObStep(0)}
+function showObStep(i){
+  const overlay=document.getElementById('ob-overlay'),dim=document.getElementById('ob-dim'),tip=document.getElementById('ob-tip');
+  if(i>=OB_STEPS.length){endOnboarding();return;}
+  obStep=i;const s=OB_STEPS[i];
+  overlay.classList.add('active');dim.classList.add('show');
+  if(s.tab==='ar'){openAR(null);setTimeout(()=>positionTip(tip,s,i),300);return;}
+  else if(s.tab!=='home'){switchTab(s.tab);}
+  setTimeout(()=>positionTip(tip,s,i),200);
+}
+function positionTip(tip,s,i){
+  tip.innerHTML=`<div class="ob-step">${i+1} / ${OB_STEPS.length} 단계</div><div class="ob-title">${s.title}</div><div class="ob-desc">${s.desc}</div><div class="ob-btns"><button class="ob-skip" onclick="endOnboarding()">건너뛰기</button><button class="ob-next" onclick="nextObStep()">${s.next}</button></div>`;
+  const positions=[
+    {top:'30%',left:'50%',transform:'translateX(-50%)',arrowClass:'arrow-down'},
+    {top:'55%',left:'50%',transform:'translateX(-50%)',arrowClass:'arrow-down'},
+    {top:'35%',left:'50%',transform:'translateX(-50%)',arrowClass:''},
+    {top:'30%',left:'50%',transform:'translateX(-50%)',arrowClass:''},
+  ];
+  const p=positions[i]||positions[0];
+  tip.style.top=p.top;tip.style.left=p.left;tip.style.transform=p.transform;
+  tip.className='ob-tooltip '+p.arrowClass;
+  setTimeout(()=>tip.classList.add('show'),50);
+}
+function nextObStep(){
+  document.getElementById('ob-tip').classList.remove('show');
+  if(obStep===2)closeAR();
+  setTimeout(()=>showObStep(obStep+1),200);
+}
+function endOnboarding(){
+  document.getElementById('ob-dim').classList.remove('show');
+  document.getElementById('ob-tip').classList.remove('show');
+  document.getElementById('ob-overlay').classList.remove('active');
+  closeAR();switchTab('home');
+}
+
+function buildHomeList(spots){
+  const el=document.getElementById('home-list');el.innerHTML='';
+  spots.forEach(s=>{
+    const tc=s.cat==='indoor'?'var(--accent)':s.cat==='food'?'var(--orange)':'var(--blue)';
+    const tb=s.cat==='indoor'?'var(--accent-dim)':s.cat==='food'?'var(--orange-dim)':'var(--blue-dim)';
+    const tTag=s.trigger==='cam'?`<span class="trigger-tag t-cam">📸 AR 스캔</span>`:`<span class="trigger-tag ${s.cat==='food'?'t-food':'t-gps'}">📍 GPS</span>`;
+    const typeLbl=s.cat==='indoor'?'🏛 실내':s.cat==='food'?'🍽 음식 파트너':'🌿 야외';
+    el.innerHTML+=`<div class="scard" onclick="openSpotDetail(${s.id})"><img class="scard-img" src="${s.img}" alt=""><div class="scard-body"><div><div class="scard-type" style="background:${tb};color:${tc}">${typeLbl}</div><div class="scard-name">${s.name}</div><div class="scard-sub">${s.dist} · 오늘 ${s.today}명</div></div><div class="scard-bottom"><div class="scard-pts" style="color:${tc}">+${s.pts} pt</div>${tTag}</div></div></div>`;
+  });
+}
+function filterHome(el,cat){
+  document.querySelectorAll('#home-cats .cat-pill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  buildHomeList(cat==='all'?SPOTS:SPOTS.filter(s=>s.cat===cat));
+}
+
+function buildDrawerList(spots){
+  const el=document.getElementById('drawer-list');el.innerHTML='';
+  document.getElementById('drawer-count').textContent=spots.length+'개';
+  spots.forEach(s=>{
+    const tc=s.cat==='indoor'?'var(--accent)':s.cat==='food'?'var(--orange)':'var(--blue)';
+    const tTag=s.trigger==='cam'?`<span class="trigger-tag t-cam" style="font-size:9px;padding:2px 6px;border-radius:8px">📸 AR</span>`:`<span class="trigger-tag ${s.cat==='food'?'t-food':'t-gps'}" style="font-size:9px;padding:2px 6px;border-radius:8px">📍 GPS</span>`;
+    el.innerHTML+=`<div class="dspot${s.near?' near':''}" onclick="openSpotDetail(${s.id})"><div class="dspot-icon ${s.cat}">${s.emoji}</div><div class="dspot-mid"><div class="dspot-name">${s.name}</div><div>${tTag}</div></div><div class="dspot-right"><div class="dspot-dist">${s.dist}</div><div class="dspot-pts" style="color:${tc}">+${s.pts} pt</div></div></div>`;
+  });
+}
+
+function initMap(){
+  if(mapInited)return;mapInited=true;
+  map=L.map('leaflet-map',{center:[51.515,-0.105],zoom:14,zoomControl:false,attributionControl:false});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(map);
+  L.circleMarker([51.5194,-0.1270],{radius:22,color:'rgba(74,158,255,.2)',fillColor:'rgba(74,158,255,.05)',fillOpacity:1,weight:1}).addTo(map);
+  const uIcon=L.divIcon({className:'',html:'<div class="lf-user" style="position:relative"></div>',iconSize:[16,16],iconAnchor:[8,8]});
+  L.marker([51.5194,-0.1270],{icon:uIcon,zIndexOffset:1000}).addTo(map);
+  SPOTS.forEach(s=>{
+    const icon=L.divIcon({className:'',html:`<div class="lf-mk ${s.cat}${s.near?' near':''}">${s.emoji}</div>`,iconSize:[46,46],iconAnchor:[23,23]});
+    const mk=L.marker([s.lat,s.lng],{icon}).addTo(map);
+    const tHtml=s.trigger==='cam'?`<div class="pop-trigger cam">📸 AR 카메라</div>`:`<div class="pop-trigger ${s.cat==='food'?'food-t':'gps'}">📍 GPS 감지</div>`;
+    mk.bindPopup(`<div class="pop"><div class="pop-tag ${s.cat}">${s.cat==='indoor'?'실내':s.cat==='food'?'음식 파트너':'야외'}</div><div class="pop-name">${s.name}</div><div class="pop-sub">${s.dist} · +${s.pts} pt · 오늘 ${s.today}명</div>${tHtml}<button class="pop-btn ${s.cat}" onclick="openSpotDetail(${s.id});document.querySelectorAll('.leaflet-popup-close-button').forEach(b=>b.click())">${s.trigger==='cam'?'📸 AR 스캔 열기 →':'⚡ 미션 보기 →'}</button></div>`,{maxWidth:220,className:'lf-popup'});
+  });
+  setTimeout(()=>map.invalidateSize(),150);
+}
+
+function toggleDrawer(){
+  drawerOpen=!drawerOpen;
+  const d=document.getElementById('drawer');
+  d.style.height=drawerOpen?'65%':'84px';
+  document.getElementById('expand-hint').textContent=drawerOpen?'↓ 접기':'↑ 더보기';
+  const offset=drawerOpen?'calc(65% + 128px)':'216px';
+  document.getElementById('map-right').style.bottom=offset;
+  document.getElementById('sim-panel').style.bottom=offset;
+}
+
+function openSpotDetail(id){
+  currentSpot=SPOTS.find(s=>s.id===id);if(!currentSpot)return;
+  const s=currentSpot;
+  document.getElementById('ss-img').src=s.img;
+  document.getElementById('ss-name').textContent=s.name;
+  const badge=document.getElementById('ss-type');
+  const tc=s.cat==='indoor'?'var(--accent)':s.cat==='food'?'var(--orange)':'var(--blue)';
+  const tb=s.cat==='indoor'?'var(--accent-dim)':s.cat==='food'?'var(--orange-dim)':'var(--blue-dim)';
+  badge.textContent=s.cat==='indoor'?'🏛 실내':s.cat==='food'?'🍽 음식 파트너':'🌿 야외';
+  badge.style.background=tb;badge.style.color=tc;
+  document.getElementById('ss-dist').textContent=s.dist;
+  document.getElementById('ss-pts').textContent='+'+s.pts;
+  document.getElementById('ss-today').textContent=s.today;
+  document.getElementById('ss-desc').textContent=s.desc;
+  const tb2=document.getElementById('ss-trig');
+  const tc2=s.trigger==='cam'?'cam':s.cat==='food'?'food-t':'gps';
+  tb2.className='trig-box '+tc2;
+  document.getElementById('ss-trig-icon').textContent=s.trigger==='cam'?'📸':s.cat==='food'?'🎟':'📍';
+  document.getElementById('ss-trig-title').textContent=s.trigger==='cam'?'실행 방법: AR 카메라 스캔':'실행 방법: GPS 자동 감지';
+  document.getElementById('ss-trig-title').style.color=s.trigger==='cam'?'var(--accent)':s.cat==='food'?'var(--orange)':'var(--blue)';
+  document.getElementById('ss-trig-desc').textContent=s.trigger==='cam'?'Gemini Vision이 전시물을 인식합니다. QR 코드 불필요.':s.cat==='food'?'가까이 걸어가면 쿠폰이 자동으로 발급됩니다.':'가까이 걸어가면 GPS가 자동으로 감지합니다.';
+  document.getElementById('ss-trig-steps').innerHTML=s.steps.map((st,i)=>`<div class="trig-step"><div class="trig-n">${i+1}</div><span>${st}</span></div>`).join('');
+  const cta=document.getElementById('ss-cta');
+  cta.textContent=s.cta;
+  document.getElementById('spot-sheet').classList.add('show');
+  document.getElementById('drawer').style.display='none';
+  if(map)map.panTo([s.lat,s.lng],{animate:true,duration:.5});
+}
+function closeSpot(){
+  document.getElementById('spot-sheet').classList.remove('show');
+  document.getElementById('drawer').style.display='flex';
+  currentSpot=null;
+}
+function goFromSpot(){
+  if(!currentSpot)return;
+  const s=currentSpot;
+  closeSpot();
+  if(s.trigger==='cam')openAR(s);
+  else openQuest(s);
+}
+
+function switchTab(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const tb=document.getElementById('tab-'+id);if(tb)tb.classList.add('active');
+  if(id==='map'){initMap();setTimeout(()=>{if(map)map.invalidateSize();},120);}
+}
+
+function filterMap(el,cat){
+  document.querySelectorAll('.map-cat').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  buildDrawerList(cat==='all'?SPOTS:SPOTS.filter(s=>s.cat===cat));
+}
+
+const PROX=[
+  {spotId:4,dist:'18m',sub:'GPS 감지됨 · 미션 이용 가능',act:'시작 →'},
+  {spotId:5,dist:'28m',sub:'GPS 감지됨 · 쿠폰 준비 완료',act:'받기 →'},
+  {spotId:2,dist:'실내',sub:'AR 카메라로 스캔하세요',act:'스캔 →'},
+];
+let proxIdx=0;
+function triggerProx(cat){
+  const sc=PROX[proxIdx%PROX.length];
+  const spot=SPOTS.find(s=>s.cat===cat)||SPOTS[proxIdx%SPOTS.length];
+  proxSpot=spot;
+  const card=document.getElementById('prox-card');
+  card.className='prox-card '+spot.cat;
+  document.getElementById('prox-icon').textContent=spot.emoji;
+  document.getElementById('prox-dist').textContent=spot.dist==='실내'?'실내':sc.dist+' 거리';
+  document.getElementById('prox-name').textContent=spot.name;
+  document.getElementById('prox-sub').textContent=sc.sub;
+  document.getElementById('prox-action').textContent=sc.act;
+  const banner=document.getElementById('prox-banner');
+  banner.classList.add('show');
+  clearTimeout(window._pt);window._pt=setTimeout(()=>banner.classList.remove('show'),5500);
+  proxIdx++;
+}
+function proxGo(){document.getElementById('prox-banner').classList.remove('show');if(proxSpot)openSpotDetail(proxSpot.id)}
+
+function openAR(spot){
+  const s=spot||SPOTS[1];
+  document.getElementById('ar-cam-bg').style.backgroundImage=`url(${s?s.img.replace('400/300','400/844'):'https://picsum.photos/id/1040/400/844'})`;
+  document.getElementById('ar-sweep').style.display='block';
+  document.getElementById('ar-hint-txt').textContent='랜드마크나 전시물에 카메라를 가리키세요';
+  document.getElementById('ar-obj').classList.remove('show');
+  document.getElementById('ar-result').classList.remove('show');
+  document.getElementById('ar-sim-btn').style.display='flex';
+  arIdx=SPOTS.findIndex(sp=>sp.id===(s?s.id:2));
+  document.getElementById('ar-overlay').classList.add('show');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const ta=document.getElementById('tab-ar');if(ta)ta.classList.add('active');
+}
+function closeAR(){document.getElementById('ar-overlay').classList.remove('show')}
+function simAR(){
+  const s=SPOTS[arIdx%SPOTS.length];
+  document.getElementById('ar-hint-txt').textContent='Gemini Vision 분석 중...';
+  document.getElementById('ar-sim-btn').style.display='none';
+  setTimeout(()=>{
+    document.getElementById('ar-sweep').style.display='none';
+    document.getElementById('ar-hint-txt').textContent='✓ 인식 완료!';
+    document.getElementById('ar-obj-name').textContent=s.arData.name;
+    document.getElementById('ar-obj-era').textContent=s.arData.era;
+    document.getElementById('ar-obj-emoji').textContent=s.arData.emoji;
+    document.getElementById('ar-obj').classList.add('show');
+    setTimeout(()=>{
+      document.getElementById('ar-r-ico').textContent=s.arData.emoji;
+      document.getElementById('ar-r-type').textContent=s.arData.type;
+      document.getElementById('ar-r-name').textContent=s.arData.name;
+      document.getElementById('ar-r-desc').textContent=s.arData.desc;
+      document.getElementById('ar-r-btn').textContent=`⚡ 미션 시작 · +${s.arData.pts} pt`;
+      document.getElementById('ar-result').classList.add('show');
+    },500);
+    arIdx++;
+    setTimeout(()=>{
+      document.getElementById('ar-sim-btn').style.display='flex';
+      const next=SPOTS[arIdx%SPOTS.length];
+      document.getElementById('ar-sim-btn').lastChild.textContent=' 다음: '+next.name;
+    },2100);
+  },1700);
+}
+function goQuestAR(){closeAR();openQuest(SPOTS[(arIdx-1+SPOTS.length)%SPOTS.length])}
+
+function openQuest(spot){
+  const s=spot||SPOTS[0];const q=s.quest;
+  document.getElementById('q-img').src=q.img;
+  document.getElementById('q-loc').textContent=q.loc;
+  document.getElementById('q-name').textContent=q.name;
+  document.getElementById('q-prog').innerHTML=[0,1,2,3,4].map(i=>`<div class="q-dot ${i<2?'done':i===2?'now':''}"></div>`).join('');
+  document.getElementById('q-card').innerHTML=`<div class="q-meta"><div class="q-tag">퀴즈 · 5단계 중 3단계</div><div class="q-pts">+${q.pts}</div></div><div class="q-question">${q.q}</div><div class="q-opts">${q.opts.map((o,i)=>`<div class="q-opt" onclick="pickOpt(this,${i===q.ans},'${q.reward.replace(/'/g,"\\'")}',${ q.pts})">${o}</div>`).join('')}</div>`;
+  answered=false;
+  document.getElementById('quest-overlay').classList.add('show');
+}
+function closeQuest(){document.getElementById('quest-overlay').classList.remove('show')}
+function pickOpt(el,ok,reward,pts){
+  if(answered)return;answered=true;
+  document.querySelectorAll('.q-opt').forEach(o=>o.style.pointerEvents='none');
+  if(ok){
+    el.classList.add('ok');
+    setTimeout(()=>{
+      myScore+=pts;
+      document.getElementById('wallet-pts').textContent=myScore;
+      document.getElementById('q-card').innerHTML=`<div class="q-success"><div class="q-success-emoji">🎉</div><div class="q-success-pts">+${pts}</div><div class="q-success-sub">미션 완료! 포인트 획득!</div><div class="q-reward-pill">🎁 ${reward}</div><button class="btn-primary" style="margin-top:20px" onclick="closeQuest();switchTab('rewards')">리워드 확인하기 →</button></div>`;
+    },500);
+  }else{
+    el.classList.add('no');
+    setTimeout(()=>{el.classList.remove('no');document.querySelectorAll('.q-opt').forEach(o=>o.style.pointerEvents='');answered=false;},500);
+  }
+}
+
+function openAdmin(){document.getElementById('admin-overlay').classList.add('show')}
+function closeAdmin(){document.getElementById('admin-overlay').classList.remove('show')}
+
+function openSM(){document.getElementById('side-menu').classList.add('open')}
+function closeSM(){document.getElementById('side-menu').classList.remove('open')}
+function setLang(el,code){
+  document.querySelectorAll('.sm-lang-pill').forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel');currentLang=code;
+  document.getElementById('hdr-lang').textContent='🌐 '+code;
+  setTimeout(closeSM,200);
+}
+
+function recenter(){if(map)map.panTo([51.5194,-0.1270],{animate:true,duration:.7})}
+</script>
+</body>
+</html>
