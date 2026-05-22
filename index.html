@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -663,6 +664,453 @@ html, body {
 .rt-name { font-size: 13px; font-weight: 600; color: var(--txt1); margin-bottom: 1px; }
 .rt-meta { font-size: 11px; color: var(--txt3); }
 .rt-dist-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px; margin-left: auto; margin-top: 4px; flex-shrink: 0; }
+
+/* ══════ DEMO LAYER CSS ══════ */
+
+/* Demo Splash */
+#demo-splash {
+  position: absolute; inset: 0; z-index: 200;
+  background: #030406;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 32px 28px; text-align: center;
+}
+#demo-splash.hidden { display: none; }
+.ds-logo { font-size: 48px; font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 6px; }
+.ds-logo span { color: var(--accent); }
+.ds-tagline { font-size: 13px; font-weight: 600; color: var(--txt3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 40px; }
+.ds-agency-pill {
+  background: linear-gradient(135deg, rgba(212,255,0,0.12), rgba(74,158,255,0.08));
+  border: 1px solid rgba(212,255,0,0.3); border-radius: 20px;
+  padding: 16px 24px; margin-bottom: 32px; width: 100%;
+  display: flex; align-items: center; gap: 14px;
+}
+.ds-agency-icon { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.ds-agency-info { text-align: left; }
+.ds-agency-name { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.ds-agency-sub { font-size: 12px; color: var(--txt2); }
+.ds-desc { font-size: 14px; color: var(--txt2); line-height: 1.7; margin-bottom: 36px; }
+.ds-flow { display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; width: 100%; }
+.ds-flow-item { display: flex; align-items: center; gap: 12px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; text-align: left; }
+.ds-flow-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #000; flex-shrink: 0; }
+.ds-flow-text { flex: 1; }
+.ds-flow-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 1px; }
+.ds-flow-sub { font-size: 11px; color: var(--txt3); }
+.ds-flow-icon { font-size: 20px; }
+.ds-start-btn {
+  width: 100%; background: var(--accent); border: none; border-radius: 16px;
+  padding: 18px; font-size: 17px; font-weight: 800; color: #000; cursor: pointer;
+  transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;
+  box-shadow: 0 8px 32px rgba(212,255,0,0.3);
+}
+.ds-start-btn:active { transform: scale(0.97); }
+
+/* Demo Guide Bar */
+#demo-guide {
+  position: absolute; bottom: calc(var(--tab-h) + 12px); left: 16px; right: 16px;
+  z-index: 36; pointer-events: auto;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#demo-guide.hidden { opacity: 0; transform: translateY(20px); pointer-events: none; }
+.dg-card {
+  background: rgba(14, 16, 22, 0.95); border: 1px solid rgba(212,255,0,0.25);
+  border-radius: 20px; padding: 14px 16px;
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  pointer-events: all; box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+.dg-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.dg-step-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.dg-dots { display: flex; gap: 5px; }
+.dg-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); transition: 0.3s; }
+.dg-dot.on { background: var(--accent); width: 18px; border-radius: 3px; }
+.dg-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.dg-desc { font-size: 12px; color: var(--txt2); line-height: 1.5; margin-bottom: 12px; }
+.dg-btns { display: flex; gap: 8px; align-items: center; }
+.dg-btn-next {
+  flex: 1; background: var(--accent); border: none; border-radius: 10px;
+  padding: 10px 16px; font-size: 13px; font-weight: 700; color: #000; cursor: pointer; transition: 0.2s;
+}
+.dg-btn-next:active { opacity: 0.8; }
+.dg-btn-skip { background: none; border: none; font-size: 12px; color: var(--txt3); cursor: pointer; padding: 8px; white-space: nowrap; }
+.dg-btn-admin {
+  flex: 1; background: rgba(181,123,255,0.15); border: 1px solid rgba(181,123,255,0.3);
+  border-radius: 10px; padding: 10px 12px; font-size: 12px; font-weight: 700;
+  color: var(--purple); cursor: pointer; transition: 0.2s; text-align: center;
+}
+.dg-btn-admin:active { opacity: 0.8; }
+
+/* Floating Admin Btn (in map / home) */
+#float-admin-btn {
+  position: absolute; bottom: calc(var(--tab-h) + 170px); right: 16px; z-index: 37;
+  background: rgba(181,123,255,0.2); border: 1px solid rgba(181,123,255,0.4);
+  border-radius: 50%; width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; cursor: pointer; backdrop-filter: blur(16px);
+  box-shadow: 0 4px 16px rgba(181,123,255,0.2); transition: 0.2s;
+}
+#float-admin-btn:active { transform: scale(0.92); }
+
+/* Demo badge */
+.demo-badge {
+  position: absolute; top: 68px; right: 16px; z-index: 38;
+  background: rgba(212,255,0,0.15); border: 1px solid rgba(212,255,0,0.3);
+  border-radius: 20px; padding: 4px 10px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--accent); text-transform: uppercase; pointer-events: none;
+}
+
+/* ── ENHANCED ADMIN — ROI SECTION ── */
+.roi-card {
+  background: linear-gradient(135deg, rgba(0,230,118,0.1), rgba(74,158,255,0.06));
+  border: 1px solid rgba(0,230,118,0.25); border-radius: 24px; padding: 20px;
+}
+.roi-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.roi-title { font-size: 15px; font-weight: 700; color: #fff; }
+.roi-badge { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,230,118,0.2); border-radius: 20px; font-size: 10px; font-weight: 700; padding: 4px 10px; }
+.roi-main { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.roi-val { font-size: 36px; font-weight: 800; color: var(--green); }
+.roi-period { font-size: 13px; color: var(--txt2); }
+.roi-sub { font-size: 12px; color: var(--txt3); margin-bottom: 16px; }
+.roi-breakdown { display: flex; flex-direction: column; gap: 8px; }
+.roi-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(0,0,0,0.25); border-radius: 12px; }
+.roi-row-lbl { font-size: 12px; font-weight: 600; color: var(--txt2); }
+.roi-row-val { font-size: 13px; font-weight: 700; }
+.roi-divider { height: 1px; background: rgba(0,230,118,0.15); }
+.roi-total-row { display: flex; justify-content: space-between; padding: 12px 14px; background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.15); border-radius: 12px; }
+.roi-total-lbl { font-size: 13px; font-weight: 700; color: #fff; }
+.roi-total-val { font-size: 15px; font-weight: 800; color: var(--green); }
+
+/* ── PERSPECTIVE LABEL ── */
+.perspective-label {
+  position: absolute; top: 68px; left: 16px; z-index: 38;
+  background: rgba(74,158,255,0.15); border: 1px solid rgba(74,158,255,0.3);
+  border-radius: 20px; padding: 4px 10px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--blue); text-transform: uppercase; pointer-events: none;
+  display: flex; align-items: center; gap: 5px;
+}
+.perspective-label.admin-mode { background: rgba(181,123,255,0.15); border-color: rgba(181,123,255,0.3); color: var(--purple); }
+
+/* ── SIM PANEL ENHANCED ── */
+.sim-panel-demo {
+  position: absolute; left: 16px; z-index: 20;
+  background: rgba(10,12,16,0.92); border: 1px solid var(--border2);
+  border-radius: 16px; padding: 14px 16px;
+  backdrop-filter: blur(20px); min-width: 180px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.spd-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--txt3); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.spd-label::before { content:''; width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent); }
+.spd-btn { display: flex; align-items: center; gap: 10px; background: var(--bg-surface); border: 1px solid var(--border2); border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: 0.2s; margin-bottom: 6px; }
+.spd-btn:last-child { margin-bottom: 0; }
+.spd-btn:active { background: var(--bg-surface-hover); transform: scale(0.97); }
+.spd-btn-icon { font-size: 16px; }
+.spd-btn-info { flex: 1; }
+.spd-btn-title { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 1px; }
+.spd-btn-sub { font-size: 10px; color: var(--txt3); }
+.spd-btn.outdoor-s { border-color: rgba(74,158,255,0.25); }
+.spd-btn.indoor-s  { border-color: rgba(212,255,0,0.25); }
+.spd-btn.food-s    { border-color: rgba(255,138,0,0.25); }
+
+/* ── ADMIN ENHANCEMENTS ── */
+.admin-mode-badge { background: var(--purple-dim); border: 1px solid rgba(181,123,255,0.3); border-radius: 20px; padding: 4px 12px; font-size: 10px; font-weight: 700; color: var(--purple); letter-spacing: 0.08em; text-transform: uppercase; }
+.admin-intro-card { background: linear-gradient(135deg, rgba(181,123,255,0.1), rgba(74,158,255,0.06)); border: 1px solid rgba(181,123,255,0.2); border-radius: 20px; padding: 16px; margin-bottom: 4px; }
+.aic-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.aic-sub { font-size: 12px; color: var(--txt2); line-height: 1.5; }
+
+/* Nation bar enhanced */
+.nat-list { display: flex; flex-direction: column; gap: 8px; }
+.nat-item { display: flex; align-items: center; gap: 10px; }
+.nat-flag { font-size: 16px; flex-shrink: 0; }
+.nat-name { font-size: 12px; font-weight: 600; color: var(--txt1); width: 36px; flex-shrink: 0; }
+.nat-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; }
+.nat-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+.nat-pct { font-size: 11px; font-weight: 700; width: 30px; text-align: right; flex-shrink: 0; }
+.nat-count { font-size: 11px; color: var(--txt3); width: 28px; text-align: right; flex-shrink: 0; }
+
+.admin-feed { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: var(--rs); overflow: hidden; }
+.af-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--border); background: var(--bg-surface); }
+.af-item:last-child { border-bottom: none; }
+.af-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.af-body { flex: 1; }
+.af-text { font-size: 12px; color: var(--txt1); margin-bottom: 2px; line-height: 1.4; }
+.af-time { font-size: 10px; color: var(--txt3); }
+.af-badge-sm { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; margin-left: 6px; }
+
+/* ── WEEK CHART ── */
+.week-bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.week-bar { width: 100%; border-radius: 3px; background: var(--accent); transition: height 0.6s ease; min-height: 4px; }
+.week-bar.low { background: var(--blue); }
+.week-lbl { font-size: 9px; color: var(--txt3); font-weight: 600; }
+.week-val { font-size: 9px; color: var(--txt2); font-weight: 700; }
+
+/* Trig box variants */
+.trig-box.gps   { background: var(--blue-dim);   border: 1px solid rgba(74,158,255,0.2); }
+.trig-box.cam   { background: var(--accent-dim); border: 1px solid rgba(212,255,0,0.2); }
+.trig-box.food-t{ background: var(--orange-dim); border: 1px solid rgba(255,138,0,0.2); }
+.trig-box.food-c{ background: var(--orange-dim); border: 1px solid rgba(255,138,0,0.2); }
+
+/* Popup btn colors */
+.pop-btn.outdoor{background:var(--blue);color:#fff}
+.pop-btn.indoor{background:var(--accent);color:#000}
+.pop-btn.food{background:var(--orange);color:#fff}
+.pop-trigger.gps{background:var(--blue-dim);color:var(--blue)}
+.pop-trigger.cam{background:var(--accent-dim);color:var(--accent)}
+.pop-trigger.food-t{background:var(--orange-dim);color:var(--orange)}
+
+@keyframes liveBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.8)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Route timeline */
+.route-timeline { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 24px; padding: 18px 20px; }
+.rt-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.rt-title { font-size: 15px; font-weight: 700; color: var(--txt1); }
+.rt-time { font-size: 12px; color: var(--txt2); font-weight: 600; }
+.rt-steps { display: flex; flex-direction: column; gap: 0; }
+.rt-step { display: flex; gap: 14px; position: relative; padding-bottom: 16px; }
+.rt-step:last-child { padding-bottom: 0; }
+.rt-step::before { content: ''; position: absolute; left: 14px; top: 28px; bottom: 0; width: 1px; background: var(--border2); }
+.rt-step:last-child::before { display: none; }
+.rt-circle { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.rt-circle.done { background: var(--green-dim); color: var(--green); border: 1.5px solid rgba(0,230,118,0.4); }
+.rt-circle.now  { background: var(--accent-dim); color: var(--accent); border: 1.5px solid rgba(212,255,0,0.4); box-shadow: 0 0 8px rgba(212,255,0,0.3); }
+.rt-circle.next { background: var(--bg-surface); color: var(--txt3); border: 1.5px solid var(--border2); font-size: 14px; }
+.rt-info { flex: 1; padding-top: 4px; }
+.rt-name { font-size: 14px; font-weight: 600; color: var(--txt1); margin-bottom: 2px; }
+.rt-meta { font-size: 11px; color: var(--txt3); }
+
+
+/* ════════════════════════════════════════════════
+   NATIONAL GALLERY OVERLAY — SCOPED CSS
+   ════════════════════════════════════════════════ */
+#ng-overlay {
+  position: absolute; inset: 0; z-index: 90;
+  background: #08090a;
+  display: none; flex-direction: column;
+  /* Override CSS variables for NG color scheme */
+  --txt1: #f0ede8; --txt2: #9a9690; --txt3: #5a5754;
+  --border: #2a2d31; --border2: #363a3f;
+  --r: 14px; --rs: 8px;
+  --bg0: #08090a; --bg1: #111214; --bg2: #1a1c1f; --bg3: #232629;
+  --gold: #c9a84c; --gold2: #e8c97a; --gold-dim: rgba(201,168,76,0.15);
+  --quest: #e8523a; --quest-dim: rgba(232,82,58,0.15);
+  --local: #3dcb7f; --local-dim: rgba(61,203,127,0.15);
+  --gemini1: #4285f4; --gemini2: #9b72cb; --gemini3: #d96570;
+  --gallery1: #8b6914; --gallery2: #c4982a; --gallery3: #e8c97a;
+}
+#ng-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+#ng-overlay .ng-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px 12px; background: var(--bg0);
+  border-bottom: 1px solid var(--border); flex-shrink: 0; z-index: 30;
+}
+#ng-overlay .ng-hdr-title {
+  font-family: 'Playfair Display', serif; font-size: 15px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--txt1);
+  text-align: center; flex: 1;
+}
+#ng-overlay .ng-back-btn {
+  background: none; border: none; color: var(--txt2);
+  cursor: pointer; padding: 4px; display: flex; align-items: center;
+  width: 32px;
+}
+#ng-overlay .ng-back-btn:active { color: var(--gold); }
+#ng-overlay .ng-timer-badge {
+  background: var(--gold-dim); border: 1px solid var(--gold);
+  color: var(--gold); font-family: 'DM Mono', monospace; font-size: 11px;
+  font-weight: 500; padding: 3px 8px; border-radius: 20px;
+  display: flex; align-items: center; gap: 4px;
+}
+#ng-overlay .ng-content { flex: 1; position: relative; overflow: hidden; background: var(--bg1); }
+#ng-overlay .ng-view { display: none; flex-direction: column; height: 100%; overflow-y: auto; }
+#ng-overlay .ng-view.ng-active { display: flex; animation: fadeUp .28s cubic-bezier(.2,.8,.4,1) both; }
+
+/* ── Tabbar inside NG overlay ── */
+#ng-overlay .ng-tabbar {
+  display: flex; flex-shrink: 0; background: var(--bg0);
+  border-top: 1px solid var(--border); padding: 10px 6px 20px; z-index: 30;
+  justify-content: space-around;
+}
+#ng-overlay .ng-tab-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: none; border: none; cursor: pointer; padding: 6px 10px;
+  border-radius: 8px; transition: all .2s; color: #5a5754;
+}
+#ng-overlay .ng-tab-btn.ng-active { color: var(--gold); }
+#ng-overlay .ng-tab-btn svg {
+  width: 22px; height: 22px; stroke: currentColor; fill: none;
+  stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+}
+#ng-overlay .ng-tab-label { font-size: 9px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+
+/* ── Gallery Hero ── */
+#ng-overlay .gallery-hero { position: relative; height: 160px; flex-shrink: 0; overflow: hidden; }
+#ng-overlay .gallery-hero-img { width: 100%; height: 100%; object-fit: cover; opacity: .5; }
+#ng-overlay .gallery-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 20%, var(--bg0) 100%); }
+#ng-overlay .gallery-hero-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 20px; }
+#ng-overlay .gallery-hero-badge { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; background: linear-gradient(90deg, var(--gallery1), var(--gallery2)); color: #fff; padding: 3px 10px; border-radius: 4px; margin-bottom: 6px; }
+#ng-overlay .gallery-hero-title { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; line-height: 1.2; }
+#ng-overlay .gallery-hero-sub { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 3px; }
+#ng-overlay .gallery-rooms { padding: 16px 20px 24px; flex: 1; overflow-y: auto; }
+#ng-overlay .gallery-room-title { font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--gallery2); border-left: 2px solid var(--gallery2); padding-left: 10px; margin-bottom: 14px; margin-top: 4px; }
+#ng-overlay .artwork-card { display: flex; align-items: center; gap: 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; margin-bottom: 10px; cursor: pointer; transition: border-color .2s, background .15s; }
+#ng-overlay .artwork-card:active { background: var(--bg3); border-color: var(--gallery2); }
+#ng-overlay .artwork-thumb { width: 64px; height: 64px; border-radius: var(--rs); overflow: hidden; flex-shrink: 0; border: 1px solid var(--border2); }
+#ng-overlay .artwork-thumb img { width: 100%; height: 100%; object-fit: cover; }
+#ng-overlay .artwork-info { flex: 1; }
+#ng-overlay .artwork-badge { display: inline-flex; align-items: center; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; margin-bottom: 5px; background: linear-gradient(90deg, var(--gallery1), var(--gallery2)); color: #fff; }
+#ng-overlay .artwork-title { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--txt1); margin-bottom: 2px; line-height: 1.3; }
+#ng-overlay .artwork-artist { font-size: 11px; color: var(--txt2); }
+#ng-overlay .artwork-year { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--txt3); margin-top: 2px; }
+#ng-overlay .artwork-arrow { color: var(--txt3); flex-shrink: 0; }
+
+/* ── Gallery Scan ── */
+#ng-overlay #ng-view-gallery-scan { align-items: center; justify-content: center; position: relative; background: #000; }
+#ng-overlay .gallery-scan-bg { position: absolute; inset: 0; background: url('https://picsum.photos/id/1047/400/800') center/cover no-repeat; opacity: .25; filter: blur(2px); }
+#ng-overlay .gallery-scan-frame { position: relative; z-index: 10; width: 280px; height: 220px; border-radius: 12px; overflow: hidden; }
+#ng-overlay .scan-corner { position: absolute; width: 24px; height: 24px; border-color: var(--gallery2); border-style: solid; z-index: 11; }
+#ng-overlay .scan-corner.tl { top: 0; left: 0; border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
+#ng-overlay .scan-corner.tr { top: 0; right: 0; border-width: 2px 2px 0 0; border-radius: 0 4px 0 0; }
+#ng-overlay .scan-corner.bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; border-radius: 0 0 0 4px; }
+#ng-overlay .scan-corner.br { bottom: 0; right: 0; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
+#ng-overlay .gallery-scan-sweeper { position: absolute; left: 0; right: 0; height: 2px; background: var(--gallery2); box-shadow: 0 0 12px 3px rgba(196,152,42,.6); animation: gallerySweep 1.8s ease-in-out infinite; z-index: 12; }
+@keyframes gallerySweep { 0%{top:0%} 50%{top:calc(100% - 2px)} 100%{top:0%} }
+#ng-overlay .gallery-scan-center { position: absolute; inset: 0; background: url('https://picsum.photos/id/1047/280/220') center/cover; opacity: .4; }
+#ng-overlay .gallery-scan-info { position: relative; z-index: 10; text-align: center; margin-top: 24px; padding: 0 20px; }
+#ng-overlay .gallery-scan-status { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gallery2); letter-spacing: .1em; margin-bottom: 6px; }
+#ng-overlay .gallery-scan-hint { font-size: 12px; color: var(--txt3); }
+#ng-overlay .gallery-scan-panel { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to bottom, transparent, var(--bg0) 30%); padding: 20px; z-index: 20; display: none; animation: slideUpPanel .4s cubic-bezier(.2,.8,.4,1) both; }
+#ng-overlay .gallery-scan-panel.show { display: block; }
+@keyframes slideUpPanel { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+#ng-overlay .ar-card { background: rgba(26,28,31,.97); border: 1px solid var(--border2); border-radius: 20px; padding: 20px; backdrop-filter: blur(12px); }
+#ng-overlay .ar-card-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+#ng-overlay .ar-card-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+#ng-overlay .ar-card-type { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 2px; }
+#ng-overlay .ar-card-title { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--txt1); }
+#ng-overlay .ar-card-desc { font-size: 12px; color: var(--txt2); line-height: 1.6; margin-bottom: 16px; }
+#ng-overlay .ar-cta { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 15px; border-radius: var(--r); border: none; cursor: pointer; transition: opacity .2s; }
+#ng-overlay .ar-cta:active { opacity: .8; }
+
+/* ── Artwork Detail ── */
+#ng-overlay #ng-view-artwork { overflow: hidden; background: var(--bg1); }
+#ng-overlay .artwork-hero { position: relative; height: 240px; flex-shrink: 0; overflow: hidden; }
+#ng-overlay .artwork-hero img { width: 100%; height: 100%; object-fit: cover; opacity: .85; }
+#ng-overlay .artwork-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg1) 0%, rgba(8,9,10,.4) 70%, transparent 100%); }
+#ng-overlay .artwork-hero-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 22px; }
+#ng-overlay .artwork-tag { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; background: linear-gradient(90deg, var(--gallery1), var(--gallery2)); color: #fff; padding: 3px 10px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+#ng-overlay .artwork-hero-title { font-family: 'Playfair Display', serif; font-size: 24px; color: #fff; line-height: 1.2; }
+#ng-overlay .artwork-hero-artist { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 4px; }
+#ng-overlay .artwork-loading { padding: 32px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; gap: 20px; }
+#ng-overlay .gallery-spinner { width: 40px; height: 40px; border: 3px solid rgba(201,168,76,.2); border-top-color: var(--gallery2); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+#ng-overlay .artwork-loading-steps { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+#ng-overlay .loading-step { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: var(--r); border: 1px solid var(--border); background: var(--bg2); font-size: 12px; color: var(--txt3); transition: all .3s; }
+#ng-overlay .loading-step-icon { font-size: 16px; flex-shrink: 0; }
+#ng-overlay .loading-step.active { color: var(--gallery2); border-color: rgba(196,152,42,.4); background: rgba(139,105,20,.1); }
+#ng-overlay .loading-step.done { color: var(--local); border-color: rgba(61,203,127,.3); }
+#ng-overlay .artwork-result { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+#ng-overlay .artwork-analysis-bar { display: flex; gap: 8px; padding: 14px 20px 10px; overflow-x: auto; flex-shrink: 0; }
+#ng-overlay .artwork-analysis-bar::-webkit-scrollbar { display: none; }
+#ng-overlay .analysis-pill { font-size: 11px; font-weight: 600; letter-spacing: .04em; padding: 7px 14px; border-radius: 20px; cursor: pointer; border: 1px solid; white-space: nowrap; transition: all .2s; }
+#ng-overlay .analysis-pill.active-pill { background: linear-gradient(90deg, var(--gallery1), var(--gallery2)); border-color: transparent; color: #fff; }
+#ng-overlay .analysis-pill:not(.active-pill) { background: var(--bg3); border-color: var(--border2); color: var(--txt2); }
+#ng-overlay .artwork-body { padding: 18px 20px 40px; flex: 1; overflow-y: auto; }
+#ng-overlay .artwork-meta-row { display: flex; gap: 10px; margin-bottom: 16px; }
+#ng-overlay .artwork-meta-chip { flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--rs); padding: 10px 12px; text-align: center; }
+#ng-overlay .meta-chip-label { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--txt3); margin-bottom: 3px; }
+#ng-overlay .meta-chip-val { font-size: 13px; font-weight: 600; color: var(--txt1); }
+#ng-overlay .insight-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; margin-bottom: 16px; }
+#ng-overlay .insight-lbl { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gallery2); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+#ng-overlay .insight-txt { font-size: 13px; color: var(--txt1); line-height: 1.7; font-weight: 300; }
+#ng-overlay .deep-q-title { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--txt3); margin-bottom: 12px; }
+#ng-overlay .deep-q-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+#ng-overlay .deep-q-btn { background: var(--bg0); border: 1px solid var(--border2); border-radius: var(--rs); padding: 13px 15px; color: var(--txt1); font-size: 12px; text-align: left; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all .2s; display: flex; align-items: flex-start; gap: 10px; }
+#ng-overlay .deep-q-btn:active { background: var(--bg2); border-color: var(--gallery2); }
+#ng-overlay .deep-q-icon { color: var(--gallery2); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+#ng-overlay .save-to-wallet-btn { width: 100%; background: linear-gradient(135deg, var(--gallery1), var(--gallery2)); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 14px; border-radius: var(--r); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity .2s; margin-bottom: 8px; }
+#ng-overlay .save-to-wallet-btn:active { opacity: .8; }
+#ng-overlay .wallet-saved-badge { background: var(--local-dim); border: 1px solid var(--local); border-radius: var(--rs); padding: 10px 14px; font-size: 12px; color: var(--local); display: none; align-items: center; gap: 8px; margin-top: 8px; }
+#ng-overlay .wallet-saved-badge.show { display: flex; }
+#ng-overlay .visitor-flow { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; margin-bottom: 16px; }
+#ng-overlay .flow-title { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--txt3); margin-bottom: 12px; }
+#ng-overlay .flow-steps { display: flex; flex-direction: column; gap: 0; }
+#ng-overlay .flow-step { display: flex; gap: 12px; padding: 10px 0; position: relative; }
+#ng-overlay .flow-step:not(:last-child)::after { content: ''; position: absolute; left: 17px; top: 38px; bottom: -10px; width: 2px; background: var(--border2); }
+#ng-overlay .flow-icon { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; border: 1px solid var(--border2); background: var(--bg3); z-index: 1; }
+#ng-overlay .flow-icon.active-flow { background: linear-gradient(135deg, var(--gallery1), var(--gallery2)); border-color: transparent; }
+#ng-overlay .flow-text { flex: 1; padding-top: 6px; }
+#ng-overlay .flow-text-title { font-size: 13px; font-weight: 600; color: var(--txt1); margin-bottom: 2px; }
+#ng-overlay .flow-text-sub { font-size: 11px; color: var(--txt2); }
+
+/* ── Audio Player (NG) ── */
+#ng-overlay #ng-view-player { overflow: hidden; background: var(--bg1); }
+#ng-overlay .player-hero { position: relative; height: 220px; flex-shrink: 0; overflow: hidden; }
+#ng-overlay .player-hero img { width: 100%; height: 100%; object-fit: cover; opacity: .75; }
+#ng-overlay .player-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg1) 0%, rgba(8,9,10,.5) 60%, transparent 100%); }
+#ng-overlay .camera-flash { position: absolute; inset: 0; background: #fff; z-index: 50; opacity: 0; pointer-events: none; transition: opacity 0.15s ease-out; }
+#ng-overlay .camera-scan-line { position: absolute; left: 0; right: 0; height: 2px; background: var(--gemini1); box-shadow: 0 0 20px 4px var(--gemini1); z-index: 40; display: none; }
+#ng-overlay .player-hero-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 22px; }
+#ng-overlay .player-tag { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: linear-gradient(90deg, var(--gemini1), var(--gemini2), var(--gemini3)); color: #fff; padding: 4px 10px; border-radius: 20px; margin-bottom: 8px; }
+#ng-overlay .player-title { font-family: 'Playfair Display', serif; font-size: 24px; color: #fff; line-height: 1.2; }
+#ng-overlay .gemini-init { padding: 24px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; overflow: hidden; }
+#ng-overlay .gemini-init-icon { font-size: 42px; margin-bottom: 16px; background: linear-gradient(135deg, var(--gemini1), var(--gemini2), var(--gemini3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+#ng-overlay .gemini-init h3 { font-size: 18px; font-weight: 600; color: var(--txt1); margin-bottom: 12px; }
+#ng-overlay .gemini-init p { font-size: 13px; color: var(--txt2); line-height: 1.6; margin-bottom: 28px; }
+#ng-overlay .btn-gemini { background: linear-gradient(135deg, var(--gemini1), var(--gemini2), var(--gemini3)); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 16px 24px; border-radius: 30px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 10px 20px rgba(155,114,203,0.3); transition: transform .2s; }
+#ng-overlay .btn-gemini:active { transform: scale(0.96); }
+#ng-overlay .gemini-loading { padding: 40px 20px; text-align: center; display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+#ng-overlay .gemini-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--gemini2); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+#ng-overlay .gemini-loading p { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--txt2); background: linear-gradient(90deg, var(--gemini1), var(--gemini2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+#ng-overlay .gemini-result { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+#ng-overlay .player-controls { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 16px 22px; flex-shrink: 0; }
+#ng-overlay .player-now-label { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--gemini2); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+#ng-overlay .player-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+#ng-overlay .prog-time { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--txt2); min-width: 36px; }
+#ng-overlay .prog-track { flex: 1; height: 4px; background: var(--bg3); border-radius: 2px; position: relative; cursor: pointer; }
+#ng-overlay .prog-fill { height: 100%; background: linear-gradient(90deg, var(--gemini1), var(--gemini2)); border-radius: 2px; width: 0%; transition: width .3s linear; }
+#ng-overlay .prog-dot { width: 14px; height: 14px; background: var(--gemini2); border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%) translateX(-50%); transition: left .3s linear; cursor: grab; box-shadow: 0 0 10px rgba(155,114,203,0.5); }
+#ng-overlay .player-btns { display: flex; align-items: center; justify-content: center; gap: 28px; }
+#ng-overlay .p-btn { background: none; border: none; color: var(--txt2); cursor: pointer; display: flex; align-items: center; transition: color .2s; padding: 6px; }
+#ng-overlay .p-btn:hover { color: var(--txt1); }
+#ng-overlay .p-play { width: 52px; height: 52px; background: linear-gradient(135deg, var(--gemini1), var(--gemini2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; border: none; transition: transform .15s, box-shadow .2s; }
+#ng-overlay .p-play:active { transform: scale(.95); }
+#ng-overlay .p-play.playing { animation: playPulseGemini 2s infinite; }
+@keyframes playPulseGemini { 0%,100%{box-shadow:0 0 0 0 rgba(155,114,203,.4)} 50%{box-shadow:0 0 0 12px rgba(155,114,203,0)} }
+#ng-overlay .player-body { padding: 16px 22px 40px; flex: 1; overflow-y: auto; }
+#ng-overlay .transcript-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; margin-bottom: 20px; }
+#ng-overlay .transcript-lbl { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gemini2); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+#ng-overlay .transcript { font-size: 13px; color: var(--txt1); line-height: 1.7; font-weight: 300; }
+#ng-overlay .qa-title { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--txt3); margin-bottom: 12px; }
+#ng-overlay .qa-list { display: flex; flex-direction: column; gap: 8px; }
+#ng-overlay .qa-btn { background: var(--bg0); border: 1px solid var(--border2); border-radius: var(--rs); padding: 14px 16px; color: var(--txt1); font-size: 13px; text-align: left; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all .2s; display: flex; align-items: flex-start; gap: 10px; }
+#ng-overlay .qa-btn:active { background: var(--bg2); border-color: var(--gemini2); }
+#ng-overlay .qa-icon { color: var(--gemini2); font-size: 14px; margin-top: 2px; }
+
+/* ── Modal inside NG ── */
+#ng-overlay .ng-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.7); z-index: 60; display: none; backdrop-filter: blur(4px); }
+#ng-overlay .ng-modal-overlay.show { display: block; }
+#ng-overlay .ng-modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(.9); width: 80%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 20px; padding: 28px 24px; z-index: 70; display: none; flex-direction: column; align-items: center; text-align: center; }
+#ng-overlay .ng-modal.show { display: flex; animation: popIn .25s cubic-bezier(.34,1.56,.64,1) both; }
+@keyframes popIn { from{opacity:0;transform:translate(-50%,-50%) scale(.85)} to{opacity:1;transform:translate(-50%,-50%) scale(1)} }
+#ng-overlay .ng-modal-icon { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 22px; }
+#ng-overlay .ng-modal h3 { font-size: 17px; font-weight: 600; color: var(--txt1); margin-bottom: 8px; }
+#ng-overlay .ng-modal p { font-size: 13px; color: var(--txt2); line-height: 1.6; margin-bottom: 24px; }
+#ng-overlay .ng-modal-btn { width: 100%; background: var(--bg3); border: 1px solid var(--border2); color: var(--txt1); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 14px; border-radius: var(--r); cursor: pointer; }
+
+/* Wallet rewards in NG */
+#ng-overlay .coupon-card { border-radius: var(--r); border: 1px solid; padding: 18px; margin-bottom: 12px; position: relative; overflow: hidden; }
+#ng-overlay .coupon-card::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; }
+#ng-overlay .coupon-card.gallery-coupon { border-color: rgba(196,152,42,.4); background: rgba(139,105,20,.15); }
+#ng-overlay .coupon-card.gallery-coupon::before { background: var(--gallery2); }
+#ng-overlay .coupon-tag { position: absolute; top: 12px; right: 12px; font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; background: rgba(196,152,42,.2); color: var(--gallery2); }
+#ng-overlay .coupon-from { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; color: var(--gallery2); }
+#ng-overlay .coupon-name { font-size: 16px; font-weight: 600; color: var(--txt1); margin-bottom: 14px; padding-right: 60px; }
+#ng-overlay .coupon-btn { background: rgba(196,152,42,.2); border: 1px solid var(--gallery2); color: var(--gallery2); font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 10px 16px; border-radius: var(--rs); cursor: pointer; text-transform: uppercase; letter-spacing: .06em; }
+#ng-overlay .wallet-empty { border: 1.5px dashed var(--border); border-radius: 20px; padding: 32px; text-align: center; margin-top: 16px; }
+#ng-overlay .wallet-empty-icon { font-size: 36px; opacity: .4; margin-bottom: 12px; }
+#ng-overlay .wallet-empty-title { font-size: 14px; font-weight: 600; color: var(--txt2); margin-bottom: 6px; }
+#ng-overlay .wallet-empty-desc { font-size: 12px; color: var(--txt3); line-height: 1.6; }
+
 </style>
 </head>
 <body>
@@ -676,7 +1124,7 @@ html, body {
     </button>
     <div class="admin-hdr-info">
       <div class="admin-hdr-label">어드민 대시보드</div>
-      <div class="admin-hdr-name">솔앤비투어 × PlaySpot</div>
+      <div class="admin-hdr-name">런던삼촌투어 × PlaySpot</div>
     </div>
     <div style="font-size:20px">⚙️</div>
   </div>
@@ -763,8 +1211,60 @@ html, body {
       </div>
       <div class="ic-title">트라팔가 광장 3번 미션<br>이탈률 67% 감지</div>
       <div class="ic-desc">방문자의 67%가 3번 미션에서 이탈합니다. 퀴즈 난이도 조정 또는 힌트 추가 시 완료율이 약 40% 향상될 것으로 예측됩니다.</div>
-      <button class="ic-action">미션 수정하기 →</button>
+      <button class="ic-action" onclick="alert('[데모] 미션 편집 화면\n퀴즈 난이도를 '보통'으로 변경하고 힌트를 추가합니다.')">미션 수정하기 →</button>
     </div>
+
+    <!-- ──── ROI SECTION ──── -->
+    <div>
+      <div class="admin-section-label">💰 수익 분석 · PlaySpot 도입 효과</div>
+      <div class="roi-card">
+        <div class="roi-hdr">
+          <div class="roi-title">이번 달 추가 수익</div>
+          <div class="roi-badge">↑ 전월 대비 +18%</div>
+        </div>
+        <div class="roi-main">
+          <div class="roi-val">£1,240</div>
+          <div class="roi-period">/ 월</div>
+        </div>
+        <div class="roi-sub">PlaySpot 기반 신규 투어 상품 수익 합계</div>
+        <div class="roi-breakdown">
+          <div class="roi-row">
+            <div class="roi-row-lbl">🎭 AR 탐정 미스터리 투어 (8명 × 2회)</div>
+            <div class="roi-row-val" style="color:var(--green)">+£352</div>
+          </div>
+          <div class="roi-row">
+            <div class="roi-row-lbl">🌙 야간 공포 투어 (7명 × 2회)</div>
+            <div class="roi-row-val" style="color:var(--green)">+£336</div>
+          </div>
+          <div class="roi-row">
+            <div class="roi-row-lbl">🏛 팀 대결 박물관 투어 (12명)</div>
+            <div class="roi-row-val" style="color:var(--green)">+£240</div>
+          </div>
+          <div class="roi-row">
+            <div class="roi-row-lbl">📍 GPS 스탬프 자동 투어 (자동 운영)</div>
+            <div class="roi-row-val" style="color:var(--accent)">+£192</div>
+          </div>
+          <div class="roi-row">
+            <div class="roi-row-lbl">☕ 로컬 파트너 쿠폰 수수료</div>
+            <div class="roi-row-val" style="color:var(--blue)">+£120</div>
+          </div>
+          <div class="roi-divider"></div>
+          <div class="roi-row">
+            <div class="roi-row-lbl">PlaySpot 구독료</div>
+            <div class="roi-row-val" style="color:var(--red)">−£99</div>
+          </div>
+          <div class="roi-total-row">
+            <div class="roi-total-lbl">순 추가 수익</div>
+            <div class="roi-total-val">£1,141 / 월</div>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--rs);padding:12px 16px;margin-top:8px;display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:12px;color:var(--txt2);">구독료 대비 수익률</div>
+        <div style="font-size:22px;font-weight:800;color:var(--accent);">ROI 1,152%</div>
+      </div>
+    </div>
+
 
     <!-- Spot Performance -->
     <div>
@@ -970,7 +1470,7 @@ html, body {
       <div class="qr-placeholder">📱</div>
       <div class="qr-title">여행자 입장 QR 코드</div>
       <div class="qr-sub">여행자에게 이 QR을 전달하면<br>앱 설치 없이 즉시 투어 시작</div>
-      <button class="btn-primary" style="font-size:14px">QR 코드 생성 · 출력</button>
+      <button class="btn-primary" style="font-size:14px" onclick="alert('[데모] QR 코드 생성 완료!\nhttps://playspot.io/tour/london-uncle\n\n인쇄 또는 카카오톡으로 공유 가능합니다.')">QR 코드 생성 · 출력</button>
     </div>
 
   </div>
@@ -995,7 +1495,7 @@ html, body {
       <div class="sm-item-icon" style="background:var(--accent-dim)">🗺️</div>
       <div class="sm-item-info">
         <div class="sm-item-name">웨스트민스터 코스</div>
-        <div class="sm-item-sub">솔앤비투어 제공 · 6 스폿</div>
+        <div class="sm-item-sub">런던삼촌투어 제공 · 6 스폿</div>
       </div>
       <div class="sm-item-arrow">✓</div>
     </div>
@@ -1047,7 +1547,7 @@ html, body {
     <div class="hdr-lang" id="hdr-lang" onclick="openSM()">🌐 KO</div>
     <div class="hdr-tour-badge">
       <div class="hdr-tour-dot"></div>
-      <div class="hdr-tour-lbl">솔앤비 투어</div>
+      <div class="hdr-tour-lbl">런던삼촌투어</div>
     </div>
     <div class="hdr-menu" onclick="openSM()"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></div>
   </div>
@@ -1062,7 +1562,7 @@ html, body {
       <div class="home-hero-bg"></div>
       <div class="home-hero-overlay"></div>
       <div class="home-hero-content">
-        <div class="home-hero-eye">솔앤비투어 × PlaySpot · 웨스트민스터</div>
+        <div class="home-hero-eye">런던삼촌투어 × PlaySpot · 웨스트민스터</div>
         <div class="home-hero-title">런던을<br>게임처럼 탐험하세요</div>
         <div class="home-hero-sub">앱 설치 없이 · QR 스캔으로 즉시 시작</div>
       </div>
@@ -1077,6 +1577,28 @@ html, body {
 
     <div class="home-body">
 
+      <!-- ═══ NATIONAL GALLERY TOUR CARD ═══ -->
+      <div onclick="openNationalGallery()" style="background:linear-gradient(135deg,rgba(139,105,20,.18),rgba(196,152,42,.06));border:1.5px solid rgba(196,152,42,.35);border-radius:24px;padding:18px;cursor:pointer;transition:.15s;margin-bottom:4px;-webkit-tap-highlight-color:transparent;" ontouchstart="">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+          <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;flex-shrink:0;border:1px solid rgba(196,152,42,.3);">
+            <img src="https://picsum.photos/id/1060/100/100" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:linear-gradient(90deg,#8b6914,#c4982a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:3px;">AI Artwork Scanner</div>
+            <div style="font-size:17px;font-weight:700;color:#fff;line-height:1.2;">내셔널 갤러리</div>
+            <div style="font-size:11px;color:#A0A5B5;margin-top:2px;">Trafalgar Square · 28 Masterworks</div>
+          </div>
+          <div style="width:36px;height:36px;border-radius:50%;background:rgba(196,152,42,.15);border:1px solid rgba(196,152,42,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎨</div>
+        </div>
+        <div style="font-size:12px;color:#A0A5B5;line-height:1.5;margin-bottom:12px;">Gemini AI가 명화를 즉시 인식하고 심층 해설을 제공합니다.<br>카메라로 작품을 찍으면 분석이 바로 시작됩니다.</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <div style="background:rgba(196,152,42,.12);border:1px solid rgba(196,152,42,.2);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;color:#c4982a;">📷 카메라 스캔</div>
+          <div style="background:rgba(196,152,42,.12);border:1px solid rgba(196,152,42,.2);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;color:#c4982a;">✨ Gemini 해설</div>
+          <div style="background:rgba(196,152,42,.12);border:1px solid rgba(196,152,42,.2);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;color:#c4982a;">🎟 아트 노트 저장</div>
+          <div style="background:rgba(196,152,42,.12);border:1px solid rgba(196,152,42,.2);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;color:#c4982a;">▶ 탭하여 시작</div>
+        </div>
+      </div>
+
       <!-- Live Activity Strip -->
       <div class="live-strip">
         <div class="live-pill now"><div class="lp-dot"></div>Yuki님 로제타 스톤 완료</div>
@@ -1090,10 +1612,10 @@ html, body {
       <!-- Tour Card (replaces paywall) -->
       <div class="tour-card" onclick="switchTab('mission')">
         <div class="tc-top">
-          <div class="tc-agency">솔앤비투어 제공</div>
+          <div class="tc-agency">런던삼촌투어 제공</div>
           <div class="tc-free">🆓 무료</div>
         </div>
-        <div class="tc-name">웨스트민스터 AR 어드벤처</div>
+        <div class="tc-name">웨스트민스터 AR 탐정 어드벤처</div>
         <div class="tc-sub">야외 GPS + 실내 AR 스캔 + 푸드 리워드</div>
         <div class="tc-prog-wrap">
           <div class="tc-prog-bar"><div class="tc-prog-fill" style="width:33%"></div></div>
@@ -1239,20 +1761,38 @@ html, body {
         <div class="map-ctrl ar-c" onclick="openAR(null)"><svg viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg></div>
       </div>
 
-      <div class="sim-panel" id="sim-panel" style="bottom:216px">
-        <div class="sim-lbl">시뮬레이션</div>
-        <div class="sim-btn" onclick="triggerProx('outdoor')">📍 야외 도달</div>
-        <div class="sim-btn" onclick="triggerProx('indoor')">📸 실내 도달</div>
-        <div class="sim-btn" onclick="triggerProx('food')">🍽 음식 도달</div>
+      <div class="sim-panel-demo" id="sim-panel" style="bottom:216px">
+        <div class="spd-label">GPS 시뮬레이션</div>
+        <div class="spd-btn outdoor-s" onclick="triggerProx('outdoor')">
+          <div class="spd-btn-icon">📍</div>
+          <div class="spd-btn-info">
+            <div class="spd-btn-title">야외 스폿 도달</div>
+            <div class="spd-btn-sub">타워 브리지 · GPS 자동 감지</div>
+          </div>
+        </div>
+        <div class="spd-btn indoor-s" onclick="triggerProx('indoor')">
+          <div class="spd-btn-icon">📸</div>
+          <div class="spd-btn-info">
+            <div class="spd-btn-title">실내 스폿 도달</div>
+            <div class="spd-btn-sub">로제타 스톤 · AR 카메라</div>
+          </div>
+        </div>
+        <div class="spd-btn food-s" onclick="triggerProx('food')">
+          <div class="spd-btn-icon">🍽</div>
+          <div class="spd-btn-info">
+            <div class="spd-btn-title">음식 파트너 도달</div>
+            <div class="spd-btn-sub">브렉퍼스트 클럽 · 쿠폰 발급</div>
+          </div>
+        </div>
       </div>
 
       <div class="drawer" id="drawer">
         <div class="drawer-drag" onclick="toggleDrawer()"><div class="drawer-handle"></div></div>
-        <div class="drawer-peek-row">
+        <div class="drawer-peek-row" onclick="toggleDrawer()" style="cursor:pointer;">
           <div class="drawer-peek-title">투어 스폿</div>
           <div class="drawer-peek-right">
             <div class="drawer-count" id="drawer-count">6개</div>
-            <div class="drawer-expand-hint" id="expand-hint">↑ 더보기</div>
+            <div class="drawer-expand-hint" id="expand-hint" onclick="toggleDrawer()" style="cursor:pointer;">↑ 더보기</div>
           </div>
         </div>
         <div class="drawer-list" id="drawer-list"></div>
@@ -1297,7 +1837,7 @@ html, body {
   <div class="view" id="view-mission">
     <div class="ms-header">
       <div class="ms-title">미션 보드 🎯</div>
-      <div class="ms-sub">웨스트민스터 코스 · 솔앤비투어</div>
+      <div class="ms-sub">웨스트민스터 코스 · 런던삼촌투어</div>
 
       <!-- XP Level Card -->
       <div class="xp-card">
@@ -1329,6 +1869,11 @@ html, body {
       </div>
     </div>
 
+    <div onclick="openNationalGallery()" style="display:flex;align-items:center;gap:10px;background:rgba(139,105,20,.12);border:1px solid rgba(196,152,42,.25);border-radius:16px;padding:12px 14px;cursor:pointer;margin-bottom:10px;" ontouchstart="">
+      <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#8b6914,#c4982a);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🎨</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">내셔널 갤러리 AI 투어</div><div style="font-size:11px;color:#A0A5B5;">Gemini Vision · 명화 즉시 분석</div></div>
+      <div style="color:#c4982a;font-size:12px;font-weight:600;">시작 →</div>
+    </div>
     <div class="ms-group-label">진행 중</div>
     <div class="mission-item active-m" onclick="openQuest(SPOTS[0])">
       <div class="mi-icon outdoor">🌉</div>
@@ -1477,7 +2022,7 @@ html, body {
     <div class="tour-active">
       <div class="ta-top">
         <div class="ta-badge">웨스트민스터 코스 진행 중</div>
-        <div class="ta-agency">솔앤비투어 제공</div>
+        <div class="ta-agency">런던삼촌투어 제공</div>
       </div>
       <div class="ta-name">탐험가 진행 현황</div>
       <div class="ta-sub">런던 웨스트민스터 · 블룸즈버리 구역</div>
@@ -1500,7 +2045,7 @@ html, body {
       <div class="coupon-name">무료 음료 — 사이즈 무관</div>
       <div class="coupon-earn">로제타 스톤 미션 완료로 획득 · 오늘 11:32</div>
       <div class="coupon-expiry">⏰ 5월 26일 만료 · 대영박물관 내 카페에서 사용</div>
-      <button class="btn-primary" style="padding:12px;font-size:13px">바코드 보기 →</button>
+      <button class="btn-primary" style="padding:12px;font-size:13px" onclick="alert('[데모] 실제 서비스에서는 바코드가 생성되어 파트너 가게에서 바로 사용합니다!')">바코드 보기 →</button>
     </div>
     <div class="coupon cc">
       <div class="coupon-header">
@@ -1510,7 +2055,7 @@ html, body {
       <div class="coupon-name">10% 할인 — 전 메뉴</div>
       <div class="coupon-earn">브렉퍼스트 미션 완료로 획득 · 오늘 12:47</div>
       <div class="coupon-expiry">⏰ 5월 28일 만료 · 전 지점 사용 가능</div>
-      <button class="btn-primary" style="padding:12px;font-size:13px;background:var(--txt1)">쿠폰 사용하기 →</button>
+      <button class="btn-primary" style="padding:12px;font-size:13px;background:var(--txt1)" onclick="alert('[데모] 쿠폰 번호: PLAYSPOT-2026-0522\n더 브렉퍼스트 클럽 전 지점에서 사용 가능합니다.')">쿠폰 사용하기 →</button>
     </div>
 
     <div class="rw-sec">앞으로 획득 가능한 쿠폰</div>
@@ -1591,7 +2136,7 @@ html, body {
         <div class="pts-icon">🎯</div>
         <div class="pts-desc">
           <div class="pts-desc-main">투어 시작 보너스</div>
-          <div class="pts-desc-sub">오늘 오전 10:00 · 솔앤비투어 제공</div>
+          <div class="pts-desc-sub">오늘 오전 10:00 · 런던삼촌투어 제공</div>
         </div>
         <div class="pts-amount" style="color:var(--blue)">+30pt</div>
       </div>
@@ -1656,7 +2201,7 @@ html, body {
   </div>
   <button class="ar-sim-btn" id="ar-sim-btn" onclick="simAR()">
     <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
-    시뮬레이션: 로제타 스톤
+    <span id="ar-sim-txt">📸 AR 시뮬레이션 (탭하여 체험)</span>
   </button>
 </div>
 
@@ -1678,6 +2223,270 @@ html, body {
 </div>
 
 </div>
+
+<!-- ===== DEMO SPLASH (inside phone) ===== -->
+<div id="demo-splash" style="position:absolute;inset:0;z-index:200;background:#030406;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px 28px;text-align:center;overflow-y:auto;">
+  <div style="font-size:48px;font-weight:800;color:#fff;letter-spacing:-0.03em;margin-bottom:6px;">Play<span style="color:#D4FF00">Spot</span></div>
+  <div style="font-size:12px;font-weight:600;color:#5C6275;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:36px;">AR 어드벤처 게임 플랫폼</div>
+  
+  <div style="background:linear-gradient(135deg,rgba(212,255,0,.12),rgba(74,158,255,.08));border:1px solid rgba(212,255,0,.3);border-radius:20px;padding:16px 20px;margin-bottom:28px;width:100%;display:flex;align-items:center;gap:14px;">
+    <div style="width:48px;height:48px;border-radius:14px;background:#D4FF00;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+    <div style="text-align:left;">
+      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:2px;">런던삼촌투어</div>
+      <div style="font-size:12px;color:#A0A5B5;">파트너십 시연 데모 · 2026년 5월</div>
+    </div>
+  </div>
+  
+  <p style="font-size:14px;color:#A0A5B5;line-height:1.7;margin-bottom:28px;">여행자가 경험하는 화면과<br>여행사가 보는 어드민 대시보드를<br>직접 체험해보세요.</p>
+  
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:32px;width:100%;">
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:#D4FF00;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#000;flex-shrink:0;">1</div>
+      <div style="flex:1;text-align:left;"><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:1px;">여행자 화면 체험</div><div style="font-size:11px;color:#5C6275;">AR 탐험 · GPS 미션 · 쿠폰 리워드</div></div>
+      <div style="font-size:18px;">📱</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:#D4FF00;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#000;flex-shrink:0;">2</div>
+      <div style="flex:1;text-align:left;"><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:1px;">GPS 자동 감지 시뮬레이션</div><div style="font-size:11px;color:#5C6275;">지도에서 버튼으로 직접 체험</div></div>
+      <div style="font-size:18px;">📍</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:#D4FF00;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#000;flex-shrink:0;">3</div>
+      <div style="flex:1;text-align:left;"><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:1px;">AR 스캔 & Gemini AI</div><div style="font-size:11px;color:#5C6275;">버튼 한 번으로 AI 인식 체험</div></div>
+      <div style="font-size:18px;">📸</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:#D4FF00;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#000;flex-shrink:0;">4</div>
+      <div style="flex:1;text-align:left;"><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:1px;">여행사 어드민 대시보드</div><div style="font-size:11px;color:#5C6275;">실시간 데이터 · ROI 분석</div></div>
+      <div style="font-size:18px;">📊</div>
+    </div>
+  </div>
+  
+  <button onclick="startDemo()" style="width:100%;background:#D4FF00;border:none;border-radius:16px;padding:18px;font-size:17px;font-weight:800;color:#000;cursor:pointer;box-shadow:0 8px 32px rgba(212,255,0,.3);display:flex;align-items:center;justify-content:center;gap:10px;">▶  시연 시작하기</button>
+</div>
+
+<!-- ===== DEMO GUIDE (inside phone) ===== -->
+<div id="demo-guide" style="display:none;position:absolute;bottom:calc(var(--tab-h) + 12px);left:16px;right:16px;z-index:36;pointer-events:auto;">
+  <div style="background:rgba(14,16,22,.96);border:1px solid rgba(212,255,0,.25);border-radius:20px;padding:14px 16px;backdrop-filter:blur(24px);box-shadow:0 8px 32px rgba(0,0,0,.6);pointer-events:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <div id="dg-step-lbl" style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#D4FF00;">STEP 1 / 5</div>
+      <div id="dg-dots" style="display:flex;gap:5px;"></div>
+    </div>
+    <div id="dg-title" style="font-size:15px;font-weight:700;color:#fff;margin-bottom:3px;">—</div>
+    <div id="dg-desc" style="font-size:12px;color:#A0A5B5;line-height:1.5;margin-bottom:12px;">—</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button onclick="hideDemoGuide()" style="background:none;border:none;font-size:12px;color:#5C6275;cursor:pointer;padding:8px;white-space:nowrap;">✕ 닫기</button>
+      <button id="dg-next-btn" onclick="nextDemoStep()" style="flex:1;background:#D4FF00;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;color:#000;cursor:pointer;">다음 단계 →</button>
+      <button onclick="openAdmin()" style="background:rgba(181,123,255,.15);border:1px solid rgba(181,123,255,.3);border-radius:10px;padding:10px 12px;font-size:12px;font-weight:700;color:#B57BFF;cursor:pointer;white-space:nowrap;">📊 어드민</button>
+    </div>
+  </div>
+</div>
+
+<!-- Demo perspective label -->
+<div id="perspective-label" style="position:absolute;top:68px;left:16px;z-index:38;background:rgba(74,158,255,.15);border:1px solid rgba(74,158,255,.3);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:.08em;color:#4A9EFF;text-transform:uppercase;pointer-events:none;display:none;">👤 여행자 화면</div>
+
+<!-- DEMO badge -->
+<div style="position:absolute;top:68px;right:16px;z-index:38;background:rgba(212,255,0,.15);border:1px solid rgba(212,255,0,.3);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:.08em;color:#D4FF00;text-transform:uppercase;pointer-events:none;display:none;" id="demo-badge">DEMO</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     NATIONAL GALLERY OVERLAY — Full flow transplanted
+     ═══════════════════════════════════════════════════════ -->
+<div id="ng-overlay">
+
+  <!-- modal -->
+  <div class="ng-modal-overlay" id="ng-modal-overlay" onclick="ngCloseModal()"></div>
+  <div class="ng-modal" id="ng-modal">
+    <div class="ng-modal-icon" id="ng-modal-icon" style="background:rgba(232,82,58,.15);color:#e8523a">⚠</div>
+    <h3 id="ng-modal-title">오답입니다</h3>
+    <p id="ng-modal-msg">다시 살펴보세요.</p>
+    <button class="ng-modal-btn" onclick="ngCloseModal()">다시 시도하기</button>
+  </div>
+
+  <!-- header -->
+  <div class="ng-hdr">
+    <button class="ng-back-btn" id="ng-hdr-left" onclick="ngHdrLeft()">
+      <svg id="ng-icon-back" width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="ng-hdr-title" id="ng-hdr-title">National Gallery</div>
+    <div class="ng-timer-badge" id="ng-timer-badge">
+      <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2"/></svg>
+      <span id="ng-timer-text">AI Guide</span>
+    </div>
+  </div>
+
+  <!-- content -->
+  <div class="ng-content" id="ng-content">
+
+    <!-- Gallery List View -->
+    <div class="ng-view" id="ng-view-gallery">
+      <div class="gallery-hero">
+        <img class="gallery-hero-img" src="https://picsum.photos/id/1060/800/400" alt="">
+        <div class="gallery-hero-overlay"></div>
+        <div class="gallery-hero-info">
+          <div class="gallery-hero-badge">AI Artwork Scanner</div>
+          <div class="gallery-hero-title">National Gallery</div>
+          <div class="gallery-hero-sub">Trafalgar Square, London · Room 1–46</div>
+        </div>
+      </div>
+      <button onclick="ngOpenGalleryScan()" style="display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#8b6914,#c4982a);border:none;border-radius:14px;padding:16px 20px;margin:12px 20px;width:calc(100% - 40px);cursor:pointer;transition:opacity .2s">
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📷</div>
+        <div style="text-align:left;flex:1">
+          <div style="font-size:14px;font-weight:600;color:#fff;margin-bottom:2px">작품 스캔하기</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.65)">카메라로 작품을 촬영하면 Gemini가 즉시 분석합니다</div>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,.7)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <div class="gallery-rooms" id="ng-gallery-rooms"></div>
+    </div>
+
+    <!-- Gallery Scan View -->
+    <div class="ng-view" id="ng-view-gallery-scan">
+      <div class="gallery-scan-bg"></div>
+      <div style="position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:0">
+        <div style="font-family:'Playfair Display',serif;font-size:13px;color:#c4982a;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px">Gemini Vision Active</div>
+        <div class="gallery-scan-frame">
+          <div class="scan-corner tl"></div><div class="scan-corner tr"></div>
+          <div class="scan-corner bl"></div><div class="scan-corner br"></div>
+          <div class="gallery-scan-center"></div>
+          <div class="gallery-scan-sweeper"></div>
+        </div>
+        <div class="gallery-scan-info">
+          <div class="gallery-scan-status" id="ng-gscan-status">작품을 프레임 안에 맞춰주세요</div>
+          <div class="gallery-scan-hint">카메라가 자동으로 작품을 인식합니다</div>
+        </div>
+      </div>
+      <div class="gallery-scan-panel" id="ng-gscan-panel">
+        <div class="ar-card" style="border-color:rgba(196,152,42,.4)">
+          <div class="ar-card-hdr">
+            <div class="ar-card-icon" style="background:linear-gradient(135deg,#8b6914,#c4982a);font-size:18px">🎨</div>
+            <div>
+              <div class="ar-card-type" style="color:#c4982a">Artwork Identified</div>
+              <div class="ar-card-title" id="ng-gscan-title">작품 인식됨!</div>
+            </div>
+          </div>
+          <div class="ar-card-desc" id="ng-gscan-desc">AI 해설을 불러오는 중...</div>
+          <button class="ar-cta" style="background:linear-gradient(135deg,#8b6914,#c4982a);color:#fff" onclick="ngOpenScannedArtwork()">AI 해설 바로 보기 →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Artwork Detail View -->
+    <div class="ng-view" id="ng-view-artwork">
+      <div class="artwork-hero">
+        <img id="ng-aw-img" src="" alt="">
+        <div class="artwork-hero-overlay"></div>
+        <div class="artwork-hero-info">
+          <div class="artwork-tag" id="ng-aw-tag">Gemini AI Analysis</div>
+          <div class="artwork-hero-title" id="ng-aw-title">Title</div>
+          <div class="artwork-hero-artist" id="ng-aw-artist">Artist · Year</div>
+        </div>
+      </div>
+      <div class="artwork-loading" id="ng-aw-loading">
+        <div class="gallery-spinner"></div>
+        <div class="artwork-loading-steps" id="ng-aw-loading-steps">
+          <div class="loading-step" id="ng-lstep-0"><div class="loading-step-icon">📷</div>이미지 캡처 완료</div>
+          <div class="loading-step" id="ng-lstep-1"><div class="loading-step-icon">🔍</div>시각적 요소 분석 중</div>
+          <div class="loading-step" id="ng-lstep-2"><div class="loading-step-icon">🎨</div>화풍 및 기법 식별 중</div>
+          <div class="loading-step" id="ng-lstep-3"><div class="loading-step-icon">📚</div>역사적 맥락 조회 중</div>
+          <div class="loading-step" id="ng-lstep-4"><div class="loading-step-icon">✨</div>맞춤형 해설 생성 중</div>
+        </div>
+      </div>
+      <div class="artwork-result" id="ng-aw-result">
+        <div class="artwork-analysis-bar" id="ng-aw-tabs"></div>
+        <div class="artwork-body" id="ng-aw-body"></div>
+      </div>
+    </div>
+
+    <!-- Audio Player View -->
+    <div class="ng-view" id="ng-view-player">
+      <div class="player-hero">
+        <img id="ng-p-img" src="" alt="">
+        <div class="player-hero-overlay"></div>
+        <div class="camera-flash" id="ng-camera-flash"></div>
+        <div class="camera-scan-line" id="ng-camera-scan-line"></div>
+        <div class="player-hero-info">
+          <div class="player-tag" id="ng-p-tag">Gemini AI Guide</div>
+          <div class="player-title" id="ng-p-title">Title</div>
+        </div>
+      </div>
+      <div class="gemini-init" id="ng-gemini-init">
+        <div class="gemini-init-icon">✨</div>
+        <h3>AI 시각 분석 가이드</h3>
+        <p>Gemini가 현재 작품의 시각적 요소를 분석하여<br>맞춤형 해설과 질문을 생성합니다.</p>
+        <button class="btn-gemini" onclick="ngRunGeminiAnalysis()">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>
+          스냅샷 촬영 및 분석
+        </button>
+      </div>
+      <div class="gemini-loading" id="ng-gemini-loading">
+        <div class="gemini-spinner"></div>
+        <p>Gemini AI가 시각 요소를 분석 중입니다...</p>
+      </div>
+      <div class="gemini-result" id="ng-gemini-result">
+        <div class="player-controls">
+          <div class="player-now-label">
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 8l6 4-6 4V8z" fill="currentColor"/></svg>
+            <span id="ng-p-now-title">AI 해설 재생 중</span>
+          </div>
+          <div class="player-progress">
+            <span class="prog-time" id="ng-p-curr">00:00</span>
+            <div class="prog-track" id="ng-prog-track" onclick="ngSeekAudio(event)">
+              <div class="prog-fill" id="ng-prog-fill"></div>
+              <div class="prog-dot" id="ng-prog-dot" style="left:0%"></div>
+            </div>
+            <span class="prog-time" style="text-align:right" id="ng-p-total">02:15</span>
+          </div>
+          <div class="player-btns">
+            <button class="p-btn" onclick="ngRewindAudio()">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+            </button>
+            <button class="p-play" id="ng-p-play-btn" onclick="ngTogglePlay()">
+              <svg id="ng-p-play-icon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <svg id="ng-p-pause-icon" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <button class="p-btn" onclick="ngForwardAudio()">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M18 13c0 3.31-2.69 6-6 6s-6-2.69-6-6 2.69-6 6-6v4l5-5-5-5v4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8h-2z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="player-body">
+          <div class="transcript-box">
+            <div class="transcript-lbl">✨ Gemini Transcript</div>
+            <p class="transcript" id="ng-p-transcript"></p>
+          </div>
+          <div class="qa-title">AI가 생성한 심화 질문</div>
+          <div class="qa-list" id="ng-p-qa-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rewards/Wallet View -->
+    <div class="ng-view" id="ng-view-rewards" style="padding:24px 20px">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;color:#f0ede8;text-align:center;margin-bottom:6px">My Art Notes</div>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#5a5754;text-align:center;margin-bottom:20px">Saved Artworks &amp; Analysis</div>
+      <div class="wallet-empty" id="ng-wallet-empty">
+        <div class="wallet-empty-icon">🎨</div>
+        <div class="wallet-empty-title">아직 저장된 작품이 없습니다</div>
+        <div class="wallet-empty-desc">AI 분석 결과를 저장하면<br>여기서 확인할 수 있습니다</div>
+      </div>
+      <div id="ng-wallet-list"></div>
+    </div>
+
+  </div><!-- /ng-content -->
+
+  <!-- tabbar -->
+  <div class="ng-tabbar">
+    <button class="ng-tab-btn" id="ng-tab-gallery" onclick="ngSwitchTab('gallery')">
+      <svg viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      <span class="ng-tab-label">갤러리</span>
+    </button>
+    <button class="ng-tab-btn" id="ng-tab-rewards" onclick="ngSwitchTab('rewards')">
+      <svg viewBox="0 0 24 24"><path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+      <span class="ng-tab-label">저장됨</span>
+    </button>
+  </div>
+</div>
+
 <script>
 const SPOTS=[
   {id:1,name:'타워 브리지',cat:'outdoor',emoji:'🌉',dist:'1.2km',pts:100,today:'8.4k',
@@ -1720,6 +2529,14 @@ const SPOTS=[
    arData:{name:'더 브렉퍼스트 클럽',era:'레스토랑 · 블룸즈버리',emoji:'🥞',type:'📍 GPS 감지됨 · 28m 거리',desc:'10% 할인 쿠폰이 활성화됩니다.',pts:50},
    quest:{loc:'📍 더 브렉퍼스트 클럽 · 블룸즈버리',name:'브렉퍼스트 트레일',img:'https://picsum.photos/id/1080/400/300',
      q:'더 브렉퍼스트 클럽은 런던 전역에 몇 개의 지점이 있나요?',opts:['A. 3개','B. 5개','C. 7개','D. 9개'],ans:2,pts:50,reward:'🥞 10% 할인 쿠폰 — 리워드 탭에서 확인하세요!'}},
+  {id:7,name:'내셔널 갤러리',cat:'indoor',emoji:'🎨',dist:'실내',pts:200,today:'3.2k',
+   lat:51.5088,lng:-0.1283,near:false,img:'https://picsum.photos/id/1060/400/300',
+   desc:'트라팔가 광장 북쪽에 위치한 세계적인 미술관. Gemini AI가 명화를 즉시 인식하고 심층 해설을 제공합니다. 스캔하면 바로 시작됩니다.',
+   trigger:'cam',steps:['🎨 내셔널 갤러리 AI 투어 탭','Gemini Vision으로 작품 촬영','AI 해설 즉시 시작 — 저장 가능'],
+   cta:'🎨 AI 갤러리 투어 시작',ctaCls:'cam',
+   arData:{name:'내셔널 갤러리',era:'AI Artwork Scanner',emoji:'🎨',type:'✨ Gemini Vision 활성화',desc:'28점의 명화를 AI로 즉시 분석합니다.',pts:200},
+   quest:{loc:'📍 내셔널 갤러리 · 트라팔가 광장',name:'AI 갤러리 투어',img:'https://picsum.photos/id/1060/400/300',
+     q:'반 고흐의 해바라기는 현재 내셔널 갤러리 몇 전시실에 있나요?',opts:['A. Room 2','B. Room 34','C. Room 43','D. Room 46'],ans:2,pts:200,reward:'🎨 내셔널 갤러리 AI 아트 노트 저장 완료!'}},
   {id:6,name:'버로우 마켓',cat:'food',emoji:'🧀',dist:'3.1km',pts:60,today:'5.2k',
    lat:51.5052,lng:-0.0910,near:false,img:'https://picsum.photos/id/1070/400/300',
    desc:'12세기부터 거래해온 런던에서 가장 오래된 시장. 걸어 들어가면 5개 스탠드 푸드 트레일이 자동으로 시작됩니다.',
@@ -1736,11 +2553,12 @@ let arIdx=0,answered=false,drawerOpen=false,myScore=130,currentLang='KO';
 window.addEventListener('load',()=>{
   buildHomeList(SPOTS);
   buildDrawerList(SPOTS);
-  setTimeout(startOnboarding,800);
+  // Splash is shown by default (no hidden class needed, display:flex in inline style)
+  // Home list is pre-built so switching to home tab is instant
 });
 
 const OB_STEPS=[
-  {tab:'home',title:'여행사 AR 어드벤처 🎮',desc:'솔앤비투어가 제공하는 웨스트민스터 코스에 오신 것을 환영합니다. 앱 설치 없이, 무료로 즐기는 AR 게임입니다.',next:'시작!'},
+  {tab:'home',title:'여행사 AR 어드벤처 🎮',desc:'런던삼촌투어가 제공하는 웨스트민스터 코스입니다. 앱 설치 없이 QR 스캔 하나로 시작하는 AR 어드벤처를 경험해보세요.',next:'시작!'},
   {tab:'map',title:'투어 스폿 지도 🗺️',desc:'파란 마커 = 야외(GPS 자동 감지). 노란 마커 = 실내(AR 카메라). 주황 마커 = 음식 파트너. 가까이 가면 미션이 자동으로 열려요.',next:'다음 →'},
   {tab:'ar',title:'카메라로 스캔하세요 📸',desc:'실내 스폿은 AR 카메라 탭을 열고 전시물을 가리키면 됩니다. Gemini AI가 인식해서 미션을 시작합니다. 완전 무료예요.',next:'다음 →'},
   {tab:'mission',title:'미션 완료 → 무료 리워드 🎁',desc:'미션을 완료할수록 로컬 파트너 쿠폰이 자동 발급됩니다. 카페, 박물관, 마켓 할인권을 무료로 받으세요.',next:'탐험 시작 →'},
@@ -1949,7 +2767,7 @@ function simAR(){
     setTimeout(()=>{
       document.getElementById('ar-sim-btn').style.display='flex';
       const next=SPOTS[arIdx%SPOTS.length];
-      document.getElementById('ar-sim-btn').lastChild.textContent=' 다음: '+next.name;
+      const simTxt=document.getElementById('ar-sim-txt');if(simTxt)simTxt.textContent=' 다음: '+next.name;
     },2100);
   },1700);
 }
@@ -1995,6 +2813,429 @@ function setLang(el,code){
 }
 
 function recenter(){if(map)map.panTo([51.5194,-0.1270],{animate:true,duration:.7})}
+
+
+
+// ═══════════════════════════════════════════════════
+// DEMO MODE - CLEAN VERSION
+// ═══════════════════════════════════════════════════
+
+const DEMO_STEPS = [
+  { tab:'home',    title:'👤 탐험 화면 — 투어 시작', desc:'여행자가 QR을 스캔하면 이 화면이 열립니다. 런던삼촌투어 브랜딩이 자동 적용됩니다. 아래로 스크롤해보세요.' },
+  { tab:'map',     title:'🗺️ 지도 & GPS 자동 감지',   desc:'마커를 탭해 스폿 상세를 확인하세요. 왼쪽 아래 버튼으로 GPS 도달 알림을 직접 체험해보세요!' },
+  { tab:'ar',      title:'📸 AR 스캔 & Gemini AI',    desc:'"📸 AR 시뮬레이션" 버튼을 누르면 AI가 전시물을 인식하는 과정을 시연합니다.' },
+  { tab:'mission', title:'🎯 미션 보드',               desc:'여행자의 진행 상황을 한눈에 확인합니다. 미션 항목을 탭하면 퀴즈가 열립니다.' },
+  { tab:'rewards', title:'🎁 리워드 & 쿠폰',           desc:'미션 완료 시 로컬 파트너 쿠폰이 자동 발급됩니다. 홈으로 돌아가면 🎨 내셔널 갤러리 AI 투어도 체험해보세요!' },
+];
+
+let currentDemoStep = 0;
+
+function startDemo() {
+  // Hide splash
+  const splash = document.getElementById('demo-splash');
+  if (splash) splash.style.display = 'none';
+  
+  // Show labels
+  const pl = document.getElementById('perspective-label');
+  if (pl) pl.style.display = 'flex';
+  const db = document.getElementById('demo-badge');
+  if (db) db.style.display = 'block';
+  
+  // Show guide
+  showDemoGuide(0);
+  switchTab('home');
+}
+
+function showDemoGuide(stepIdx) {
+  const guide = document.getElementById('demo-guide');
+  if (!guide) return;
+  guide.style.display = 'block';
+  currentDemoStep = stepIdx;
+  
+  const s = DEMO_STEPS[stepIdx];
+  if (!s) return;
+  
+  document.getElementById('dg-step-lbl').textContent = 'STEP ' + (stepIdx+1) + ' / ' + DEMO_STEPS.length;
+  document.getElementById('dg-title').textContent = s.title;
+  document.getElementById('dg-desc').textContent = s.desc;
+  
+  // Dots
+  const dotsEl = document.getElementById('dg-dots');
+  if (dotsEl) {
+    dotsEl.innerHTML = DEMO_STEPS.map((_,i) =>
+      '<div style="width:' + (i===stepIdx?'18px':'6px') + ';height:6px;border-radius:3px;background:' + (i===stepIdx?'#D4FF00':'rgba(255,255,255,0.15)') + ';transition:.3s;"></div>'
+    ).join('');
+  }
+  
+  // Next button label
+  const nb = document.getElementById('dg-next-btn');
+  if (nb) {
+    if (stepIdx === DEMO_STEPS.length - 1) {
+      nb.textContent = '📊 어드민 대시보드 →';
+      nb.style.background = '#B57BFF';
+      nb.style.color = '#fff';
+    } else {
+      nb.textContent = '다음 단계 →';
+      nb.style.background = '#D4FF00';
+      nb.style.color = '#000';
+    }
+  }
+}
+
+function nextDemoStep() {
+  if (currentDemoStep === DEMO_STEPS.length - 1) {
+    hideDemoGuide();
+    openAdmin();
+    return;
+  }
+  const next = currentDemoStep + 1;
+  const s = DEMO_STEPS[next];
+  if (s.tab === 'ar') {
+    openAR(null);
+  } else {
+    switchTab(s.tab);
+  }
+  showDemoGuide(next);
+}
+
+function hideDemoGuide() {
+  const guide = document.getElementById('demo-guide');
+  if (guide) guide.style.display = 'none';
+}
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// NATIONAL GALLERY — DATA & FUNCTIONS
+// ═══════════════════════════════════════════════════════════════
+
+const ngArtworkRooms=[
+  {room:'Room 2 — Early Italian Paintings',artworks:[
+    {id:'ng1',title:'The Arnolfini Portrait',artist:'Jan van Eyck',year:'1434',room:'Room 2',medium:'Oil on oak panel',img:'https://picsum.photos/id/1025/400/500',
+     analysis:{overview:'화면 분석 결과, 이 작품은 플랑드르 유화 기법의 정점을 보여줍니다. 거울에 반사된 화면 너머의 두 인물은 van Eyck의 경이로운 사실주의를 증명하며, 방 안 가득한 상징들은 중세 결혼 의식의 암호문 같은 역할을 합니다.',technique:'Van Eyck는 오일 글레이징(Oil Glazing) 기법을 겹쳐 도포하여 섬유와 모피의 질감을 극사실적으로 묘사했습니다. 샹들리에의 촛불 하나는 하나님의 임재를 상징합니다.',context:'이 그림은 이탈리아 상인 조반니 아르놀피니와 그의 아내를 그린 것으로, 당시로는 혁신적인 실내 초상화 형식입니다.',meta:{시대:'15세기 초기 플랑드르',기법:'오일 글레이징',크기:'82.2 × 60 cm'},
+     qa:[{q:'거울 속 두 인물은 누구인가요?',a:'거울에는 부부 외에 두 명의 증인이 반사되어 있으며, 그 중 한 명은 화가 van Eyck 본인으로 추정됩니다.'},{q:'강아지는 무엇을 상징하나요?',a:'발 아래의 작은 강아지는 충실함과 부부간의 신의를 상징하는 중세 회화의 일반적인 상징물입니다.'},{q:'이 그림이 혁신적인 이유는?',a:'이전까지 종교화 위주였던 유럽 회화에서 처음으로 평범한 세속인을 주인공으로 한 실내 초상화라는 점에서 미술사적 혁신으로 평가됩니다.'}]}},
+    {id:'ng2',title:'Sunflowers',artist:'Vincent van Gogh',year:'1888',room:'Room 43',medium:'Oil on canvas',img:'https://picsum.photos/id/145/400/500',
+     analysis:{overview:'화면 분석 결과, van Gogh의 독특한 임파스토 기법이 선명하게 드러납니다. 두껍게 쌓인 물감 질감은 해바라기의 생동감을 3차원적으로 표현합니다.',technique:'임파스토(Impasto) 기법을 사용하여 물감을 두껍게 발라 빛과 그림자를 질감으로 표현했습니다.',context:'아를에서 고갱을 맞이하기 위해 그린 작품으로, van Gogh는 황색을 "사랑과 우정의 색"으로 표현했습니다.',meta:{시대:'후기 인상주의',기법:'임파스토',크기:'92.1 × 73 cm'},
+     qa:[{q:'해바라기가 11송이인 이유는?',a:'Van Gogh는 고갱의 방을 장식하기 위해 총 4점의 해바라기 시리즈를 그렸으며, 각각 다른 숫자의 꽃을 담았습니다.'},{q:'왜 이 노란색이 독특한가요?',a:'Van Gogh는 당시 새로 개발된 합성 황색 크롬 안료를 사용했는데, 이 안료는 시간이 지나며 점차 어두워지는 특성이 있습니다.'},{q:'원작이 여러 개인가요?',a:'네, van Gogh는 해바라기를 주제로 총 5점을 그렸으며, 런던 내셔널 갤러리 작품은 가장 유명한 버전입니다.'}]}}
+  ]},
+  {room:'Room 34 — 17th Century Dutch',artworks:[
+    {id:'ng3',title:'The Fighting Temeraire',artist:'J.M.W. Turner',year:'1839',room:'Room 34',medium:'Oil on canvas',img:'https://picsum.photos/id/155/400/500',
+     analysis:{overview:'시각 분석 결과, 터너의 빛 표현이 이 작품의 핵심입니다. 지는 해의 따뜻한 황금빛과 차가운 증기선의 연기가 대비를 이루며, 범선 시대의 종말과 산업혁명의 시작을 시적으로 묘사합니다.',technique:'터너는 물과 하늘의 경계를 의도적으로 흐릿하게 처리하는 "Atmospheric Perspective" 기법으로 시간의 흐름과 덧없음을 시각화했습니다.',context:'넬슨 제독의 트라팔가르 해전에서 활약했던 전함 테메레르가 해체를 위해 끌려가는 마지막 항해를 담은 작품입니다.',meta:{시대:'낭만주의',기법:'대기원근법',크기:'90.7 × 121.6 cm'},
+     qa:[{q:'증기선은 왜 작게 그렸나요?',a:'상대적으로 작고 검게 그려진 증기선은 새로운 산업 시대를 상징하며, 이미 지나가는 시대인 범선보다 덜 영광스럽게 표현했습니다.'},{q:'이 그림이 영국인이 가장 사랑하는 그림인가요?',a:'네, 2005년 BBC 여론조사에서 영국인이 가장 사랑하는 그림으로 선정되었습니다.'},{q:'테메레르 호는 실제로 존재했나요?',a:'네, 98문 전열함으로 1805년 트라팔가르 해전에서 넬슨 제독의 기함 빅토리 호를 호위한 실제 역사적 함선입니다.'}]}}
+  ]}
+];
+
+// ── State ──────────────────────────────────────────────
+let ngCurrentArtwork = null;
+let ngIsPlaying = false;
+let ngAudioInt = null;
+let ngAudioProgress = 0;
+let ngViewStack = ['gallery'];
+let ngScannedId = null;
+const ngTitles = {
+  gallery:'National Gallery',artwork:'AI Art Analysis',
+  'gallery-scan':'Artwork Scanner',player:'Gemini AI Guide',rewards:'My Art Notes'
+};
+
+// ── Open/Close overlay ──────────────────────────────────
+function openNationalGallery() {
+  const overlay = document.getElementById('ng-overlay');
+  overlay.classList.add('show');
+  ngViewStack = ['gallery'];
+  ngShowView('gallery');
+  ngBuildGallery();
+  // Mark National Gallery spot as visited if in PlaySpot
+  if (typeof SPOTS !== 'undefined') {
+    const ngSpot = SPOTS.find(s => s.id === 7);
+    if (ngSpot) ngSpot._visited = true;
+  }
+}
+function closeNationalGallery() {
+  const overlay = document.getElementById('ng-overlay');
+  overlay.classList.remove('show');
+  if (ngIsPlaying) ngTogglePlay();
+}
+
+// ── Internal navigation ─────────────────────────────────
+function ngShowView(id) {
+  document.querySelectorAll('#ng-overlay .ng-view').forEach(v => v.classList.remove('ng-active'));
+  const el = document.getElementById('ng-view-' + id);
+  if (el) el.classList.add('ng-active');
+  const titleEl = document.getElementById('ng-hdr-title');
+  if (titleEl) titleEl.textContent = ngTitles[id] || 'National Gallery';
+  // Tab active state
+  document.querySelectorAll('#ng-overlay .ng-tab-btn').forEach(b => b.classList.remove('ng-active'));
+  const tab = document.getElementById('ng-tab-' + id);
+  if (tab) tab.classList.add('ng-active');
+}
+function ngSwitchTab(id) {
+  ngViewStack = ['gallery', id];
+  ngShowView(id);
+}
+function ngHdrLeft() {
+  if (ngViewStack.length > 1) {
+    ngViewStack.pop();
+    ngShowView(ngViewStack[ngViewStack.length - 1]);
+  } else {
+    closeNationalGallery();
+  }
+}
+
+// ── Build Gallery list ──────────────────────────────────
+function ngBuildGallery() {
+  const c = document.getElementById('ng-gallery-rooms');
+  if (!c || c.innerHTML.trim()) return; // already built
+  ngArtworkRooms.forEach(room => {
+    c.innerHTML += `<div class="gallery-room-title">${room.room}</div>`;
+    room.artworks.forEach(aw => {
+      c.innerHTML += `<div class="artwork-card" onclick="ngOpenArtwork('${aw.id}')">
+        <div class="artwork-thumb"><img src="${aw.img}" alt=""></div>
+        <div class="artwork-info">
+          <div class="artwork-badge">✨ AI Ready</div>
+          <div class="artwork-title">${aw.title}</div>
+          <div class="artwork-artist">${aw.artist}</div>
+          <div class="artwork-year">${aw.year} · ${aw.medium}</div>
+        </div>
+        <div class="artwork-arrow"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+      </div>`;
+    });
+  });
+}
+
+// ── Open Artwork (auto-starts analysis) ────────────────
+function ngOpenArtwork(id) {
+  const allArtworks = ngArtworkRooms.flatMap(r => r.artworks);
+  ngCurrentArtwork = allArtworks.find(a => a.id === id);
+  if (!ngCurrentArtwork) return;
+  document.getElementById('ng-aw-img').src = ngCurrentArtwork.img;
+  document.getElementById('ng-aw-title').textContent = ngCurrentArtwork.title;
+  document.getElementById('ng-aw-artist').textContent = ngCurrentArtwork.artist + ' · ' + ngCurrentArtwork.year;
+  document.getElementById('ng-aw-loading').style.display = 'flex';
+  document.getElementById('ng-aw-result').style.display = 'none';
+  document.querySelectorAll('#ng-overlay .loading-step').forEach(s => { s.classList.remove('active','done'); });
+  ngViewStack.push('artwork');
+  ngShowView('artwork');
+  ngRunArtworkAnalysis();
+}
+
+function ngRunArtworkAnalysis() {
+  const steps = document.querySelectorAll('#ng-overlay .loading-step');
+  let i = 0;
+  const si = setInterval(() => {
+    if (i > 0) { steps[i-1].classList.remove('active'); steps[i-1].classList.add('done'); }
+    if (i < steps.length) { steps[i].classList.add('active'); i++; }
+    else { clearInterval(si); ngShowArtworkResult(); }
+  }, 500);
+}
+
+function ngShowArtworkResult() {
+  document.getElementById('ng-aw-loading').style.display = 'none';
+  document.getElementById('ng-aw-result').style.display = 'flex';
+  const tabs = ['해설','기법','맥락','AI 질문','관람 플로우'];
+  document.getElementById('ng-aw-tabs').innerHTML = tabs.map((t,i) =>
+    `<div class="analysis-pill ${i===0?'active-pill':''}" onclick="ngSwitchArtTab(${i})">${t}</div>`
+  ).join('');
+  ngRenderArtTab(0);
+}
+
+function ngSwitchArtTab(idx) {
+  document.querySelectorAll('#ng-overlay .analysis-pill').forEach((p,i) => p.classList.toggle('active-pill', i===idx));
+  ngRenderArtTab(idx);
+}
+
+function ngRenderArtTab(idx) {
+  const aw = ngCurrentArtwork; const a = aw.analysis;
+  const body = document.getElementById('ng-aw-body');
+  if (idx === 0) {
+    const metaChips = Object.entries(a.meta).map(([k,v]) =>
+      `<div class="artwork-meta-chip"><div class="meta-chip-label">${k}</div><div class="meta-chip-val">${v}</div></div>`
+    ).join('');
+    body.innerHTML = `<div class="artwork-meta-row">${metaChips}</div>
+    <div class="insight-box"><div class="insight-lbl">✨ Gemini 시각 분석</div><p class="insight-txt">${a.overview}</p></div>
+    <button class="btn-gemini" style="width:100%;justify-content:center;margin-bottom:10px;" onclick="ngStartVoiceNarration('${aw.id}')">🔊 음성 해설 듣기</button>
+    <button class="save-to-wallet-btn" onclick="ngSaveToWallet('${aw.id}')">🎟 지갑에 저장 — 저장됨 탭에서 확인</button>
+    <div class="wallet-saved-badge" id="ng-saved-badge-${aw.id}">✅ 저장되었습니다</div>`;
+  } else if (idx === 1) {
+    body.innerHTML = `<div class="insight-box"><div class="insight-lbl">🎨 기법 분석</div><p class="insight-txt">${a.technique}</p></div>`;
+  } else if (idx === 2) {
+    body.innerHTML = `<div class="insight-box"><div class="insight-lbl">📚 역사적 맥락</div><p class="insight-txt">${a.context}</p></div>`;
+  } else if (idx === 3) {
+    const qaHtml = a.qa.map((q,i) =>
+      `<button class="deep-q-btn" onclick="ngShowArtAnswer(${i})"><div class="deep-q-icon">✨</div><div>${q.q}</div></button>`
+    ).join('');
+    body.innerHTML = `<div class="deep-q-title">Gemini가 생성한 심화 질문</div><div class="deep-q-list">${qaHtml}</div>
+    <div id="ng-art-answer-box" style="display:none" class="insight-box"><div class="insight-lbl">💡 AI 답변</div><p class="insight-txt" id="ng-art-answer-txt"></p></div>`;
+  } else if (idx === 4) {
+    body.innerHTML = `<div class="visitor-flow"><div class="flow-title">맞춤형 관람 플로우</div><div class="flow-steps">
+      <div class="flow-step"><div class="flow-icon active-flow">📷</div><div class="flow-text"><div class="flow-text-title">작품 첫 인상 기록</div><div class="flow-text-sub">촬영 후 AI가 즉시 분석</div></div></div>
+      <div class="flow-step"><div class="flow-icon active-flow">🔍</div><div class="flow-text"><div class="flow-text-title">세부 요소 탐구</div><div class="flow-text-sub">기법·색채·구도 딥다이브</div></div></div>
+      <div class="flow-step"><div class="flow-icon active-flow">💬</div><div class="flow-text"><div class="flow-text-title">AI와 대화</div><div class="flow-text-sub">궁금한 점을 자유롭게 질문</div></div></div>
+      <div class="flow-step"><div class="flow-icon">⭐</div><div class="flow-text"><div class="flow-text-title">나만의 아트 노트 저장</div><div class="flow-text-sub">분석 결과를 저장됨 탭에 보관</div></div></div>
+    </div></div>
+    <button class="save-to-wallet-btn" onclick="ngSaveToWallet('${aw.id}')">🎟 관람 기록 저장하기</button>
+    <div class="wallet-saved-badge" id="ng-saved-badge-flow-${aw.id}">✅ 저장되었습니다</div>`;
+  }
+}
+
+function ngShowArtAnswer(idx) {
+  const a = ngCurrentArtwork.analysis.qa[idx];
+  document.getElementById('ng-art-answer-box').style.display = 'block';
+  document.getElementById('ng-art-answer-txt').textContent = a.a;
+}
+
+function ngSaveToWallet(id) {
+  const aw = ngCurrentArtwork || ngArtworkRooms.flatMap(r=>r.artworks).find(a=>a.id===id);
+  if (!aw) return;
+  document.querySelectorAll(`[id^="ng-saved-badge"]`).forEach(b => { if(b.id.includes(id)) b.classList.add('show'); });
+  if (!document.querySelector(`[data-ng-artwork-id="${id}"]`)) {
+    document.getElementById('ng-wallet-empty').style.display = 'none';
+    document.getElementById('ng-wallet-list').innerHTML +=
+      `<div class="coupon-card gallery-coupon" data-ng-artwork-id="${id}">
+        <div class="coupon-tag">Art Note</div>
+        <div class="coupon-from">National Gallery</div>
+        <div class="coupon-name">${aw.title}<br><span style="font-size:12px;font-weight:400;color:#9a9690">${aw.artist} · ${aw.year}</span></div>
+        <button class="coupon-btn" onclick="ngSwitchTab('rewards')">저장됨 탭에서 보기</button>
+      </div>`;
+  }
+}
+
+// ── Voice Narration → Audio Player ─────────────────────
+function ngStartVoiceNarration(id) {
+  const aw = ngArtworkRooms.flatMap(r=>r.artworks).find(a=>a.id===id);
+  if (!aw) return;
+  document.getElementById('ng-p-img').src = aw.img;
+  document.getElementById('ng-p-tag').textContent = 'Gemini AI Art Guide';
+  document.getElementById('ng-p-title').textContent = aw.title;
+  document.getElementById('ng-gemini-init').style.display = 'none';
+  document.getElementById('ng-gemini-loading').style.display = 'none';
+  document.getElementById('ng-gemini-result').style.display = 'flex';
+  ngSetQaContent(aw.analysis.overview + ' ' + aw.analysis.technique, aw.title);
+  ngRenderQaButtons(aw.analysis.qa);
+  ngViewStack.push('player');
+  ngShowView('player');
+  setTimeout(() => ngTogglePlay(), 300);
+}
+
+function ngRunGeminiAnalysis() {
+  const flash = document.getElementById('ng-camera-flash');
+  flash.style.opacity = '1';
+  setTimeout(() => {
+    flash.style.opacity = '0';
+    document.getElementById('ng-gemini-init').style.display = 'none';
+    document.getElementById('ng-gemini-loading').style.display = 'flex';
+    const scanLine = document.getElementById('ng-camera-scan-line');
+    scanLine.style.display = 'block';
+    let pos = 0, dir = 1;
+    const si = setInterval(() => { pos += dir*3; if(pos>100){pos=100;dir=-1;} if(pos<0){pos=0;dir=1;} scanLine.style.top=pos+'%'; }, 30);
+    setTimeout(() => {
+      clearInterval(si); scanLine.style.display = 'none';
+      document.getElementById('ng-gemini-loading').style.display = 'none';
+      document.getElementById('ng-gemini-result').style.display = 'flex';
+      if (ngCurrentArtwork) {
+        ngSetQaContent(ngCurrentArtwork.analysis.overview, ngCurrentArtwork.title);
+        ngRenderQaButtons(ngCurrentArtwork.analysis.qa);
+      }
+      ngTogglePlay();
+    }, 2500);
+  }, 150);
+}
+
+function ngSetQaContent(text, title) {
+  document.getElementById('ng-p-transcript').textContent = text;
+  document.getElementById('ng-p-now-title').textContent = title || 'AI 해설 재생 중';
+  ngAudioProgress = 0;
+  document.getElementById('ng-prog-fill').style.width = '0%';
+  document.getElementById('ng-prog-dot').style.left = '0%';
+  document.getElementById('ng-p-curr').textContent = '00:00';
+  if (ngIsPlaying) ngTogglePlay();
+}
+function ngRenderQaButtons(qaArray) {
+  document.getElementById('ng-p-qa-list').innerHTML = qaArray.map((q,i) =>
+    `<button class="qa-btn" onclick="ngPlayQa(${i})"><div class="qa-icon">✨</div><div>${q.q}</div></button>`
+  ).join('');
+}
+function ngPlayQa(idx) {
+  const qa = ngCurrentArtwork ? ngCurrentArtwork.analysis.qa[idx] : null;
+  if (!qa) return;
+  ngSetQaContent(qa.a, qa.q);
+  ngTogglePlay();
+}
+function ngTogglePlay() {
+  ngIsPlaying = !ngIsPlaying;
+  document.getElementById('ng-p-play-icon').style.display = ngIsPlaying ? 'none' : '';
+  document.getElementById('ng-p-pause-icon').style.display = ngIsPlaying ? '' : 'none';
+  const btn = document.getElementById('ng-p-play-btn');
+  if (ngIsPlaying) {
+    btn.classList.add('playing');
+    ngAudioInt = setInterval(() => {
+      ngAudioProgress = Math.min(100, ngAudioProgress + 0.7);
+      ngUpdateProgressUI();
+      if (ngAudioProgress >= 100) { clearInterval(ngAudioInt); ngIsPlaying = false; document.getElementById('ng-p-play-icon').style.display=''; document.getElementById('ng-p-pause-icon').style.display='none'; btn.classList.remove('playing'); }
+    }, 100);
+  } else { btn.classList.remove('playing'); clearInterval(ngAudioInt); }
+}
+function ngRewindAudio() { ngAudioProgress = Math.max(0, ngAudioProgress-11); ngUpdateProgressUI(); }
+function ngForwardAudio() { ngAudioProgress = Math.min(100, ngAudioProgress+11); ngUpdateProgressUI(); }
+function ngSeekAudio(e) {
+  const track = document.getElementById('ng-prog-track');
+  const rect = track.getBoundingClientRect();
+  ngAudioProgress = Math.max(0, Math.min(100, ((e.clientX-rect.left)/rect.width)*100));
+  ngUpdateProgressUI();
+}
+function ngUpdateProgressUI() {
+  const pct = ngAudioProgress;
+  document.getElementById('ng-prog-fill').style.width = pct + '%';
+  document.getElementById('ng-prog-dot').style.left = pct + '%';
+  const sec = Math.round(pct * 1.35);
+  document.getElementById('ng-p-curr').textContent = `0${Math.floor(sec/60)}:${sec%60<10?'0'+sec%60:sec%60}`;
+}
+
+// ── Gallery Scan Flow ───────────────────────────────────
+function ngOpenGalleryScan() {
+  ngViewStack.push('gallery-scan');
+  ngShowView('gallery-scan');
+  ngRunGalleryScanAnim();
+}
+function ngRunGalleryScanAnim() {
+  const status = document.getElementById('ng-gscan-status');
+  const panel  = document.getElementById('ng-gscan-panel');
+  panel.classList.remove('show');
+  status.textContent = '작품을 프레임 안에 맞춰주세요';
+  setTimeout(() => { status.textContent = '작품 인식 중...'; }, 1500);
+  setTimeout(() => {
+    status.textContent = '✓ 작품 식별 완료!';
+    const allAw = ngArtworkRooms.flatMap(r=>r.artworks);
+    const picked = allAw[Math.floor(Math.random() * allAw.length)];
+    document.getElementById('ng-gscan-title').textContent = picked.title;
+    document.getElementById('ng-gscan-desc').textContent = `${picked.artist} · ${picked.year} — AI 해설 준비 완료`;
+    ngScannedId = picked.id;
+    panel.classList.add('show');
+  }, 3000);
+}
+function ngOpenScannedArtwork() {
+  if (ngViewStack[ngViewStack.length-1] === 'gallery-scan') ngViewStack.pop();
+  setTimeout(() => ngOpenArtwork(ngScannedId || 'ng1'), 50);
+}
+
+// ── Modal helpers ───────────────────────────────────────
+function ngCloseModal() {
+  document.getElementById('ng-modal-overlay').classList.remove('show');
+  document.getElementById('ng-modal').classList.remove('show');
+}
+
+
+// National Gallery spot opens NG overlay directly
+const _origGoFromSpot = goFromSpot;
+window.goFromSpot = function() {
+  if (currentSpot && currentSpot.id === 7) {
+    closeSpot();
+    openNationalGallery();
+    return;
+  }
+  _origGoFromSpot();
+};
+
 </script>
+
 </body>
 </html>
