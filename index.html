@@ -791,26 +791,59 @@ html, body {
 }
 .perspective-label.admin-mode { background: rgba(181,123,255,0.15); border-color: rgba(181,123,255,0.3); color: var(--purple); }
 
-/* ── SIM PANEL ENHANCED ── */
+/* ── SIM PANEL — 접이식 플로팅 버튼 ── */
 .sim-panel-demo {
-  position: absolute; left: 16px; z-index: 20;
-  background: rgba(10,12,16,0.92); border: 1px solid var(--border2);
-  border-radius: 16px; padding: 14px 16px;
-  backdrop-filter: blur(20px); min-width: 180px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  position: absolute; right: 16px; z-index: 22;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
 }
-.spd-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--txt3); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-.spd-label::before { content:''; width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent); }
-.spd-btn { display: flex; align-items: center; gap: 10px; background: var(--bg-surface); border: 1px solid var(--border2); border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: 0.2s; margin-bottom: 6px; }
-.spd-btn:last-child { margin-bottom: 0; }
-.spd-btn:active { background: var(--bg-surface-hover); transform: scale(0.97); }
+/* GPS 토글 버튼 */
+.spd-toggle-btn {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(10,12,16,0.92); border: 1.5px solid rgba(212,255,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; backdrop-filter: blur(20px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 12px rgba(212,255,0,0.15);
+  transition: 0.25s cubic-bezier(0.16,1,0.3,1);
+  font-size: 18px; flex-shrink: 0;
+}
+.spd-toggle-btn:active { transform: scale(0.9); }
+.spd-toggle-btn.open { background: rgba(212,255,0,0.15); border-color: var(--accent); }
+
+/* 드롭다운 패널 */
+.spd-panel {
+  display: flex; flex-direction: column; gap: 6px;
+  opacity: 0; transform: translateY(8px) scale(0.95);
+  pointer-events: none;
+  transition: 0.25s cubic-bezier(0.16,1,0.3,1);
+  transform-origin: bottom right;
+}
+.spd-panel.open {
+  opacity: 1; transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+.spd-label {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--accent); text-align: right;
+  margin-bottom: 2px; padding-right: 4px;
+  display: flex; align-items: center; justify-content: flex-end; gap: 5px;
+}
+.spd-label::after { content:''; width:5px; height:5px; border-radius:50%; background:var(--accent); box-shadow:0 0 5px var(--accent); }
+.spd-btn {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(10,12,16,0.92); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 10px 14px; cursor: pointer;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  transition: 0.18s; white-space: nowrap;
+}
+.spd-btn:active { transform: scale(0.96); opacity: 0.85; }
 .spd-btn-icon { font-size: 16px; }
 .spd-btn-info { flex: 1; }
 .spd-btn-title { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 1px; }
 .spd-btn-sub { font-size: 10px; color: var(--txt3); }
-.spd-btn.outdoor-s { border-color: rgba(74,158,255,0.25); }
-.spd-btn.indoor-s  { border-color: rgba(212,255,0,0.25); }
-.spd-btn.food-s    { border-color: rgba(255,138,0,0.25); }
+.spd-btn.outdoor-s { border-color: rgba(74,158,255,0.35); }
+.spd-btn.indoor-s  { border-color: rgba(212,255,0,0.35); }
+.spd-btn.food-s    { border-color: rgba(255,138,0,0.35); }
 
 /* ── ADMIN ENHANCEMENTS ── */
 .admin-mode-badge { background: var(--purple-dim); border: 1px solid rgba(181,123,255,0.3); border-radius: 20px; padding: 4px 12px; font-size: 10px; font-weight: 700; color: var(--purple); letter-spacing: 0.08em; text-transform: uppercase; }
@@ -1556,158 +1589,107 @@ html, body {
 <!-- ===== VIEWS ===== -->
 <div class="content">
 
-  <!-- HOME VIEW -->
+  <!-- HOME VIEW — 심플 재설계 -->
   <div class="view active" id="view-home">
+
+    <!-- 히어로: 크고 명확하게 -->
     <div class="home-hero">
       <div class="home-hero-bg"></div>
       <div class="home-hero-overlay"></div>
       <div class="home-hero-content">
-        <div class="home-hero-eye">런던삼촌투어 × PlaySpot · 웨스트민스터</div>
-        <div class="home-hero-title">런던을<br>게임처럼 탐험하세요</div>
-        <div class="home-hero-sub">앱 설치 없이 · QR 스캔으로 즉시 시작</div>
+        <div class="home-hero-eye">런던삼촌투어 × PlaySpot</div>
+        <div class="home-hero-title">런던을<br>게임처럼! 🎮</div>
+        <div class="home-hero-sub">스폿을 찾고 · 미션 완료 · 무료 쿠폰 GET</div>
       </div>
     </div>
 
-    <div class="home-stats">
-      <div class="home-stat"><div class="hstat-val">6</div><div class="hstat-lbl">미션 스폿</div></div>
-      <div class="home-stat"><div class="hstat-val">2h</div><div class="hstat-lbl">예상 소요</div></div>
-      <div class="home-stat"><div class="hstat-val" style="color:var(--orange)">47명</div><div class="hstat-lbl">지금 탐험 중</div></div>
-      <div class="home-stat"><div class="hstat-val" style="color:var(--green);font-size:13px">무료</div><div class="hstat-lbl">투어 제공</div></div>
+    <!-- 진행 상황 — 한눈에 보이는 진행바 -->
+    <div style="padding: 16px 20px 0;">
+      <div style="background: linear-gradient(135deg, rgba(212,255,0,0.1), rgba(74,158,255,0.06)); border: 1.5px solid rgba(212,255,0,0.25); border-radius: 24px; padding: 18px 20px; cursor: pointer;" onclick="switchTab('mission')">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div style="font-size:16px; font-weight:800; color:#fff;">나의 진행 상황</div>
+          <div style="font-size:22px; font-weight:800; color:var(--accent);">33%</div>
+        </div>
+        <div style="height:10px; background:rgba(255,255,255,0.1); border-radius:5px; margin-bottom:10px; overflow:hidden;">
+          <div style="height:100%; width:33%; background:var(--accent); border-radius:5px;"></div>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <div style="text-align:center;">
+            <div style="font-size:20px; font-weight:800; color:#fff;">2</div>
+            <div style="font-size:11px; color:var(--txt3); font-weight:600;">완료 ✓</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:20px; font-weight:800; color:var(--accent);">2</div>
+            <div style="font-size:11px; color:var(--txt3); font-weight:600;">진행 중 →</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:20px; font-weight:800; color:var(--txt3);">2</div>
+            <div style="font-size:11px; color:var(--txt3); font-weight:600;">남은 스폿</div>
+          </div>
+          <div style="text-align:center; margin-left:auto;">
+            <div style="font-size:20px; font-weight:800; color:var(--orange);">2개</div>
+            <div style="font-size:11px; color:var(--txt3); font-weight:600;">쿠폰 🎁</div>
+          </div>
+        </div>
+        <div style="margin-top:12px; font-size:12px; color:var(--accent); font-weight:700; text-align:right;">미션 계속하기 →</div>
+      </div>
     </div>
 
-    <div class="home-body">
+    <!-- 다음 목적지 — 가장 중요한 정보 -->
+    <div style="padding: 12px 20px 0;">
+      <div style="font-size:12px; font-weight:700; color:var(--txt3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;">📍 다음 목적지</div>
+      <div style="background:rgba(74,158,255,0.08); border:1.5px solid rgba(74,158,255,0.3); border-radius:20px; padding:16px 18px; display:flex; align-items:center; gap:14px; cursor:pointer;" onclick="switchTab('map')">
+        <div style="width:52px; height:52px; border-radius:16px; background:rgba(74,158,255,0.15); border:1px solid rgba(74,158,255,0.3); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0;">🌉</div>
+        <div style="flex:1;">
+          <div style="font-size:17px; font-weight:800; color:#fff; margin-bottom:3px;">타워 브리지</div>
+          <div style="font-size:12px; color:rgba(74,158,255,0.9); font-weight:600;">📍 GPS 감지 · 걸어서 약 12분</div>
+        </div>
+        <div style="background:var(--blue); border-radius:12px; padding:10px 16px; font-size:13px; font-weight:800; color:#fff; flex-shrink:0;">출발 →</div>
+      </div>
+    </div>
 
-      <!-- ═══ NATIONAL GALLERY TOUR CARD ═══ -->
-      <div onclick="openNationalGallery()" style="background:linear-gradient(135deg,rgba(139,105,20,.18),rgba(196,152,42,.06));border:1.5px solid rgba(196,152,42,.35);border-radius:24px;padding:18px;cursor:pointer;transition:.15s;margin-bottom:4px;-webkit-tap-highlight-color:transparent;" ontouchstart="">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-          <div style="width:46px;height:46px;border-radius:13px;overflow:hidden;flex-shrink:0;border:1px solid rgba(196,152,42,.3);">
-            <img src="https://picsum.photos/id/1060/100/100" style="width:100%;height:100%;object-fit:cover;">
-          </div>
+    <!-- 특별 스폿: 내셔널 갤러리 -->
+    <div style="padding: 12px 20px 0;">
+      <div onclick="openNationalGallery()" style="background:linear-gradient(135deg,rgba(139,105,20,.18),rgba(196,152,42,.06)); border:1.5px solid rgba(196,152,42,.35); border-radius:20px; padding:16px 18px; display:flex; align-items:center; gap:14px; cursor:pointer;" ontouchstart="">
+        <div style="width:52px; height:52px; border-radius:16px; overflow:hidden; flex-shrink:0;">
+          <img src="https://picsum.photos/id/1060/100/100" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:10px; font-weight:700; letter-spacing:.08em; color:#c4982a; text-transform:uppercase; margin-bottom:3px;">🎨 AI 명화 해설</div>
+          <div style="font-size:16px; font-weight:800; color:#fff; margin-bottom:2px;">내셔널 갤러리</div>
+          <div style="font-size:12px; color:var(--txt2);">카메라로 명화를 비추면 AI가 해설!</div>
+        </div>
+        <div style="color:#c4982a; font-size:22px;">→</div>
+      </div>
+    </div>
+
+    <div class="home-body" style="gap:12px;">
+
+      <!-- 이용 방법 — 3단계로 초등학생도 이해 -->
+      <div style="background:var(--bg-surface); border:1px solid var(--border); border-radius:20px; padding:18px 20px;">
+        <div style="font-size:14px; font-weight:800; color:#fff; margin-bottom:14px;">🕹️ 어떻게 하나요?</div>
+        <div style="display:flex; justify-content:space-around; text-align:center; gap:8px;">
           <div style="flex:1;">
-            <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:linear-gradient(90deg,#8b6914,#c4982a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:3px;">AI Artwork Scanner</div>
-            <div style="font-size:17px;font-weight:700;color:#fff;line-height:1.2;">내셔널 갤러리</div>
-            <div style="font-size:11px;color:#A0A5B5;margin-top:2px;">Trafalgar Square · 28 Masterworks</div>
+            <div style="font-size:32px; margin-bottom:6px;">🗺️</div>
+            <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:2px;">스폿 찾기</div>
+            <div style="font-size:11px; color:var(--txt3); line-height:1.4;">지도 보고<br>걸어가요</div>
           </div>
-          <div style="width:36px;height:36px;border-radius:50%;background:rgba(196,152,42,.15);border:1px solid rgba(196,152,42,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎨</div>
-        </div>
-        <div style="font-size:12px;color:#A0A5B5;line-height:1.5;margin-bottom:12px;">Gemini AI가 명화를 즉시 인식하고 심층 해설을 제공합니다.<br>카메라로 작품을 찍으면 분석이 바로 시작됩니다.</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <div style="background:rgba(196,152,42,.12);border:1px solid rgba(196,152,42,.2);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;color:#c4982a;">📷 카메라 스캔</div>
-          <div style="background:rgba(196,152,42,.12);border:1px solid rgba(196,152,42,.2);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;color:#c4982a;">✨ Gemini 해설</div>
-          <div style="background:rgba(196,152,42,.12);border:1px solid rgba(196,152,42,.2);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;color:#c4982a;">🎟 아트 노트 저장</div>
-          <div style="background:rgba(196,152,42,.12);border:1px solid rgba(196,152,42,.2);border-radius:20px;padding:4px 10px;font-size:10px;font-weight:600;color:#c4982a;">▶ 탭하여 시작</div>
-        </div>
-      </div>
-
-      <!-- Live Activity Strip -->
-      <div class="live-strip">
-        <div class="live-pill now"><div class="lp-dot"></div>Yuki님 로제타 스톤 완료</div>
-        <div class="live-pill done"><div class="lp-dot"></div>수진님 쿠폰 3개 획득</div>
-        <div class="live-pill hot"><div class="lp-dot"></div>버로우 마켓 현재 혼잡</div>
-        <div class="live-pill now"><div class="lp-dot"></div>Carlos님 타워 브리지 도착</div>
-        <div class="live-pill done"><div class="lp-dot"></div>Anna님 전체 미션 완료 🎉</div>
-        <div class="live-pill now"><div class="lp-dot"></div>James님 엘긴 마블스 스캔 중</div>
-      </div>
-
-      <!-- Tour Card (replaces paywall) -->
-      <div class="tour-card" onclick="switchTab('mission')">
-        <div class="tc-top">
-          <div class="tc-agency">런던삼촌투어 제공</div>
-          <div class="tc-free">🆓 무료</div>
-        </div>
-        <div class="tc-name">웨스트민스터 AR 탐정 어드벤처</div>
-        <div class="tc-sub">야외 GPS + 실내 AR 스캔 + 푸드 리워드</div>
-        <div class="tc-prog-wrap">
-          <div class="tc-prog-bar"><div class="tc-prog-fill" style="width:33%"></div></div>
-          <div class="tc-prog-text">스폿 2/6 완료 · 미션 2/6 달성 · 쿠폰 2개 획득</div>
-        </div>
-        <div class="tc-tags">
-          <div class="tc-tag">⏱ 약 2시간</div>
-          <div class="tc-tag">🎁 6개 리워드</div>
-          <div class="tc-tag">📍 런던 중심부</div>
-        </div>
-      </div>
-
-      <!-- How it works -->
-      <div class="how-strip">
-        <div class="how-title">플레이 방법</div>
-        <div class="how-steps">
-          <div class="how-step">
-            <div class="how-num">1</div>
-            <div class="how-text">
-              <div class="how-text-title">📱 여행사 QR 스캔으로 시작</div>
-              <div class="how-text-sub">앱 설치 불필요. QR 하나로 투어가 바로 열립니다.</div>
-            </div>
+          <div style="font-size:20px; color:var(--txt3); align-self:center; padding-bottom:20px;">→</div>
+          <div style="flex:1;">
+            <div style="font-size:32px; margin-bottom:6px;">⚡</div>
+            <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:2px;">미션 완료</div>
+            <div style="font-size:11px; color:var(--txt3); line-height:1.4;">퀴즈 풀고<br>스캔해요</div>
           </div>
-          <div class="how-step">
-            <div class="how-num">2</div>
-            <div class="how-text">
-              <div class="how-text-title">🗺️ 스폿 찾아 미션 완료</div>
-              <div class="how-text-sub">야외는 GPS 자동 감지, 실내는 카메라로 스캔하세요.</div>
-            </div>
-          </div>
-          <div class="how-step">
-            <div class="how-num">3</div>
-            <div class="how-text">
-              <div class="how-text-title">🎁 무료 리워드 자동 발급</div>
-              <div class="how-text-sub">미션 완료 시 로컬 파트너 쿠폰이 즉시 발급됩니다.</div>
-            </div>
+          <div style="font-size:20px; color:var(--txt3); align-self:center; padding-bottom:20px;">→</div>
+          <div style="flex:1;">
+            <div style="font-size:32px; margin-bottom:6px;">🎁</div>
+            <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:2px;">쿠폰 GET!</div>
+            <div style="font-size:11px; color:var(--txt3); line-height:1.4;">무료 혜택<br>바로 사용</div>
           </div>
         </div>
       </div>
 
-      <!-- Route Mini Timeline -->
-      <div class="route-timeline">
-        <div class="rt-header">
-          <div class="rt-title">오늘의 추천 루트</div>
-          <div class="rt-time">⏱ 약 2시간 소요</div>
-        </div>
-        <div class="rt-steps">
-          <div class="rt-step">
-            <div class="rt-circle done">✓</div>
-            <div class="rt-info">
-              <div class="rt-name">트라팔가 광장</div>
-              <div class="rt-meta">📍 GPS · 완료 · +80pt</div>
-            </div>
-          </div>
-          <div class="rt-step">
-            <div class="rt-circle done">✓</div>
-            <div class="rt-info">
-              <div class="rt-name">더 브렉퍼스트 클럽</div>
-              <div class="rt-meta">🍽 음식 파트너 · 완료 · 쿠폰 획득</div>
-            </div>
-          </div>
-          <div class="rt-step">
-            <div class="rt-circle now">→</div>
-            <div class="rt-info">
-              <div class="rt-name">타워 브리지</div>
-              <div class="rt-meta">📍 GPS · 진행 중 · 3단계 중 2단계</div>
-            </div>
-          </div>
-          <div class="rt-step">
-            <div class="rt-circle next">🪨</div>
-            <div class="rt-info">
-              <div class="rt-name">로제타 스톤 (대영박물관)</div>
-              <div class="rt-meta">📸 AR 스캔 · 다음 목적지 · 1.4km</div>
-            </div>
-          </div>
-          <div class="rt-step">
-            <div class="rt-circle next">🏛</div>
-            <div class="rt-info">
-              <div class="rt-name">엘긴 마블스</div>
-              <div class="rt-meta">📸 AR 스캔 · 잠김 · 이전 미션 필요</div>
-            </div>
-          </div>
-          <div class="rt-step">
-            <div class="rt-circle next">🧀</div>
-            <div class="rt-info">
-              <div class="rt-name">버로우 마켓</div>
-              <div class="rt-meta">🍽 음식 파트너 · 잠김 · 3.1km</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <!-- 투어 스폿 목록 -->
       <div class="sec-hdr">
         <div class="sec-title">투어 스폿</div>
         <div class="sec-link" onclick="switchTab('map')">지도에서 보기 →</div>
@@ -1756,34 +1738,40 @@ html, body {
         </div>
       </div>
 
-      <div class="map-right" id="map-right" style="bottom:216px">
-        <div class="map-ctrl locate" onclick="recenter()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke-linecap="round"/></svg></div>
+      <div class="map-right" id="map-right" style="bottom:190px">
+        <div class="map-ctrl locate" onclick="recenter()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg></div>
         <div class="map-ctrl ar-c" onclick="openAR(null)"><svg viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg></div>
       </div>
 
-      <div class="sim-panel-demo" id="sim-panel" style="bottom:216px">
-        <div class="spd-label">GPS 시뮬레이션</div>
-        <div class="spd-btn outdoor-s" onclick="triggerProx('outdoor')">
-          <div class="spd-btn-icon">📍</div>
-          <div class="spd-btn-info">
-            <div class="spd-btn-title">야외 스폿 도달</div>
-            <div class="spd-btn-sub">타워 브리지 · GPS 자동 감지</div>
+      <!-- GPS 시뮬레이션 — 접이식 플로팅 버튼 -->
+      <div class="sim-panel-demo" id="sim-panel" style="bottom:130px">
+        <!-- 드롭다운 패널 (기본: 닫힘) -->
+        <div class="spd-panel" id="spd-panel">
+          <div class="spd-label">GPS 시뮬레이션</div>
+          <div class="spd-btn outdoor-s" onclick="triggerProx('outdoor');toggleSimPanel()">
+            <div class="spd-btn-icon">📍</div>
+            <div class="spd-btn-info">
+              <div class="spd-btn-title">야외 스폿 도달</div>
+              <div class="spd-btn-sub">타워 브리지 · GPS 자동 감지</div>
+            </div>
+          </div>
+          <div class="spd-btn indoor-s" onclick="triggerProx('indoor');toggleSimPanel()">
+            <div class="spd-btn-icon">📸</div>
+            <div class="spd-btn-info">
+              <div class="spd-btn-title">실내 스폿 도달</div>
+              <div class="spd-btn-sub">로제타 스톤 · AR 카메라</div>
+            </div>
+          </div>
+          <div class="spd-btn food-s" onclick="triggerProx('food');toggleSimPanel()">
+            <div class="spd-btn-icon">🍽</div>
+            <div class="spd-btn-info">
+              <div class="spd-btn-title">음식 파트너 도달</div>
+              <div class="spd-btn-sub">브렉퍼스트 클럽 · 쿠폰 발급</div>
+            </div>
           </div>
         </div>
-        <div class="spd-btn indoor-s" onclick="triggerProx('indoor')">
-          <div class="spd-btn-icon">📸</div>
-          <div class="spd-btn-info">
-            <div class="spd-btn-title">실내 스폿 도달</div>
-            <div class="spd-btn-sub">로제타 스톤 · AR 카메라</div>
-          </div>
-        </div>
-        <div class="spd-btn food-s" onclick="triggerProx('food')">
-          <div class="spd-btn-icon">🍽</div>
-          <div class="spd-btn-info">
-            <div class="spd-btn-title">음식 파트너 도달</div>
-            <div class="spd-btn-sub">브렉퍼스트 클럽 · 쿠폰 발급</div>
-          </div>
-        </div>
+        <!-- 토글 버튼 -->
+        <button class="spd-toggle-btn" id="spd-toggle" onclick="toggleSimPanel()" title="GPS 시뮬레이션">🛰️</button>
       </div>
 
       <div class="drawer" id="drawer">
@@ -1836,35 +1824,20 @@ html, body {
   <!-- MISSION VIEW (replaces Rank) -->
   <div class="view" id="view-mission">
     <div class="ms-header">
-      <div class="ms-title">미션 보드 🎯</div>
+      <div class="ms-title">미션 🎯</div>
       <div class="ms-sub">웨스트민스터 코스 · 런던삼촌투어</div>
 
-      <!-- XP Level Card -->
-      <div class="xp-card">
-        <div class="xp-top">
-          <div class="xp-badge">⚔️ 레벨 3 · 탐험가</div>
-          <div class="xp-streak">🔥 3일 연속</div>
-        </div>
-        <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:65%"></div></div>
-        <div class="xp-meta">
-          <span>130 XP</span>
-          <span>다음 레벨까지 70 XP</span>
-          <span>200 XP · 레벨 4</span>
-        </div>
-      </div>
-
+      <!-- 심플 진행률 -->
       <div class="ms-overall">
         <div class="ms-overall-top">
-          <div class="ms-overall-label">코스 전체 진행률</div>
+          <div class="ms-overall-label">전체 진행률</div>
           <div class="ms-overall-pct">33%</div>
         </div>
         <div class="ms-overall-bar"><div class="ms-overall-fill" style="width:33%"></div></div>
         <div class="ms-overall-stats">
-          <div class="ms-overall-stat"><strong>2</strong> 완료</div>
-          <div class="ms-overall-stat"><strong>2</strong> 진행 중</div>
-          <div class="ms-overall-stat"><strong>2</strong> 잠김</div>
-          <div class="ms-overall-stat"><strong>130pt</strong> 획득</div>
-          <div class="ms-overall-stat"><strong>2개</strong> 쿠폰</div>
+          <div class="ms-overall-stat"><strong>2</strong> 완료 ✓</div>
+          <div class="ms-overall-stat"><strong>2</strong> 진행 중 →</div>
+          <div class="ms-overall-stat"><strong>2개</strong> 쿠폰 🎁</div>
         </div>
       </div>
     </div>
@@ -2548,6 +2521,7 @@ const SPOTS=[
 ];
 
 let map,mapInited=false,currentSpot=null,proxSpot=null;
+let userMarker=null,userPos=[51.5194,-0.1270];
 let arIdx=0,answered=false,drawerOpen=false,myScore=130,currentLang='KO';
 
 window.addEventListener('load',()=>{
@@ -2631,7 +2605,8 @@ function initMap(){
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(map);
   L.circleMarker([51.5194,-0.1270],{radius:22,color:'rgba(74,158,255,.2)',fillColor:'rgba(74,158,255,.05)',fillOpacity:1,weight:1}).addTo(map);
   const uIcon=L.divIcon({className:'',html:'<div class="lf-user" style="position:relative"></div>',iconSize:[16,16],iconAnchor:[8,8]});
-  L.marker([51.5194,-0.1270],{icon:uIcon,zIndexOffset:1000}).addTo(map);
+  userMarker=L.marker([51.5194,-0.1270],{icon:uIcon,zIndexOffset:1000}).addTo(map);
+  userPos=[51.5194,-0.1270];
   SPOTS.forEach(s=>{
     const icon=L.divIcon({className:'',html:`<div class="lf-mk ${s.cat}${s.near?' near':''}">${s.emoji}</div>`,iconSize:[46,46],iconAnchor:[23,23]});
     const mk=L.marker([s.lat,s.lng],{icon}).addTo(map);
@@ -2697,7 +2672,11 @@ function switchTab(id){
   document.getElementById('view-'+id).classList.add('active');
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   const tb=document.getElementById('tab-'+id);if(tb)tb.classList.add('active');
-  if(id==='map'){initMap();setTimeout(()=>{if(map)map.invalidateSize();},120);}
+  if(id==='map'){
+    initMap();
+    // 컨테이너가 표시된 후 크기 재계산 (display:none → flex 전환 후 필요)
+    setTimeout(()=>{ if(map){ map.invalidateSize(true); map.setView(userPos,15); } }, 200);
+  }
 }
 
 function filterMap(el,cat){
@@ -2716,6 +2695,15 @@ function triggerProx(cat){
   const sc=PROX[proxIdx%PROX.length];
   const spot=SPOTS.find(s=>s.cat===cat)||SPOTS[proxIdx%SPOTS.length];
   proxSpot=spot;
+  // 사용자 마커를 해당 스폿 근처로 이동 (약 20~40m 오프셋)
+  const offsetLat = (Math.random()-0.5)*0.0003;
+  const offsetLng = (Math.random()-0.5)*0.0004;
+  userPos=[spot.lat+offsetLat, spot.lng+offsetLng];
+  if(userMarker && map){
+    userMarker.setLatLng(userPos);
+    map.invalidateSize();
+    setTimeout(()=>{ map.setView(userPos, 15, {animate:true, duration:0.6}); }, 50);
+  }
   const card=document.getElementById('prox-card');
   card.className='prox-card '+spot.cat;
   document.getElementById('prox-icon').textContent=spot.emoji;
@@ -2812,7 +2800,31 @@ function setLang(el,code){
   setTimeout(closeSM,200);
 }
 
-function recenter(){if(map)map.panTo([51.5194,-0.1270],{animate:true,duration:.7})}
+function recenter(){
+  if(!map){ initMap(); setTimeout(recenter, 300); return; }
+  map.invalidateSize();
+  setTimeout(()=>{ map.setView(userPos, 15, {animate:true, duration:0.7}); }, 50);
+}
+
+// ── GPS 시뮬레이션 패널 토글 ──
+function toggleSimPanel() {
+  const panel = document.getElementById('spd-panel');
+  const btn   = document.getElementById('spd-toggle');
+  if (!panel || !btn) return;
+  const isOpen = panel.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  btn.textContent = isOpen ? '✕' : '🛰️';
+}
+// 패널 외부 클릭 시 닫기
+document.addEventListener('click', function(e) {
+  const simPanel = document.getElementById('sim-panel');
+  if (simPanel && !simPanel.contains(e.target)) {
+    const panel = document.getElementById('spd-panel');
+    const btn   = document.getElementById('spd-toggle');
+    if (panel) { panel.classList.remove('open'); }
+    if (btn)   { btn.classList.remove('open'); btn.textContent = '🛰️'; }
+  }
+});
 
 
 
@@ -2822,7 +2834,7 @@ function recenter(){if(map)map.panTo([51.5194,-0.1270],{animate:true,duration:.7
 
 const DEMO_STEPS = [
   { tab:'home',    title:'👤 탐험 화면 — 투어 시작', desc:'여행자가 QR을 스캔하면 이 화면이 열립니다. 런던삼촌투어 브랜딩이 자동 적용됩니다. 아래로 스크롤해보세요.' },
-  { tab:'map',     title:'🗺️ 지도 & GPS 자동 감지',   desc:'마커를 탭해 스폿 상세를 확인하세요. 왼쪽 아래 버튼으로 GPS 도달 알림을 직접 체험해보세요!' },
+  { tab:'map',     title:'🗺️ 지도 & GPS 자동 감지',   desc:'마커를 탭해 스폿 상세를 확인하세요. 오른쪽 🛰️ 버튼을 탭하면 GPS 도달 알림을 직접 체험해보세요!' },
   { tab:'ar',      title:'📸 AR 스캔 & Gemini AI',    desc:'"📸 AR 시뮬레이션" 버튼을 누르면 AI가 전시물을 인식하는 과정을 시연합니다.' },
   { tab:'mission', title:'🎯 미션 보드',               desc:'여행자의 진행 상황을 한눈에 확인합니다. 미션 항목을 탭하면 퀴즈가 열립니다.' },
   { tab:'rewards', title:'🎁 리워드 & 쿠폰',           desc:'미션 완료 시 로컬 파트너 쿠폰이 자동 발급됩니다. 홈으로 돌아가면 🎨 내셔널 갤러리 AI 투어도 체험해보세요!' },
