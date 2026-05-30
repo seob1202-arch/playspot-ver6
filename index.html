@@ -43,15 +43,28 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
 .tabbar.hidden{transform:translateY(100%);opacity:0;pointer-events:none}
 .tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 4px;color:var(--txt3);transition:.3s cubic-bezier(.16,1,.3,1);min-width:0;min-height:44px}
 .tab-btn.active{color:var(--accent)}
-.tab-btn.active:not(.tab-btn-ar) svg{filter:drop-shadow(0 0 4px rgba(212,255,0,.5))}
+.tab-btn.active svg{filter:drop-shadow(0 0 4px rgba(212,255,0,.5))}
 #tab-kids.active svg{filter:drop-shadow(0 0 5px rgba(181,123,255,.7))!important}
 #tab-kids.active{color:var(--purple)}
 .tab-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tab-label{font-size:9px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap;text-align:center;margin-top:2px}
-.tab-label-ar{margin-top:4px;font-size:8px}
-.tab-btn-ar{padding-top:0}
-.tab-ar-wrap{background:var(--accent);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-top:-8px;box-shadow:0 4px 20px rgba(212,255,0,.45)}
-.tab-ar-wrap svg{stroke:#000}
+
+/* ── FLOATING SCAN FAB ── */
+.scan-fab{position:absolute;right:18px;bottom:84px;z-index:40;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+  background:radial-gradient(circle at 35% 30%,#E4FF4A,var(--accent) 70%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  box-shadow:0 8px 26px rgba(212,255,0,.42),0 2px 8px rgba(0,0,0,.4);
+  transition:transform .3s cubic-bezier(.16,1,.3,1),opacity .3s ease,bottom .35s cubic-bezier(.16,1,.3,1);
+  animation:fabIn .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes fabIn{from{transform:scale(0) rotate(-30deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.scan-fab:active{transform:scale(.92)}
+.scan-fab svg{width:23px;height:23px;stroke:#000;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:2}
+.scan-fab-label{font-size:7.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#000;position:relative;z-index:2;line-height:1}
+.scan-fab-ring{position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--accent);opacity:.55;animation:fabPulse 2.4s ease-out infinite}
+@keyframes fabPulse{0%{transform:scale(1);opacity:.5}70%{opacity:0}100%{transform:scale(1.5);opacity:0}}
+.scan-fab.hidden{transform:translateY(120px) scale(.8);opacity:0;pointer-events:none}
+/* On the map view the FAB sits above the bottom map controls */
+.scan-fab.on-map{bottom:200px}
 
 /* CONTENT SHELL */
 .content{flex:1;position:relative;overflow:hidden;min-height:0}
@@ -508,6 +521,13 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
 .aw-tab{flex-shrink:0;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:20px;border:1px solid;cursor:pointer;transition:.2s;white-space:nowrap}
 .aw-tab.on{background:linear-gradient(90deg,#8b6914,#c4a428);border-color:transparent;color:#fff}
 .aw-tab:not(.on){background:var(--bg1);border-color:var(--border);color:var(--txt2)}
+
+/* ── SEGMENTED CONTROL (Creator Studio tabs) ── */
+.seg-wrap{padding:14px 18px 6px;flex-shrink:0}
+.seg-track{display:flex;gap:4px;background:var(--bg1);border:1px solid var(--border);border-radius:14px;padding:4px}
+.seg-btn{flex:1;text-align:center;font-size:13px;font-weight:700;letter-spacing:-.01em;padding:10px 8px;border-radius:11px;cursor:pointer;color:var(--txt2);transition:color .2s,background .25s cubic-bezier(.16,1,.3,1);white-space:nowrap}
+.seg-btn:active{transform:scale(.97)}
+.seg-btn.on{background:var(--accent);color:#000;box-shadow:0 2px 10px rgba(212,255,0,.28)}
 .aw-body{padding:6px 18px 32px;overflow-y:auto;flex:1}
 .insight-box{background:var(--bg1);border:1px solid var(--border);border-radius:20px;padding:16px;margin-bottom:12px}
 .insight-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c4a428;margin-bottom:8px;display:flex;align-items:center;gap:5px}
@@ -824,7 +844,6 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
     </div>
     <div class="map-right" id="map-right" style="bottom:128px">
       <div class="map-ctrl locate" onclick="recenter()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke-linecap="round"/></svg></div>
-      <div class="map-ctrl ar-c" onclick="openAR(null)"><svg viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg></div>
     </div>
     <!-- GPS sim panel hidden by default, toggle via dev -->
     <div class="sim-panel" id="sim-panel" style="bottom:128px;display:none">
@@ -1122,11 +1141,13 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
     </button>
   </div>
 
-  <!-- Creator Tabs -->
-  <div style="display:flex;border-bottom:1px solid var(--border);flex-shrink:0" id="creator-tabs">
-    <div class="aw-tab on" onclick="switchCreatorTab(0)" data-i18n="creator_tab_guide">My Guide</div>
-    <div class="aw-tab" onclick="switchCreatorTab(1)" data-i18n="creator_tab_add">Add Spot</div>
-    <div class="aw-tab" onclick="switchCreatorTab(2)" data-i18n="creator_tab_earn">Earnings</div>
+  <!-- Creator Tabs (segmented control) -->
+  <div class="seg-wrap" id="creator-tabs">
+    <div class="seg-track">
+      <div class="seg-btn on" onclick="switchCreatorTab(0)" data-i18n="creator_tab_guide">My Guide</div>
+      <div class="seg-btn" onclick="switchCreatorTab(1)" data-i18n="creator_tab_add">Add Spot</div>
+      <div class="seg-btn" onclick="switchCreatorTab(2)" data-i18n="creator_tab_earn">Earnings</div>
+    </div>
   </div>
 
   <div style="flex:1;overflow-y:auto" id="creator-body"></div>
@@ -1170,12 +1191,6 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
     <svg viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
     <span class="tab-label" data-i18n="tab_map">Map</span>
   </button>
-  <button class="tab-btn tab-btn-ar" id="tab-ar" onclick="openAR(null)">
-    <div class="tab-ar-wrap">
-      <svg viewBox="0 0 24 24" style="width:22px;height:22px;stroke:#000;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
-    </div>
-    <span class="tab-label tab-label-ar" data-i18n="tab_scan">Scan</span>
-  </button>
   <button class="tab-btn" id="tab-tours" onclick="switchTab('tours')">
     <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="5" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
     <span class="tab-label" data-i18n="tab_tours">Tours</span>
@@ -1189,6 +1204,13 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
     <span class="tab-label" data-i18n="tab_rewards">Rewards</span>
   </button>
 </div>
+
+<!-- FLOATING SCAN FAB -->
+<button class="scan-fab" id="scan-fab" onclick="openAR(null)" aria-label="AI Scan">
+  <span class="scan-fab-ring"></span>
+  <svg viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
+  <span class="scan-fab-label" data-i18n="tab_scan">Scan</span>
+</button>
 
 </div><!-- /phone -->
 <script>
@@ -1819,8 +1841,8 @@ function openCitySelector(){
    ONBOARDING (Language → Country → City → Interest)
 ════════════════════════════════════════════ */
 let obStep=0, obLang='EN', obCountry='kr', obCity='seoul', obInterest='history';
-function startOnboarding(){obStep=0;obLang=currentLang;renderOnboard();document.getElementById('onboard').classList.remove('hidden');}
-function skipOnboard(){document.getElementById('onboard').classList.add('hidden');}
+function startOnboarding(){obStep=0;obLang=currentLang;renderOnboard();document.getElementById('onboard').classList.remove('hidden');document.getElementById('scan-fab')?.classList.add('hidden');}
+function skipOnboard(){document.getElementById('onboard').classList.add('hidden');document.getElementById('scan-fab')?.classList.remove('hidden');}
 function obDots(){return [0,1,2,3].map(i=>`<div class="ob-dot ${i<=obStep?'done':''}"></div>`).join('');}
 function renderOnboard(){
   document.getElementById('ob-dots').innerHTML=obDots();
@@ -1857,6 +1879,7 @@ function obNext(){
   // finish
   if(CITIES[obCity]&&CITIES[obCity].active)setCity(obCity);
   document.getElementById('onboard').classList.add('hidden');
+  document.getElementById('scan-fab')?.classList.remove('hidden');
   if(obInterest==='kids')setTimeout(()=>switchTab('kids'),350);
   setTimeout(fireConfetti,300);
 }
@@ -2549,6 +2572,7 @@ function openSpotDetail(id){
   const cta=document.getElementById('ss-cta');
   cta.textContent=s.cta;cta.className='btn-primary';
   document.getElementById('spot-sheet').classList.add('show');
+  document.getElementById('scan-fab')?.classList.add('hidden');
   const drawerEl=document.getElementById('drawer');
   if(drawerEl)drawerEl.style.display='none';
   if(map){try{map.panTo([s.lat,s.lng],{animate:true,duration:.5});}catch(e){}}
@@ -2556,6 +2580,7 @@ function openSpotDetail(id){
 function closeSpot(){
   stopAudio();
   document.getElementById('spot-sheet').classList.remove('show');
+  document.getElementById('scan-fab')?.classList.remove('hidden');
   const drawer=document.getElementById('drawer');
   if(drawer){drawer.style.display='flex';}
   currentSpot=null;
@@ -2579,13 +2604,18 @@ function switchTab(id){
   if(id==='map'){initMap();refreshMapSpots();setTimeout(()=>{if(map)map.invalidateSize();},120);}
   if(id==='kids'){buildKidsList(KIDS_QUESTS);}
   if(id!=='map'){stopAudio();}
-  // Re-attach scroll listener for hide-on-scroll
+  // Scan FAB: lift it above the map controls on the map view
+  const fab=document.getElementById('scan-fab');
+  if(fab)fab.classList.toggle('on-map',id==='map');
+  // Re-attach scroll listener for hide-on-scroll (tabbar + FAB together)
   if(view){
     view.onscroll=function(){
-      const tabbar=document.getElementById('tabbar');if(!tabbar)return;
-      tabbar.classList.add('hidden');
+      const tabbar=document.getElementById('tabbar');
+      const fb=document.getElementById('scan-fab');
+      if(tabbar)tabbar.classList.add('hidden');
+      if(fb)fb.classList.add('hidden');
       clearTimeout(scrollHideTimer);
-      scrollHideTimer=setTimeout(()=>tabbar.classList.remove('hidden'),1200);
+      scrollHideTimer=setTimeout(()=>{if(tabbar)tabbar.classList.remove('hidden');if(fb)fb.classList.remove('hidden');},1200);
     };
   }
 }
@@ -2630,10 +2660,13 @@ function openAR(spot){
   document.getElementById('ar-sim-btn').style.display='flex';
   arIdx=SPOTS.findIndex(sp=>sp.id===s.id);
   document.getElementById('ar-overlay').classList.add('show');
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-ar')?.classList.add('active');
+  // hide the floating scan FAB while the AR camera is open
+  document.getElementById('scan-fab')?.classList.add('hidden');
 }
-function closeAR(){document.getElementById('ar-overlay').classList.remove('show')}
+function closeAR(){
+  document.getElementById('ar-overlay').classList.remove('show');
+  document.getElementById('scan-fab')?.classList.remove('hidden');
+}
 function simAR(){
   const s=SPOTS[arIdx%SPOTS.length];
   document.getElementById('ar-hint-txt').textContent='Gemini Vision analyzing...';
@@ -3012,7 +3045,7 @@ function closeCreator(){
   document.getElementById('creator-overlay').style.display='none';
 }
 function switchCreatorTab(idx){
-  document.querySelectorAll('#creator-tabs .aw-tab').forEach((t,i)=>t.classList.toggle('on',i===idx));
+  document.querySelectorAll('#creator-tabs .seg-btn').forEach((t,i)=>t.classList.toggle('on',i===idx));
   const b=document.getElementById('creator-body');
   if(idx===0) renderCreatorMyGuide(b);
   else if(idx===1) renderCreatorAddSpot(b);
