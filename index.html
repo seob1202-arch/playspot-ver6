@@ -49,23 +49,6 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
 .tab-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .tab-label{font-size:9px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap;text-align:center;margin-top:2px}
 
-/* ── FLOATING SCAN FAB ── */
-.scan-fab{position:absolute;right:18px;bottom:84px;z-index:40;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
-  background:radial-gradient(circle at 35% 30%,#E4FF4A,var(--accent) 70%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
-  box-shadow:0 8px 26px rgba(212,255,0,.42),0 2px 8px rgba(0,0,0,.4);
-  transition:transform .3s cubic-bezier(.16,1,.3,1),opacity .3s ease,bottom .35s cubic-bezier(.16,1,.3,1);
-  animation:fabIn .5s cubic-bezier(.16,1,.3,1) both}
-@keyframes fabIn{from{transform:scale(0) rotate(-30deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
-.scan-fab:active{transform:scale(.92)}
-.scan-fab svg{width:23px;height:23px;stroke:#000;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:2}
-.scan-fab-label{font-size:7.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#000;position:relative;z-index:2;line-height:1}
-.scan-fab-ring{position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--accent);opacity:.55;animation:fabPulse 2.4s ease-out infinite}
-@keyframes fabPulse{0%{transform:scale(1);opacity:.5}70%{opacity:0}100%{transform:scale(1.5);opacity:0}}
-.scan-fab.hidden{transform:translateY(120px) scale(.8);opacity:0;pointer-events:none}
-/* On the map view the FAB sits above the bottom map controls */
-.scan-fab.on-map{bottom:200px}
-
 /* CONTENT SHELL */
 .content{flex:1;position:relative;overflow:hidden;min-height:0}
 .view{display:none;flex-direction:column;height:100%;overflow-y:auto;padding-bottom:68px}
@@ -222,12 +205,12 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
 .sim-btn{background:rgba(3,4,6,.85);border:1px solid var(--border2);border-radius:10px;padding:8px 12px;font-size:10px;font-weight:700;color:var(--txt2);cursor:pointer;backdrop-filter:var(--glass);display:flex;align-items:center;gap:5px;white-space:nowrap}
 
 /* SPOT DETAIL SHEET */
-.spot-sheet{position:absolute;bottom:0;left:0;right:0;z-index:55;background:var(--bg0);border-radius:32px 32px 0 0;border-top:1px solid var(--border2);display:none;flex-direction:column;max-height:88%;overflow:hidden}
+.spot-sheet{position:absolute;bottom:0;left:0;right:0;z-index:55;background:var(--bg0);border-radius:32px 32px 0 0;border-top:1px solid var(--border2);display:none;flex-direction:column;height:94%;max-height:94%;overflow:hidden}
 .spot-sheet.show{display:flex;animation:shUp .4s cubic-bezier(.16,1,.3,1)}
 @keyframes shUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .ss-handle-row{padding:12px 0 4px;display:flex;justify-content:center;flex-shrink:0}
 .ss-handle{width:40px;height:5px;background:var(--txt3);border-radius:3px}
-.ss-img{position:relative;height:200px;margin:8px 16px 0;border-radius:24px;overflow:hidden;flex-shrink:0}
+.ss-img{position:relative;height:170px;margin:8px 16px 0;border-radius:24px;overflow:hidden;flex-shrink:0}
 .ss-img img{width:100%;height:100%;object-fit:cover}
 .ss-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(3,4,6,.95) 0%,rgba(3,4,6,.15) 55%,transparent 100%)}
 .ss-img-close{position:absolute;top:12px;right:12px;width:32px;height:32px;background:rgba(0,0,0,.6);border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;backdrop-filter:blur(8px)}
@@ -235,12 +218,83 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
 .ss-img-info{position:absolute;bottom:0;left:0;right:0;padding:18px}
 .ss-badge{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:7px;display:inline-block;margin-bottom:6px}
 .ss-name{font-size:24px;font-weight:800;color:#fff;line-height:1.2}
-.ss-scroll{overflow-y:auto;flex:1;padding:20px 18px 0}
+.ss-scroll{overflow-y:auto;flex:1;padding:20px 18px 16px;-webkit-overflow-scrolling:touch}
+
+/* ── FOR YOU recommendation cards ── */
+#foryou-sec{margin-bottom:24px}
+.foryou-scroll{display:flex;gap:12px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.foryou-scroll::-webkit-scrollbar{display:none}
+.fy-card{flex:0 0 200px;background:var(--bg1);border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:.22s cubic-bezier(.16,1,.3,1)}
+.fy-card:active{transform:scale(.97)}
+.fy-card-img{position:relative;height:110px;overflow:hidden}
+.fy-card-img img{width:100%;height:100%;object-fit:cover}
+.fy-card-badge{position:absolute;top:8px;left:8px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:7px;backdrop-filter:blur(4px)}
+.fy-card-body{padding:11px 12px 12px}
+.fy-card-name{font-size:14px;font-weight:700;color:var(--txt1);margin-bottom:4px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fy-card-why{font-size:11px;color:var(--txt2);font-weight:600;margin-bottom:9px;line-height:1.3;height:29px;overflow:hidden}
+.fy-card-foot{display:flex;align-items:center;justify-content:space-between;font-size:12px}
+.fy-card-go{color:var(--txt3);font-weight:600;font-size:11px}
+#foryou-pref{cursor:pointer;font-size:15px;opacity:.7;transition:.2s}
+#foryou-pref:active{transform:scale(.9)}
+
+/* ── DIGITAL PASSPORT ── */
+.passport-card{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;background:linear-gradient(135deg,rgba(74,158,255,.08),rgba(212,255,0,.04));border:1px solid var(--border);border-radius:20px;padding:16px;margin-bottom:8px}
+.pp-stamp{position:relative;aspect-ratio:1;border-radius:14px;border:1.5px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;transition:.25s cubic-bezier(.16,1,.3,1);background:var(--bg1)}
+.pp-stamp:active{transform:scale(.92)}
+.pp-stamp.done{border-style:solid;border-color:transparent;background:var(--bg2);box-shadow:0 2px 10px rgba(0,0,0,.25);animation:ppPop .45s cubic-bezier(.16,1,.3,1)}
+@keyframes ppPop{0%{transform:scale(.3) rotate(-12deg);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1) rotate(0);opacity:1}}
+.pp-stamp-emoji{line-height:1}
+.pp-stamp-check{position:absolute;bottom:-3px;right:-3px;width:18px;height:18px;border-radius:50%;color:#000;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg0)}
+.pp-complete{grid-column:1/-1;text-align:center;font-size:13px;font-weight:800;color:var(--accent);padding:8px;background:var(--accent-dim);border-radius:12px;margin-top:4px}
+
+/* ── SHARE CARD ── */
+.share-overlay{position:absolute;inset:0;z-index:120;display:none;align-items:center;justify-content:center}
+.share-overlay.show{display:flex}
+.share-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);animation:fadeIn .25s}
+.share-sheet{position:relative;z-index:2;width:86%;max-width:330px;animation:shScale .4s cubic-bezier(.16,1,.3,1)}
+@keyframes shScale{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.share-card{position:relative;background:linear-gradient(160deg,#0b0d12,#141821);border:1px solid var(--border2);border-radius:26px;padding:26px 22px;overflow:hidden;text-align:center}
+.share-card-glow{position:absolute;top:-40%;left:-20%;width:140%;height:80%;background:radial-gradient(ellipse,rgba(212,255,0,.16),transparent 65%);pointer-events:none}
+.share-card-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;margin-bottom:14px}
+.share-logo{font-size:16px;font-weight:800;color:#fff}.share-logo span{color:var(--accent)}
+.share-city{font-size:12px;font-weight:600;color:var(--txt2)}
+.share-emoji{font-size:64px;line-height:1;margin:6px 0 10px;position:relative;z-index:1;filter:drop-shadow(0 4px 16px rgba(212,255,0,.3))}
+.share-label{font-size:12px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.1em;position:relative;z-index:1}
+.share-spot{font-size:24px;font-weight:800;color:#fff;margin:4px 0 18px;line-height:1.2;position:relative;z-index:1}
+.share-pts-row{display:flex;gap:8px;position:relative;z-index:1;margin-bottom:16px}
+.share-pts{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:10px 6px}
+.share-pts-v{font-size:18px;font-weight:800;color:#fff}
+.share-pts-l{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.share-foot{font-size:10px;color:var(--txt3);position:relative;z-index:1}
+.share-actions{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.share-btn{padding:14px;border-radius:14px;border:1px solid var(--border2);background:var(--bg1);color:var(--txt1);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.18s}
+.share-btn:active{transform:scale(.97)}
+.share-btn.primary{background:var(--accent);color:#000;border-color:var(--accent);box-shadow:0 6px 20px rgba(212,255,0,.3)}
+
+/* ── GLOBAL ARRIVAL ALERT ── */
+.arrival-alert{position:absolute;top:64px;left:14px;right:14px;z-index:90;display:flex;align-items:center;gap:12px;background:rgba(20,24,33,.96);backdrop-filter:blur(16px);border:1px solid var(--border2);border-radius:18px;padding:12px 14px;box-shadow:0 12px 32px rgba(0,0,0,.5);transform:translateY(-140%);opacity:0;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .3s}
+.arrival-alert.show{transform:translateY(0);opacity:1}
+.arr-ping{position:relative;width:44px;height:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px}
+.arr-ping span{position:absolute;inset:0;border-radius:50%;border:2px solid var(--c,var(--accent));opacity:.6;animation:arrPing 1.8s ease-out infinite}
+.arr-ping span:nth-child(2){animation-delay:.6s}
+@keyframes arrPing{0%{transform:scale(.6);opacity:.6}100%{transform:scale(1.5);opacity:0}}
+.arr-info{flex:1;min-width:0}
+.arr-title{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}
+.arr-name{font-size:14px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.arr-go{flex-shrink:0;border:none;border-radius:11px;padding:9px 16px;font-size:13px;font-weight:800;color:#000;cursor:pointer;font-family:inherit}
+.arr-go:active{transform:scale(.95)}
+.arr-x{flex-shrink:0;background:none;border:none;color:var(--txt3);font-size:20px;cursor:pointer;line-height:1;padding:0 2px}
 .ss-stats{display:flex;gap:10px;margin-bottom:18px}
 .ss-stat{flex:1;background:var(--bg1);border:1px solid var(--border);border-radius:var(--rs);padding:12px;text-align:center}
 .ss-stat-v{font-size:16px;font-weight:700;color:var(--txt1);margin-bottom:3px}
 .ss-stat-l{font-size:9px;color:var(--txt3);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
 .ss-desc{font-size:14px;color:var(--txt2);line-height:1.65;margin-bottom:20px}
+/* ── Blue Badge credibility elements ── */
+.ss-hook{display:flex;gap:9px;align-items:flex-start;background:linear-gradient(135deg,rgba(212,255,0,.1),rgba(74,158,255,.05));border:1px solid rgba(212,255,0,.2);border-radius:14px;padding:12px 14px;margin-bottom:12px;font-size:13.5px;font-weight:600;color:var(--txt1);line-height:1.5}
+.ss-hook-ic{font-size:16px;flex-shrink:0;line-height:1.3}
+.ss-source{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-8px 0 20px;font-size:11px}
+.ss-verified{display:inline-flex;align-items:center;gap:3px;background:var(--green-dim);color:var(--green);font-weight:700;padding:3px 9px;border-radius:8px;letter-spacing:.02em;flex-shrink:0}
+.ss-source-txt{color:var(--txt3);font-weight:500}
 
 /* Food spot menu */
 .food-menu-card{background:var(--bg1);border:1px solid var(--border);border-radius:20px;padding:18px;margin-bottom:18px}
@@ -286,6 +340,7 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
 .tprog-cat{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:6px}
 .tprog-name{font-size:18px;font-weight:800;color:#fff;line-height:1.2}
 .tprog-body{padding:14px 16px}
+.tour-verified{margin-bottom:10px}
 .tprog-desc{font-size:12px;color:var(--txt2);line-height:1.55;margin-bottom:12px}
 .tprog-meta{display:flex;gap:16px;margin-bottom:12px}
 .tprog-meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt3);font-weight:600}
@@ -451,7 +506,7 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
 .rw-wallet-stats{display:flex;gap:24px}
 .rws-val{font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px}
 .rws-lbl{font-size:9px;color:var(--txt3);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.rw-sec{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);margin-bottom:12px;margin-top:20px}
+.rw-sec{font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--txt1);margin-bottom:14px;margin-top:24px}
 
 /* Coupon — redesigned to prevent text overflow */
 .coupon{background:var(--bg1);border:1px solid var(--border);border-radius:20px;padding:0;margin-bottom:10px;overflow:hidden;flex-shrink:0}
@@ -792,6 +847,14 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
     <div class="hstat"><div class="hstat-v">4.9★</div><div class="hstat-l" data-i18n="stat_rating">Rating</div></div>
   </div>
   <div class="home-body">
+    <!-- 맞춤 추천: 내 위치 + 취향 기반 (최상단) -->
+    <div id="foryou-sec" style="display:none">
+      <div class="sec-hdr" style="margin-bottom:12px">
+        <div class="sec-title" id="foryou-title">✨ For You · Nearby</div>
+        <div class="sec-link" id="foryou-pref" onclick="openPrefPicker()">⚙️</div>
+      </div>
+      <div class="foryou-scroll" id="foryou-scroll"></div>
+    </div>
     <!-- 가이드 투어 -->
     <div>
       <div class="sec-hdr" style="margin-bottom:12px">
@@ -963,11 +1026,17 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
       <div><div class="rws-val">3</div><div class="rws-lbl">Coupons</div></div>
     </div>
   </div>
+  <!-- 디지털 여권: 방문한 스폿 스탬프 컬렉션 -->
+  <div class="rw-sec" id="passport-sec-hdr" style="display:flex;align-items:center;justify-content:space-between;margin-top:22px">
+    <span id="passport-title">🛂 Explorer Passport</span>
+    <span id="passport-count" style="font-size:11px;color:var(--accent);font-weight:700">0 / 0</span>
+  </div>
+  <div class="passport-card" id="passport-card"></div>
   <!-- 아트 노트 섹션 (갤러리에서 저장 시 여기에 추가됨) -->
   <div id="art-notes-section" style="display:none">
     <div class="rw-sec" style="display:flex;align-items:center;justify-content:space-between;margin-top:20px">
       <span>🎨 Art Notes</span>
-      <span style="font-size:10px;color:var(--txt3)">Gallery AI analysis records</span>
+      <span style="font-size:11px;color:var(--txt3);font-weight:500">Gallery AI analysis records</span>
     </div>
     <div id="art-notes-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:4px"></div>
   </div>
@@ -1205,12 +1274,6 @@ html,body{height:100%;background:var(--bg0);font-family:'Outfit',sans-serif;over
   </button>
 </div>
 
-<!-- FLOATING SCAN FAB -->
-<button class="scan-fab" id="scan-fab" onclick="openAR(null)" aria-label="AI Scan">
-  <span class="scan-fab-ring"></span>
-  <svg viewBox="0 0 24 24"><path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
-  <span class="scan-fab-label" data-i18n="tab_scan">Scan</span>
-</button>
 
 </div><!-- /phone -->
 <script>
@@ -1609,130 +1672,203 @@ const SEOUL_ART = {
    LONDON DATA (ported from final_v1, B-compatible schema)
 ════════════════════════════════════════════ */
 const LONDON_SPOTS=[
-  {id:1,name:'타워 브리지',cat:'outdoor',emoji:'🌉',dist:'1.2km',pts:100,today:'8.4k',lat:51.5055,lng:-0.0754,near:false,img:'https://picsum.photos/id/1043/400/300',desc:'1894년 개통, 무게 1,000톤의 도개교. 50m 이내 접근 시 GPS가 자동 감지합니다.',trigger:'gps',cta:'⚡ 퀘스트 시작',free:true,
-   quest:{type:'quiz',loc:'📍 타워 브리지 · 사우스뱅크',name:'빅토리아의 비밀',img:'https://picsum.photos/id/1043/400/300',q:'타워 브리지를 건설하는 데 얼마나 걸렸나요?',opts:['A. 4년','B. 6년','C. 8년','D. 12년'],ans:2,pts:100,reward:'🏰 타워 브리지 배지 + 전시관 무료 입장 쿠폰!'}},
-  {id:2,name:'로제타 스톤',cat:'indoor',emoji:'🪨',dist:'실내',pts:150,today:'2.1k',lat:51.5194,lng:-0.1270,near:true,img:'https://picsum.photos/id/1040/400/300',desc:'기원전 196년에 새겨진 이 돌이 3,000년의 이집트 역사를 해독했습니다. AR 카메라로 향하면 Gemini가 2초 만에 인식합니다.',trigger:'cam',cta:'📸 AR 카메라 열기',
-   quest:{type:'quiz',loc:'📍 대영박물관 · 4전시실',name:'로제타 스톤의 미스터리',img:'https://picsum.photos/id/1040/400/300',q:'로제타 스톤을 발견한 것은 누구인가요?',opts:['A. 영국 고고학자들','B. 나폴레옹의 병사들','C. 이집트 역사학자들','D. 토마스 영'],ans:1,pts:150,reward:'☕ 뮤지엄 카페 무료 음료 쿠폰!'}},
-  {id:4,name:'트라팔가 광장',cat:'outdoor',emoji:'🦁',dist:'2.8km',pts:80,today:'12k',lat:51.5080,lng:-0.1281,near:false,img:'https://picsum.photos/id/1036/400/300',desc:'1844년부터 런던의 심장부. 광장에 걸어 들어가면 GPS가 자동 감지하고 넬슨 제독의 이야기가 시작됩니다.',trigger:'gps',cta:'⚡ 퀘스트 시작',
-   quest:{type:'shake',loc:'📍 트라팔가 광장 · 중심부',name:'넬슨 제독을 깨워라',img:'https://picsum.photos/id/1036/400/300',shakeEmoji:'🦁',shakeHint:'스마트폰을 힘차게 흔들어 넬슨 제독의 이야기를 해제하세요!',pts:80,reward:'🦁 트라팔가 탐험가 배지 획득!'}},
-  {id:5,name:'더 브렉퍼스트 클럽',cat:'food',emoji:'🥞',dist:'320m',pts:50,today:'340',lat:51.5201,lng:-0.1285,near:true,img:'https://picsum.photos/id/1080/400/300',desc:'런던에서 가장 인스타그래머블한 올데이 브렉퍼스트. 30m 이내 접근 시 10% 할인 쿠폰이 자동 발급됩니다.',trigger:'gps',cta:'🎟 쿠폰 자동 발급',isFood:true,
-   menu:[{emoji:'🥞',name:'팬케이크 스택',desc:'메이플 시럽, 베리 토핑',price:'£9.50',badge:'인기 1위'},{emoji:'🍳',name:'풀 잉글리시 브렉퍼스트',desc:'달걀·베이컨·소시지·토스트',price:'£13.00'},{emoji:'☕',name:'플랫 화이트',desc:'호주식 에스프레소',price:'£3.80'},{emoji:'🥑',name:'아보카도 토스트',desc:'수란 + 페타 치즈',price:'£11.50'}],
-   quest:{type:'photo',loc:'📍 더 브렉퍼스트 클럽',name:'인스타그래머블 브런치',img:'https://picsum.photos/id/1080/400/300',photoHint:'팬케이크 스택 사진을 찍어 공유하세요!',pts:50,reward:'🥞 10% 할인 쿠폰!'}},
-  {id:7,name:'내셔널 갤러리',cat:'indoor',emoji:'🎨',dist:'실내',pts:200,today:'3.2k',lat:51.5088,lng:-0.1283,near:false,img:'https://picsum.photos/id/1060/400/300',desc:'트라팔가 광장 북쪽의 세계적인 미술관. Gemini AI가 명화를 즉시 인식하고 심층 해설을 제공합니다.',trigger:'cam',cta:'📸 AI 갤러리 투어',
-   quest:{type:'quiz',loc:'📍 내셔널 갤러리',name:'AI 갤러리 투어',img:'https://picsum.photos/id/1060/400/300',q:'반 고흐의 해바라기는 현재 몇 전시실에 있나요?',opts:['A. Room 2','B. Room 34','C. Room 43','D. Room 46'],ans:2,pts:200,reward:'🎨 내셔널 갤러리 AI 아트 노트 저장 완료!'}},
-  {id:6,name:'버로우 마켓',cat:'food',emoji:'🧀',dist:'3.1km',pts:60,today:'5.2k',lat:51.5052,lng:-0.0910,near:false,img:'https://picsum.photos/id/1070/400/300',desc:'12세기부터 거래해온 런던 최고의 푸드 마켓. 걸어 들어가면 5개 스탠드 트레일이 자동 시작됩니다.',trigger:'gps',cta:'🍽 트레일 자동 시작',isFood:true,
-   menu:[{emoji:'🧀',name:'몽고메리 체더',desc:'영국 최고의 숙성 체더',price:'£6/100g',badge:'추천'},{emoji:'🥩',name:'비프 버거',desc:'드라이에이지 패티',price:'£12.00'},{emoji:'🥐',name:'소시지 롤',desc:'수제 버크셔 포크',price:'£4.50'},{emoji:'🍓',name:'딸기 타르트',desc:'커스터드 크림 + 제철 베리',price:'£5.00'}],
-   quest:{type:'shake',loc:'📍 버로우 마켓 · 서더크',name:'푸드 트레일 스탬프',img:'https://picsum.photos/id/1070/400/300',shakeEmoji:'🧀',shakeHint:'스탬프를 모으려면 각 스탠드에서 폰을 흔들어주세요!',pts:60,reward:'🧀 £5 버로우 마켓 바우처!'}},
-  {id:102,name:'그레이트 코트',cat:'indoor',emoji:'🔮',dist:'실내',pts:110,today:'4.3k',lat:51.5195,lng:-0.1269,near:true,img:'https://picsum.photos/id/1028/400/300',desc:'유럽 최대 덮힌 광장. 유리 패널 3,312장이 단 하나도 같은 모양이 없습니다.',trigger:'cam',cta:'📸 AR 카메라 열기',
-   quest:{type:'quiz',loc:'📍 대영박물관 · 그레이트 코트',name:'유리 돔의 수학',img:'https://picsum.photos/id/1028/400/300',q:'그레이트 코트 유리 지붕을 설계한 건축가는?',opts:['A. 렌조 피아노','B. 노먼 포스터','C. 자하 하디드','D. 리처드 로저스'],ans:1,pts:110,reward:'🔮 그레이트 코트 아키텍처 배지!'}},
-  {id:106,name:'센트폴 성당',cat:'outdoor',emoji:'⛪',dist:'2.4km',pts:95,today:'6.8k',lat:51.5138,lng:-0.0984,near:false,img:'https://picsum.photos/id/1019/400/300',desc:'크리스토퍼 렌이 설계한 바로크 걸작, 돔 높이 111m. 1666년 런던 대화재 이후 재건.',trigger:'gps',cta:'⚡ 퀘스트 시작',
-   quest:{type:'quiz',loc:'📍 센트폴 성당',name:'불사조의 성당',img:'https://picsum.photos/id/1019/400/300',q:'1666년 런던 대화재가 시작된 거리 이름은?',opts:['A. 플리트 스트리트','B. 푸딩 레인','C. 킹 스트리트','D. 브레드 스트리트'],ans:1,pts:95,reward:'⛪ 대화재 역사가 배지!'}},
-  {id:107,name:'코벤트 가든',cat:'outdoor',emoji:'🎭',dist:'1.6km',pts:75,today:'14k',lat:51.5117,lng:-0.1240,near:false,img:'https://picsum.photos/id/175/400/300',desc:'거리 공연의 성지. 17세기 꽃시장에서 문화의 중심으로.',trigger:'gps',cta:'⚡ 퀘스트 시작',
-   quest:{type:'shake',loc:'📍 코벤트 가든',name:'박수를 보내라',img:'https://picsum.photos/id/175/400/300',shakeEmoji:'🎭',shakeHint:'길거리 공연가에게 박수를! 폰을 힘차게 흔들어주세요.',pts:75,reward:'🎭 코벤트 가든 퍼포머 배지!'}},
-  {id:119,name:'킹스 크로스 9¾ 승강장',cat:'indoor',emoji:'🚂',dist:'1.3km',pts:75,today:'5.6k',lat:51.5320,lng:-0.1240,near:false,img:'https://picsum.photos/id/402/400/300',desc:'해리 포터의 마법 세계로 이어지는 전설의 승강장. AR 카메라를 벽에 향하면 AI가 해설을.',trigger:'cam',cta:'📸 AR 카메라 열기',
-   quest:{type:'touch',loc:'📍 킹스 크로스 9¾ 승강장',name:'호그와트 입장',img:'https://picsum.photos/id/402/400/300',touchTarget:'🚂',touchHint:'벽을 터치해 호그와트 익스프레스에 탑승하세요!',pts:75,reward:'🚂 호그와트 탑승자 배지!'}},
-  {id:109,name:'내추럴 히스토리 뮤지엄',cat:'indoor',emoji:'🦕',dist:'실내',pts:130,today:'7.8k',lat:51.4967,lng:-0.1762,near:false,img:'https://picsum.photos/id/1003/400/300',desc:'공룡 골격이 중앙 홀을 지키는 자연사 박물관. AR로 공룡을 스캔하면 Gemini가 살아있는 해설을.',trigger:'cam',cta:'📸 AR 카메라 열기',
-   quest:{type:'shake',loc:'📍 내추럴 히스토리 뮤지엄',name:'공룡을 깨워라',img:'https://picsum.photos/id/1003/400/300',shakeEmoji:'🦕',shakeHint:'폰을 흔들어 6500만년 전 공룡의 울음소리를 들어보세요!',pts:130,reward:'🦕 공룡 탐험가 배지!'}},
+  {id:1,name:'Tower of London',cat:'outdoor',emoji:'🏰',dist:'0m',pts:120,today:'9.2k',lat:51.5081,lng:-0.0759,near:true,img:'https://picsum.photos/id/1043/400/300',free:true,
+   hook:'Its defences failed only once in 1,000 years — and it was an inside job.',
+   desc:'Founded by William the Conqueror in 1066, the central White Tower was completed around 1078 from pale Caen limestone. In its 1,000-year life it has been a royal palace, prison, mint, menagerie and the home of the Crown Jewels. Its defences were breached only once — during the 1381 Peasants\' Revolt, when rebels ran in through gates left open.',
+   source:'Historic Royal Palaces · Britannica',updated:'2026.05',
+   trigger:'gps',cta:'⚡ Start Free Quest',
+   quest:{type:'quiz',loc:'📍 Tower of London · Tower Hill',name:'Secrets of the White Tower',img:'https://picsum.photos/id/1043/400/300',q:'Who began building the Tower of London?',opts:['A. Henry VIII','B. William the Conqueror','C. Richard the Lionheart','D. Edward the Confessor'],ans:1,pts:120,reward:'🏰 Tower Explorer Badge + Crown Jewels fast-track tip!'}},
+  {id:2,name:'Westminster Abbey',cat:'indoor',emoji:'⛪',dist:'2.1km',pts:150,today:'6.4k',lat:51.4994,lng:-0.1273,near:false,img:'https://picsum.photos/id/1040/400/300',
+   hook:'Every English coronation for nearly 1,000 years has happened on this one spot.',
+   desc:'Every coronation since William the Conqueror in 1066 has taken place here — the longest continuously used coronation church in the world. The present Gothic building was begun by Henry III in 1245. Over 3,300 people are buried within, from Geoffrey Chaucer to Isaac Newton, and 16 royal weddings have been held here.',
+   source:'Westminster Abbey official · Britannica',updated:'2026.05',
+   trigger:'cam',cta:'📸 Open AR Camera',
+   quest:{type:'quiz',loc:'📍 Westminster Abbey · Westminster',name:'The Coronation Church',img:'https://picsum.photos/id/1040/400/300',q:'Since which year has every coronation taken place at Westminster Abbey?',opts:['A. 1066','B. 1245','C. 1485','D. 1603'],ans:0,pts:150,reward:'⛪ Coronation Historian Badge!'}},
+  {id:3,name:'Tower Bridge',cat:'outdoor',emoji:'🌉',dist:'350m',pts:90,today:'12k',lat:51.5055,lng:-0.0754,near:true,img:'https://picsum.photos/id/1052/400/300',
+   hook:'It is constantly confused with London Bridge — which really was sold to America.',
+   desc:'Completed in 1894 after eight years of construction, this Victorian bascule bridge can still raise its two roadway "leaves" in about five minutes using hydraulic power. The high-level walkways, 42m above the Thames, now have a glass floor. It is regularly mistaken for plain London Bridge upstream — which was genuinely sold and shipped to Arizona in 1968.',
+   source:'Tower Bridge official · Historic England',updated:'2026.05',
+   trigger:'gps',cta:'⚡ Start Quest',
+   quest:{type:'photo',loc:'📍 Tower Bridge · South Bank',name:'The Glass Floor Shot',img:'https://picsum.photos/id/1052/400/300',photoHint:'Shoot straight down through the high-level glass walkway floor!',pts:90,reward:'🌉 Tower Bridge Engineer Badge!'}},
+  {id:7,name:'The British Museum',cat:'indoor',emoji:'🏛',dist:'1.4km',pts:200,today:'8.1k',lat:51.5194,lng:-0.1270,near:false,img:'https://picsum.photos/id/1060/400/300',
+   hook:'The Great Court roof has 3,312 glass panels — and no two are the same.',
+   desc:'Opened in 1759 as the world\'s first free national public museum. Its Great Court, unveiled in 2000 and designed by Norman Foster, is the largest covered public square in Europe — roofed by 3,312 unique glass panels. Highlights include the Rosetta Stone, which unlocked Egyptian hieroglyphs after being carved in 196 BC in three scripts.',
+   source:'British Museum official · Britannica',updated:'2026.05',
+   trigger:'cam',cta:'📸 AI Museum Tour',
+   quest:{type:'quiz',loc:'📍 British Museum · Great Court',name:'The Glass Geometry',img:'https://picsum.photos/id/1060/400/300',q:'How many scripts is the Rosetta Stone carved in?',opts:['A. One','B. Two','C. Three','D. Five'],ans:2,pts:200,reward:'🏛 British Museum AI Art Note saved!'}},
+  {id:4,name:'Trafalgar Square',cat:'outdoor',emoji:'🦁',dist:'1.9km',pts:80,today:'15k',lat:51.5080,lng:-0.1281,near:false,img:'https://picsum.photos/id/1036/400/300',
+   hook:'Nelson stands 52m up — and Britain measures all distances from a point nearby.',
+   desc:'Laid out in the 1840s to commemorate the 1805 Battle of Trafalgar, where Admiral Nelson died. Nelson\'s Column rises about 52m, guarded by four bronze lions cast partly from captured French cannon. The "official centre of London", from which road distances are measured, sits just south at the original Charing Cross site.',
+   source:'Britannica · Historic England',updated:'2026.05',
+   trigger:'gps',cta:'⚡ Start Quest',
+   quest:{type:'shake',loc:'📍 Trafalgar Square · Centre',name:'Wake Admiral Nelson',img:'https://picsum.photos/id/1036/400/300',shakeEmoji:'🦁',shakeHint:'Shake hard to summon the story of the Battle of Trafalgar!',pts:80,reward:'🦁 Trafalgar Explorer Badge!'}},
+  {id:5,name:'Borough Market',cat:'food',emoji:'🧀',dist:'600m',pts:60,today:'5.2k',lat:51.5054,lng:-0.0909,near:true,img:'https://picsum.photos/id/1080/400/300',isFood:true,
+   hook:'There has been a market on or near this spot for over 1,000 years.',
+   desc:'One of London\'s oldest food markets, with trading on this site documented for over a millennium and the present market dating to the 1850s. Today it is a destination for British and global artisan produce. Step within 30m and a partner discount coupon is issued automatically.',
+   source:'Borough Market official · Historic England',updated:'2026.05',
+   trigger:'gps',cta:'🎟 Auto Coupon',
+   menu:[{emoji:'🧀',name:'Aged Cheddar',desc:'Award-winning West Country cheddar',price:'£6/100g',badge:'#1 Pick'},{emoji:'🥧',name:'Pork Pie',desc:'Hand-raised British classic',price:'£5.50'},{emoji:'🍫',name:'Brownie',desc:'Famous market fudge brownie',price:'£3.50'},{emoji:'☕',name:'Flat White',desc:'Independent roaster',price:'£3.20'}],
+   quest:{type:'photo',loc:'📍 Borough Market · Southwark',name:'The Market Tapestry',img:'https://picsum.photos/id/1080/400/300',photoHint:'Capture the colourful produce stalls under the Victorian iron roof!',pts:60,reward:'🧀 10% Borough Market voucher — check Rewards!'}},
+  {id:6,name:'St Paul\'s Cathedral',cat:'indoor',emoji:'⛪',dist:'1.1km',pts:130,today:'4.9k',lat:51.5138,lng:-0.0984,near:false,img:'https://picsum.photos/id/1019/400/300',
+   hook:'Whisper into the dome wall and someone 30m away can hear you perfectly.',
+   desc:'Sir Christopher Wren\'s Baroque masterpiece, completed in 1711 after the Great Fire of London destroyed the medieval cathedral in 1666. Its dome rises about 111m. The Whispering Gallery, 30m up inside the dome, carries a whisper clearly to the far side thanks to its curved acoustics.',
+   source:'St Paul\'s Cathedral official · Britannica',updated:'2026.05',
+   trigger:'cam',cta:'📸 Open AR Camera',
+   quest:{type:'quiz',loc:'📍 St Paul\'s Cathedral',name:'Phoenix from the Fire',img:'https://picsum.photos/id/1019/400/300',q:'Which disaster led to the rebuilding of St Paul\'s by Wren?',opts:['A. The Blitz, 1940','B. The Great Fire of London, 1666','C. The Plague, 1665','D. A lightning strike'],ans:1,pts:130,reward:'⛪ Wren\'s Dome Historian Badge!'}},
+  {id:119,name:'Abbey Road Crossing',cat:'outdoor',emoji:'🎵',dist:'4.8km',pts:75,today:'6.1k',lat:51.5321,lng:-0.1774,near:false,img:'https://picsum.photos/id/1082/400/300',
+   hook:'The most famous pedestrian crossing on Earth — and it isn\'t even in the original spot.',
+   desc:'The zebra crossing photographed for The Beatles\' 1969 album cover, shot on the morning of 8 August 1969 outside what was then EMI Studios (opened 1931, the world\'s first purpose-built recording studio). Granted Grade II listed status in 2010 — rare for road markings. The crossing was actually shifted a few metres for traffic reasons years later.',
+   source:'Historic England · Visit London',updated:'2026.05',
+   trigger:'gps',cta:'⚡ Start Quest',
+   quest:{type:'photo',loc:'📍 Abbey Road · St John\'s Wood',name:'The Iconic Walk',img:'https://picsum.photos/id/1082/400/300',photoHint:'Recreate the Beatles single-file walk — mind the traffic!',pts:75,reward:'🎵 Abbey Road Legend Badge!'}},
+  {id:109,name:'Natural History Museum',cat:'indoor',emoji:'🦕',dist:'3.2km',pts:140,today:'7.8k',lat:51.4967,lng:-0.1764,near:false,img:'https://picsum.photos/id/1003/400/300',
+   hook:'A 25m blue whale skeleton now dives through the entrance hall where a dinosaur once stood.',
+   desc:'Opened in 1881 in Alfred Waterhouse\'s cathedral-like terracotta building. Since 2017 the central Hintze Hall has been dominated by "Hope", the 25.2m skeleton of a real blue whale — the largest animal ever known to have lived — replacing the famous Diplodocus cast "Dippy".',
+   source:'Natural History Museum official',updated:'2026.05',
+   trigger:'cam',cta:'📸 Open AR Camera',
+   quest:{type:'shake',loc:'📍 Natural History Museum · Hintze Hall',name:'Meet Hope the Whale',img:'https://picsum.photos/id/1003/400/300',shakeEmoji:'🐋',shakeHint:'Shake to hear the call of the largest animal that ever lived!',pts:140,reward:'🐋 Wildlife Explorer Badge!'}},
+  {id:120,name:'Churchill War Rooms',cat:'indoor',emoji:'🎖',dist:'2.0km',pts:120,today:'2.3k',lat:51.5023,lng:-0.1290,near:false,img:'https://picsum.photos/id/1037/400/300',
+   hook:'Britain was run from this secret basement bunker — left frozen in time since 1945.',
+   desc:'The underground nerve centre from which Winston Churchill and his government directed the British war effort during WWII. The rooms were sealed in August 1945 and preserved almost exactly as they were left, including the Map Room and Churchill\'s private quarters. Now part of the Imperial War Museums.',
+   source:'Imperial War Museums official',updated:'2026.05',
+   trigger:'cam',cta:'📸 Open AR Camera',
+   quest:{type:'quiz',loc:'📍 Churchill War Rooms · Whitehall',name:'The Secret Bunker',img:'https://picsum.photos/id/1037/400/300',q:'What were the Churchill War Rooms used for?',opts:['A. A royal wine cellar','B. WWII government command centre','C. A Victorian prison','D. The first Underground station'],ans:1,pts:120,reward:'🎖 Wartime Historian Badge!'}},
+  {id:121,name:'Camden Market',cat:'food',emoji:'🍜',dist:'5.4km',pts:65,today:'9.7k',lat:51.5414,lng:-0.1465,near:false,img:'https://picsum.photos/id/1070/400/300',isFood:true,
+   hook:'One former timber yard now feeds the world 1,000 stalls deep.',
+   desc:'Grown from a small craft market started in 1974 into one of London\'s largest, with around 1,000 stalls across the old Stables and canal-side yards. It is the heart of London\'s alternative culture and a global street-food hub along the Regent\'s Canal.',
+   source:'Camden Market official · Visit London',updated:'2026.05',
+   trigger:'gps',cta:'🎟 Auto Coupon',
+   menu:[{emoji:'🍜',name:'Ramen Bowl',desc:'Tonkotsu from a canal-side stall',price:'£9.00',badge:'Crowd Fav'},{emoji:'🌯',name:'Halloumi Wrap',desc:'Grilled veggie street classic',price:'£7.50'},{emoji:'🧁',name:'Cruffin',desc:'Croissant-muffin hybrid',price:'£4.00'},{emoji:'🧋',name:'Bubble Tea',desc:'Brown sugar boba',price:'£5.00'}],
+   quest:{type:'shake',loc:'📍 Camden Market · Camden Lock',name:'Street Food Roulette',img:'https://picsum.photos/id/1070/400/300',shakeEmoji:'🍜',shakeHint:'Shake to spin the global street-food wheel!',pts:65,reward:'🍜 Camden Foodie Badge + stall voucher!'}},
 ];
+
 const LONDON_TOURS=[
-  {id:'tp1',name:'런던 시티 투어',tag:'클래식',tagColor:'var(--blue)',tagBg:'var(--blue-d)',
+  {id:'tp1',name:'Royal London: Power & Pageantry',tag:'Classic',tagColor:'var(--blue)',tagBg:'var(--blue-dim)',
    img:'https://picsum.photos/id/1036/600/300',
-   desc:'런던의 아이콘을 따라 걷는 2시간 도보 투어. 타워 브리지에서 트라팔가 광장까지, 역사 속으로.',
-   duration:'약 2시간',distance:'3.2km',totalPts:455,
-   spots:['타워 브리지','내셔널 갤러리','트라팔가 광장','코벤트 가든'],
-   reward:'런던 시티 탐험가 배지 + £5 파트너 바우처',
+   desc:'A 2-hour walk through 1,000 years of monarchy — from the fortress where kings hid to the church where they were crowned. Verified against Historic Royal Palaces & Westminster Abbey.',
+   duration:'~2 hours',distance:'3.6km',totalPts:470,
+   spots:['Tower of London','Tower Bridge','Trafalgar Square','Westminster Abbey'],
+   spotIds:[1,3,4,2],
+   reward:'🏰 Royal London Explorer Badge + partner voucher',color:'var(--blue)',
    steps:[
-     {name:'타워 브리지',meta:'야외 GPS · 출발지점',mission:'📸 사진: 타워 브리지 전경 인증',icon:'🌉',walkMin:0,pts:100,status:'now',lat:51.5055,lng:-0.0754},
-     {name:'내셔널 갤러리',meta:'실내 AR · 야외 이동',mission:'🧠 퀴즈: 반 고흐 해바라기 위치',icon:'🎨',walkMin:20,pts:150,status:'next',lat:51.5088,lng:-0.1283},
-     {name:'트라팔가 광장',meta:'야외 GPS · 핵심 스폿',mission:'📳 흔들기: 넬슨 제독 스토리',icon:'🦁',walkMin:5,pts:80,status:'next',lat:51.5080,lng:-0.1281},
-     {name:'코벤트 가든',meta:'야외 GPS · 마지막 스폿',mission:'📳 흔들기: 거리 공연 박수',icon:'🎭',walkMin:12,pts:75,status:'next',lat:51.5117,lng:-0.1240},
+     {name:'Tower of London',meta:'Outdoor GPS · Start point',mission:'🧠 Quiz: Who built the White Tower?',icon:'🏰',walkMin:0,pts:120,status:'now',lat:51.5081,lng:-0.0759},
+     {name:'Tower Bridge',meta:'Outdoor GPS · Glass walkway',mission:'📸 Photo: Through the glass floor',icon:'🌉',walkMin:6,pts:90,status:'next',lat:51.5055,lng:-0.0754},
+     {name:'Trafalgar Square',meta:'Outdoor GPS · Nelson\'s Column',mission:'📳 Shake: Battle of Trafalgar',icon:'🦁',walkMin:25,pts:80,status:'next',lat:51.5080,lng:-0.1281},
+     {name:'Westminster Abbey',meta:'Indoor AR · Coronation church',mission:'🧠 Quiz: Coronations since 1066',icon:'⛪',walkMin:12,pts:150,status:'next',lat:51.4994,lng:-0.1273},
    ]},
-  {id:'tp2',name:'잭 더 리퍼 야간 투어',tag:'미스터리',tagColor:'var(--red)',tagBg:'var(--red-d)',
+  {id:'tp2',name:'The Beatles & Musical London',tag:'Music',tagColor:'var(--purple)',tagBg:'var(--purple-dim)',
+   img:'https://picsum.photos/id/1082/600/300',
+   desc:'Walk in the footsteps of the Fab Four to the most famous crossing on Earth, then through the streets that built British pop. Grade II listing & studio history verified via Historic England.',
+   duration:'~1.5 hours',distance:'2.4km',totalPts:230,
+   spots:['Abbey Road Crossing','Abbey Road Studios','St John\'s Wood','Marylebone'],
+   spotIds:[119],
+   reward:'🎵 Musical London Badge + record-shop discount',color:'var(--purple)',custom:true,
+   steps:[
+     {name:'Abbey Road Crossing',meta:'Outdoor GPS · The zebra crossing',mission:'📸 Photo: Recreate the album walk',icon:'🎵',walkMin:0,pts:75,status:'now',lat:51.5321,lng:-0.1774},
+     {name:'Abbey Road Studios',meta:'World\'s first purpose-built studio',mission:'👆 Touch: Sign the studio wall',icon:'🎙',walkMin:1,pts:50,status:'next',lat:51.5319,lng:-0.1779},
+     {name:'St John\'s Wood High St',meta:'Leafy village feel · Outdoor GPS',mission:'☕ Visit: A Beatles-era café',icon:'🌳',walkMin:8,pts:45,status:'next',lat:51.5340,lng:-0.1740},
+     {name:'Marylebone',meta:'Paul McCartney\'s old neighbourhood',mission:'📳 Shake: Unlock a 60s playlist',icon:'🎸',walkMin:18,pts:60,status:'next',lat:51.5210,lng:-0.1490},
+   ]},
+  {id:'tp3',name:'Dark London: Crime & Mystery',tag:'Mystery',tagColor:'var(--red)',tagBg:'var(--red-dim)',
    img:'https://picsum.photos/id/1015/600/300',
-   desc:'1888년 잭 더 리퍼의 발자취를 따라가는 다크 히스토리 투어. 화이트채플 골목에서 역사의 어둠을 마주하세요.',
-   duration:'약 1.5시간',distance:'2.1km',totalPts:380,
-   spots:['화이트채플 밀러스 코트','세인트 보톨프 교회','스피탈필즈 마켓','베르너 스트리트'],
-   reward:'🕵️ 빅토리아 탐정 배지 + 역사 자료 PDF',
+   desc:'A dusk walk through the city\'s shadows — Tudor executions, the Great Fire, and Victorian intrigue. Historical events verified against Britannica & Historic Royal Palaces; no sensationalism.',
+   duration:'~1.5 hours',distance:'2.8km',totalPts:340,
+   spots:['Tower of London','St Paul\'s Cathedral','The British Museum','Whitechapel'],
+   spotIds:[1,6,7],
+   reward:'🕵️ London Detective Badge + history PDF',color:'var(--red)',custom:true,
    steps:[
-     {name:'화이트채플 밀러스 코트',meta:'사건 발생지 · 야외 GPS',mission:'🧠 퀴즈: 첫 사건 발생 연도',icon:'🔦',walkMin:0,pts:80,status:'now',lat:51.5183,lng:-0.0614},
-     {name:'세인트 보톨프 교회',meta:'당시 기록 보관소 · GPS',mission:'📸 사진: 역사적 묘비 인증',icon:'⛪',walkMin:8,pts:90,status:'next',lat:51.5181,lng:-0.0773},
-     {name:'스피탈필즈 마켓',meta:'빅토리아 시대 마켓',mission:'📳 흔들기: 빅토리아 타임캡슐',icon:'🏪',walkMin:12,pts:110,status:'next',lat:51.5195,lng:-0.0714},
-     {name:'베르너 스트리트',meta:'마지막 목격지 · GPS',mission:'👆 터치: 숨겨진 단서 발견',icon:'🗺️',walkMin:20,pts:100,status:'next',lat:51.5137,lng:-0.0625},
+     {name:'Tower of London',meta:'Execution site · Outdoor GPS',mission:'🧠 Quiz: The Tower\'s only breach',icon:'🏰',walkMin:0,pts:120,status:'now',lat:51.5081,lng:-0.0759},
+     {name:'St Paul\'s Cathedral',meta:'Great Fire ground zero · AR',mission:'🧠 Quiz: What destroyed old St Paul\'s?',icon:'⛪',walkMin:18,pts:130,status:'next',lat:51.5138,lng:-0.0984},
+     {name:'The British Museum',meta:'Ancient mysteries · Indoor AR',mission:'🧠 Quiz: Decode the Rosetta Stone',icon:'🏛',walkMin:15,pts:90,status:'next',lat:51.5194,lng:-0.1270},
+     {name:'Whitechapel',meta:'Victorian East End · Outdoor GPS',mission:'👆 Touch: Find the hidden clue',icon:'🔦',walkMin:20,pts:80,status:'next',lat:51.5169,lng:-0.0617},
    ]},
-  {id:'tp3',name:'코츠월드 당일 여행',tag:'근교 투어',tagColor:'var(--grn)',tagBg:'var(--grn-d)',
-   img:'https://picsum.photos/id/1042/600/300',
-   desc:'런던에서 기차로 1.5시간, 영국에서 가장 아름다운 마을 버어턴온더워터와 바이버리를 탐험하세요.',
-   duration:'종일 (약 8시간)',distance:'버스/도보 5km',totalPts:360,
-   spots:['버어턴온더워터','바이버리 알링턴 로우','버어턴 파라곤 카페','어퍼 슬로터 마을'],
-   reward:'코츠월드 전원 탐험 배지 + 카페 10% 쿠폰',
+  {id:'tp4',name:'London Food Safari',tag:'Foodie',tagColor:'var(--orange)',tagBg:'var(--orange-dim)',
+   img:'https://picsum.photos/id/1080/600/300',
+   desc:'From a 1,000-year-old market to Camden\'s 1,000 stalls — a tasting trail across London\'s living food history. Market histories verified via official sources & Historic England.',
+   duration:'~2.5 hours',distance:'4.2km',totalPts:250,
+   spots:['Borough Market','St Paul\'s Cathedral','The British Museum','Camden Market'],
+   spotIds:[5,121],
+   reward:'🍴 London Foodie Master Badge + market vouchers',color:'var(--orange)',custom:true,
    steps:[
-     {name:'버어턴온더워터',meta:'코츠월드의 베니스',mission:'📸 사진: 다리 위 인증샷',icon:'🌊',walkMin:0,pts:80,status:'now',lat:51.8843,lng:-1.7579},
-     {name:'바이버리 알링턴 로우',meta:'엽서 속 그 거리',mission:'🧠 퀴즈: 알링턴 로우 건축 연도',icon:'🏡',walkMin:25,pts:100,status:'next',lat:51.7619,lng:-1.7620},
-     {name:'버어턴 파라곤 카페',meta:'음식 파트너',mission:'☕ 방문: 스콘 + 크림티 체험',icon:'🫖',walkMin:5,pts:80,status:'next',lat:51.8840,lng:-1.7590},
-     {name:'어퍼 슬로터 마을',meta:'코츠월드 오지 마을',mission:'👆 터치: 코츠월드 스톤 감지',icon:'🌿',walkMin:30,pts:100,status:'next',lat:51.9019,lng:-1.7464},
+     {name:'Borough Market',meta:'1,000-year-old market · GPS',mission:'📸 Photo: Stalls under iron roof',icon:'🧀',walkMin:0,pts:60,status:'now',lat:51.5054,lng:-0.0909},
+     {name:'Maltby Street Market',meta:'Railway-arch food stalls · GPS',mission:'☕ Visit: A small-batch roaster',icon:'☕',walkMin:12,pts:45,status:'next',lat:51.4998,lng:-0.0790},
+     {name:'Seven Dials',meta:'Covent Garden dining hub · GPS',mission:'📳 Shake: Spin the dinner wheel',icon:'🍽',walkMin:30,pts:60,status:'next',lat:51.5145,lng:-0.1270},
+     {name:'Camden Market',meta:'1,000 global stalls · GPS',mission:'🍜 Photo: Your street-food haul',icon:'🍜',walkMin:25,pts:85,status:'next',lat:51.5414,lng:-0.1465},
+   ]},
+  {id:'tp5',name:'Kids\' London Adventure',tag:'Kids',tagColor:'var(--purple)',tagBg:'var(--purple-dim)',
+   img:'https://picsum.photos/id/1062/600/300',
+   desc:'A family quest trail full of dinosaurs, castles and treasure hunts — designed for ages 5–12 with safe, walkable stops. Built around museum & palace family programmes.',
+   duration:'~2 hours',distance:'visit-based',totalPts:300,
+   spots:['Natural History Museum','Tower of London','Tower Bridge','The British Museum'],
+   spotIds:[109,1,3,7],
+   reward:'🌟 Junior London Explorer Badge + sticker book',color:'var(--purple)',custom:true,isKids:true,
+   steps:[
+     {name:'Natural History Museum',meta:'Dinosaurs & whale · Indoor',mission:'🦕 Shake: Wake the dinosaur!',icon:'🦕',walkMin:0,pts:80,status:'now',lat:51.4967,lng:-0.1764},
+     {name:'Tower of London',meta:'Castle & ravens · Outdoor GPS',mission:'📸 Photo: With a Beefeater!',icon:'🏰',walkMin:30,pts:80,status:'next',lat:51.5081,lng:-0.0759},
+     {name:'Tower Bridge',meta:'Glass floor walkway · GPS',mission:'👆 Touch: Lift the bridge!',icon:'🌉',walkMin:6,pts:60,status:'next',lat:51.5055,lng:-0.0754},
+     {name:'The British Museum',meta:'Mummies & treasure · Indoor',mission:'🧠 Quiz: Find the Rosetta Stone',icon:'🏛',walkMin:25,pts:80,status:'next',lat:51.5194,lng:-0.1270},
    ]},
 ];
 
 const LONDON_KIDS=[
-  {id:'lkq1',name:'Tower Bridge Engineer',emoji:'🏗',age:'7+',pts:60,difficulty:'Easy',img:'https://picsum.photos/id/1043/400/300',
-   desc:"Discover how Tower Bridge lifts and lowers! Find the hidden engine room and learn the secret of the bascule.",
-   duration:'20 min',badge:'🏗 Junior Engineer Badge',
-   missions:[{icon:'🔍',title:'Spot the Engine',desc:'Find where the bridge machinery hides'},{icon:'📸',title:'Photo Mission',desc:'Snap the bridge fully raised'},{icon:'🧠',title:'Bridge Quiz',desc:'How does the bridge lift up?'}],
-   quest:{type:'quiz',loc:'📍 Tower Bridge · South Bank',name:'The Bridge Secret',img:'https://picsum.photos/id/1043/400/300',q:'What force lifts Tower Bridge?',opts:['A. People push it by hand','B. Hydraulic power 💧','C. A giant electric motor','D. Pulling ropes'],ans:1,pts:60,reward:'🏗 Junior Engineer Badge + sticker!'}},
-  {id:'lkq2',name:'Dinosaur Bone Mystery',emoji:'🦕',age:'6+',pts:80,difficulty:'Easy',img:'https://picsum.photos/id/1003/400/300',
-   desc:'Meet the dinosaurs at the Natural History Museum! Scan with AR and a 65-million-year-old dino appears before your eyes!',
-   duration:'25 min',badge:'🦕 Dino Explorer Badge',
-   missions:[{icon:'📳',title:'Shake Mission',desc:"Shake to hear the dino's roar!"},{icon:'📸',title:'Dino Photo',desc:'Take a photo with the giant skeleton'},{icon:'🔍',title:'Bone Hunt',desc:'Find the longest dinosaur bone'}],
-   quest:{type:'shake',loc:'📍 Natural History Museum',name:'Wake the Dinosaur',img:'https://picsum.photos/id/1003/400/300',shakeEmoji:'🦕',shakeHint:'Shake your phone to hear the dinosaur roar from 65 million years ago!',pts:80,reward:'🦕 Dino Explorer Badge + dino sticker set!'}},
-  {id:'lkq3',name:'Become a Harry Potter Wizard',emoji:'🚂',age:'8+',pts:90,difficulty:'Medium',img:'https://picsum.photos/id/402/400/300',
-   desc:'Find Platform 9¾ at Kings Cross! A real mission to board the Hogwarts Express!',
-   duration:'25 min',badge:'🚂 Hogwarts Passenger Badge',
-   missions:[{icon:'🔍',title:'Find the Platform',desc:'Locate the hidden platform wall'},{icon:'📸',title:'Wizard Photo',desc:'Pose pushing the magic trolley!'},{icon:'👆',title:'Touch Mission',desc:'Touch the wall to board the train'}],
-   quest:{type:'touch',loc:'📍 Kings Cross · Platform 9¾',name:'Boarding Hogwarts',img:'https://picsum.photos/id/402/400/300',touchTarget:'🚂',touchHint:'Touch the wall to board the Hogwarts Express!',pts:90,reward:'🚂 Hogwarts Passenger Badge!'}},
-  {id:'lkq4',name:'Rosetta Stone Detective',emoji:'🪨',age:'9+',pts:100,difficulty:'Medium',img:'https://picsum.photos/id/1040/400/300',
-   desc:'Decode the secret message carved into a 3,000-year-old stone! Earn your detective badge.',
-   duration:'30 min',badge:'🪨 Ancient Detective Badge',
-   missions:[{icon:'🔢',title:'Count Languages',desc:'How many scripts are on the stone?'},{icon:'📸',title:'Artifact Photo',desc:'Photograph the famous stone'},{icon:'🧠',title:'History Quiz',desc:'Who first decoded it?'}],
-   quest:{type:'quiz',loc:'📍 British Museum · Room 4',name:'Decode the Ancient Secret',img:'https://picsum.photos/id/1040/400/300',q:'How many scripts are written on the Rosetta Stone?',opts:['A. 1','B. 2','C. 3 📜','D. 4'],ans:2,pts:100,reward:'🪨 Ancient Detective Badge!'}},
-  {id:'lkq5',name:'Trafalgar Photo Champion',emoji:'📸',age:'6+',pts:55,difficulty:'Easy',img:'https://picsum.photos/id/1036/400/300',
-   desc:'Take the most creative shot in front of the giant lion statues! Find the best angle.',
-   duration:'15 min',badge:'📸 Photo Master Badge',
-   missions:[{icon:'📸',title:'Lion Photo',desc:'Climb the lion for an optical-illusion shot'},{icon:'🔍',title:'Find Nelson',desc:'Spot Admiral Nelson at the top'},{icon:'📳',title:'Cheer Shake',desc:'Shake to feed the pigeons!'}],
-   quest:{type:'photo',loc:'📍 Trafalgar Square',name:'Photo Challenge',img:'https://picsum.photos/id/1036/400/300',photoHint:'Take an optical illusion photo as if riding the lion statue!',pts:55,reward:'📸 Photo Master Badge!'}},
-  {id:'lkq6',name:'Natural History Quiz King',emoji:'🐋',age:'8+',pts:75,difficulty:'Medium',img:'https://picsum.photos/id/1024/400/300',
-   desc:'Meet Hope the giant blue whale hanging in the Hintze Hall! Become a wildlife quiz champion.',
-   duration:'25 min',badge:'🐋 Wildlife Champion Badge',
-   missions:[{icon:'🔍',title:'Find Hope',desc:'Locate the giant whale skeleton'},{icon:'📸',title:'Whale Photo',desc:'Photo under the whale'},{icon:'🧠',title:'Animal Quiz',desc:'Largest animal ever to live?'}],
-   quest:{type:'quiz',loc:'📍 Natural History Museum · Hintze Hall',name:'Wildlife Champion',img:'https://picsum.photos/id/1024/400/300',q:'What is the largest animal that ever lived?',opts:['A. African elephant','B. Blue whale 🐋','C. Brontosaurus','D. Giant squid'],ans:1,pts:75,reward:'🐋 Wildlife Champion Badge + ocean sticker set!'}},
+  {id:'lkq1',name:'Tower Castle Detective',emoji:'🏰',age:'7+',pts:60,difficulty:'Easy',img:'https://picsum.photos/id/1043/400/300',
+   desc:"Explore the 1,000-year-old castle! Find the ravens, meet a Beefeater, and discover why the White Tower is white.",
+   duration:'25 min',badge:'🏰 Junior Castle Detective Badge',
+   missions:[{icon:'🔍',title:'Raven Hunt',desc:'Find all the famous Tower ravens'},{icon:'📸',title:'Beefeater Photo',desc:'Snap a Yeoman Warder in uniform'},{icon:'🧠',title:'Castle Quiz',desc:'Why is the White Tower white?'}],
+   quest:{type:'quiz',loc:'📍 Tower of London',name:'The White Tower Secret',img:'https://picsum.photos/id/1043/400/300',q:'Why is the White Tower called "white"?',opts:['A. It was painted white in the 1240s 🎨','B. It snowed when it was built','C. White ravens lived there','D. It is made of chalk'],ans:0,pts:60,reward:'🏰 Junior Castle Detective Badge + sticker!'}},
+  {id:'lkq2',name:'Dinosaur & Whale Hunt',emoji:'🦕',age:'6+',pts:80,difficulty:'Easy',img:'https://picsum.photos/id/1003/400/300',
+   desc:'Meet Hope the giant blue whale and hunt for dinosaur fossils at the Natural History Museum! Scan with AR to bring them to life.',
+   duration:'30 min',badge:'🦕 Dino & Whale Badge',
+   missions:[{icon:'🐋',title:'Find Hope',desc:'Locate the 25m whale skeleton'},{icon:'📸',title:'Fossil Photo',desc:'Photograph your favourite fossil'},{icon:'🧠',title:'Animal Quiz',desc:'Biggest animal ever to live?'}],
+   quest:{type:'quiz',loc:'📍 Natural History Museum · Hintze Hall',name:'Hope the Whale',img:'https://picsum.photos/id/1003/400/300',q:'What is the largest animal that has ever lived?',opts:['A. African elephant','B. Blue whale 🐋','C. T-Rex','D. Giant squid'],ans:1,pts:80,reward:'🦕 Dino & Whale Badge + ocean sticker set!'}},
+  {id:'lkq3',name:'Bridge Engineer Challenge',emoji:'🌉',age:'7+',pts:70,difficulty:'Easy',img:'https://picsum.photos/id/1052/400/300',
+   desc:'Discover how Tower Bridge lifts its giant arms! Walk the glass floor 42m above the river and learn the hydraulic secret.',
+   duration:'20 min',badge:'🌉 Junior Engineer Badge',
+   missions:[{icon:'🔍',title:'Spot the Engine',desc:'Find the old steam machinery'},{icon:'📸',title:'Glass Floor Photo',desc:'Look straight down through the glass'},{icon:'🧠',title:'Bridge Quiz',desc:'What lifts the bridge?'}],
+   quest:{type:'quiz',loc:'📍 Tower Bridge',name:'How the Bridge Lifts',img:'https://picsum.photos/id/1052/400/300',q:'How does Tower Bridge raise its roadway?',opts:['A. Strong people push it','B. Hydraulic power 💧','C. Giant magnets','D. The wind'],ans:1,pts:70,reward:'🌉 Junior Engineer Badge!'}},
+  {id:'lkq4',name:'Rosetta Stone Codebreaker',emoji:'🪨',age:'9+',pts:100,difficulty:'Medium',img:'https://picsum.photos/id/1040/400/300',
+   desc:'Crack the code of a 2,000-year-old stone at the British Museum! Three languages, one secret message.',
+   duration:'30 min',badge:'🪨 Junior Codebreaker Badge',
+   missions:[{icon:'🔢',title:'Count Scripts',desc:'How many languages on the stone?'},{icon:'📸',title:'Artifact Photo',desc:'Photograph the famous stone'},{icon:'🧠',title:'Code Quiz',desc:'What did it help decode?'}],
+   quest:{type:'quiz',loc:'📍 British Museum · Room 4',name:'Three Scripts, One Secret',img:'https://picsum.photos/id/1040/400/300',q:'How many different scripts are on the Rosetta Stone?',opts:['A. One','B. Two','C. Three 📜','D. Ten'],ans:2,pts:100,reward:'🪨 Junior Codebreaker Badge!'}},
+  {id:'lkq5',name:'Lion Square Photo Quest',emoji:'🦁',age:'5+',pts:55,difficulty:'Easy',img:'https://picsum.photos/id/1036/400/300',
+   desc:'Find the four giant bronze lions guarding Nelson\'s Column at Trafalgar Square! Strike your bravest lion pose.',
+   duration:'15 min',badge:'🦁 Lion Guardian Badge',
+   missions:[{icon:'🔍',title:'Count Lions',desc:'How many lions guard the column?'},{icon:'📸',title:'Lion Pose',desc:'Roar like a lion for the camera!'},{icon:'📳',title:'Pigeon Shake',desc:'Shake to scatter the pigeons!'}],
+   quest:{type:'quiz',loc:'📍 Trafalgar Square',name:'The Four Lions',img:'https://picsum.photos/id/1036/400/300',q:'How many bronze lions guard Nelson\'s Column?',opts:['A. Two','B. Four 🦁','C. Six','D. Eight'],ans:1,pts:55,reward:'🦁 Lion Guardian Badge!'}},
+  {id:'lkq6',name:'Beatles Walk Challenge',emoji:'🎵',age:'8+',pts:65,difficulty:'Easy',img:'https://picsum.photos/id/1082/400/300',
+   desc:'Visit the most famous crossing in the world and walk like a Beatle! Learn why it became a protected landmark.',
+   duration:'20 min',badge:'🎵 Junior Music Legend Badge',
+   missions:[{icon:'📸',title:'Crossing Photo',desc:'Walk across like the Beatles (safely!)'},{icon:'🔍',title:'Studio Spot',desc:'Find the famous studio building'},{icon:'🧠',title:'Music Quiz',desc:'What year was the photo taken?'}],
+   quest:{type:'quiz',loc:'📍 Abbey Road · St John\'s Wood',name:'The Famous Crossing',img:'https://picsum.photos/id/1082/400/300',q:'In what year did the Beatles photograph the Abbey Road cover?',opts:['A. 1959','B. 1969 🎸','C. 1979','D. 1989'],ans:1,pts:65,reward:'🎵 Junior Music Legend Badge + sticker!'}},
 ];
 
 const LONDON_ART={
   lng1:{name:'The Rosetta Stone',sub:'196 BC · British Museum',img:'https://picsum.photos/id/1040/600/400',audioLen:'2:20',
-    overview:'Discovered in 1799 by Napoleon\'s soldiers, the Rosetta Stone unlocked the secrets of ancient Egyptian hieroglyphs. The same decree is carved in three scripts — hieroglyphic, Demotic and Ancient Greek — allowing scholars to finally read a language silent for 1,400 years.',
-    technique:'The stone is a fragment of a larger granodiorite stela. Scholar Jean-François Champollion cracked the code in 1822 by comparing the Greek text with the hieroglyphs, realising the symbols represented sounds, not just ideas.',
-    context:'The decree was issued in 196 BC by priests honouring the pharaoh Ptolemy V. The trilingual format reflects a society where Greek rulers governed an Egyptian population.',
-    qs:['Why was the same text written in three scripts?','How did Champollion finally crack the code?','Why is the Rosetta Stone so important to modern Egyptology?'],
-    meta:{Period:'196 BC',Material:'Granodiorite',Height:'112cm',Location:'Room 4',Origin:'Egypt'}},
-  lng2:{name:'Sunflowers',sub:'1888 · The National Gallery',img:'https://picsum.photos/id/145/600/400',audioLen:'1:55',
-    overview:'Van Gogh painted his famous Sunflowers series to decorate the room of his friend Paul Gauguin in Arles. Bursting with energy and yellow on yellow, the work shows flowers at every stage of life — from full bloom to wilting.',
-    technique:'Van Gogh used impasto — thick, sculptural strokes of paint — and a daring yellow-on-yellow palette made possible by newly invented chrome-yellow pigments. He worked at extraordinary speed to capture the flowers before they faded.',
-    context:'1888 in Arles was one of Van Gogh\'s most productive periods. The Sunflowers came to symbolise gratitude and friendship, though his collaboration with Gauguin ended dramatically months later.',
-    qs:['Why did Van Gogh paint sunflowers for Gauguin?','What makes the yellow-on-yellow technique so revolutionary?','How many versions of Sunflowers exist today?'],
-    meta:{Period:'1888',Material:'Oil on canvas',Size:'92×73cm',Location:'Room 43',Artist:'Vincent van Gogh'}},
-  lng3:{name:'The Fighting Temeraire',sub:'1839 · The National Gallery',img:'https://picsum.photos/id/155/600/400',audioLen:'2:10',
-    overview:'Turner\'s elegiac masterpiece shows the heroic warship Temeraire — a veteran of the Battle of Trafalgar — being towed by a small steam tug to be broken up for scrap. It is a poetic farewell to the age of sail.',
-    technique:'Turner contrasts the ghostly white sailing ship with the dark, smoke-belching steam tug, using a blaze of sunset colour to heighten the emotion. The atmospheric light effects defined Romantic painting.',
-    context:'Painted as Britain industrialised, the work mourns the passing of the old world while heralding the steam age. Voted Britain\'s greatest painting in a 2005 national poll.',
-    qs:['Why did Turner contrast a sailing ship with a steam tug?','What does the sunset symbolise in this painting?','Why is the Temeraire historically significant?'],
-    meta:{Period:'1839',Material:'Oil on canvas',Size:'91×122cm',Location:'Room 34',Artist:'J.M.W. Turner'}},
-  lng4:{name:'The Great Court Roof',sub:'2000 · British Museum',img:'https://picsum.photos/id/1028/600/400',audioLen:'1:40',
-    overview:'The largest covered public square in Europe, the Great Court is roofed by a breathtaking glass-and-steel lattice designed by Norman Foster. No two of its 3,312 glass panels are exactly alike.',
-    technique:'The roof\'s geometry was computer-generated to flow seamlessly from the rectangular courtyard to the circular Reading Room at its centre — an engineering feat blending mathematics and architecture.',
-    context:'Opened in 2000, the Great Court transformed a forgotten courtyard into the symbolic heart of the British Museum, reconnecting the public with the historic Reading Room.',
-    qs:['How were 3,312 unique glass panels engineered?','Why is the roof shaped the way it is?','What was the Great Court used for before 2000?'],
-    meta:{Period:'2000',Material:'Glass & steel',Panels:'3,312',Location:'Great Court',Architect:'Norman Foster'}},
+    overview:'Discovered in 1799 by Napoleon\'s soldiers, the Rosetta Stone is a fragment of a stela carrying the same decree in three scripts — hieroglyphic, Demotic and Ancient Greek. By comparing the known Greek with the hieroglyphs, scholars finally unlocked a writing system silent for some 1,400 years.',
+    technique:'The decree was carved into granodiorite in 196 BC. French scholar Jean-François Champollion announced the decipherment in 1822, realising the hieroglyphs encoded sounds, not just ideas.',
+    context:'Issued by priests honouring the boy-pharaoh Ptolemy V, the trilingual format mirrors an Egypt ruled by a Greek dynasty. It has been on display at the British Museum almost continuously since 1802.',
+    qs:['Why was the same text carved in three scripts?','How did Champollion crack the code in 1822?','Why is the Rosetta Stone the foundation of Egyptology?'],
+    meta:{Period:'196 BC',Material:'Granodiorite',Height:'112cm',Location:'Room 4',Origin:'Egypt'},source:'British Museum official · Britannica',updated:'2026.05'},
+  lng2:{name:'The Sutton Hoo Helmet',sub:'c. 625 AD · British Museum',img:'https://picsum.photos/id/145/600/400',audioLen:'2:05',
+    overview:'The reconstructed iron-and-tinned-bronze helmet from the Sutton Hoo ship burial in Suffolk, one of the greatest archaeological finds in British history (excavated 1939). It belonged to an Anglo-Saxon leader, possibly King Rædwald, and reshaped how we understand "Dark Age" England.',
+    technique:'The helmet\'s face mask, eyebrows and dragon motifs were formed from tinned bronze and garnet, fragmented in the soil and painstakingly reassembled by museum conservators.',
+    context:'The burial — an entire 27m ship dragged inland and buried under a mound — revealed that early Anglo-Saxon England was far wealthier and more connected than the term "Dark Ages" suggests.',
+    qs:['Why was an entire ship buried on land?','How was the shattered helmet reconstructed?','What did Sutton Hoo change about our view of the "Dark Ages"?'],
+    meta:{Period:'c. 625 AD',Material:'Iron, tinned bronze',Found:'1939, Suffolk',Location:'Room 41',Culture:'Anglo-Saxon'},source:'British Museum official',updated:'2026.05'},
+  lng3:{name:'The Sunflowers',sub:'1888 · The National Gallery',img:'https://picsum.photos/id/155/600/400',audioLen:'1:55',
+    overview:'Vincent van Gogh painted his Sunflowers series in Arles to decorate the room of his friend Paul Gauguin. The National Gallery\'s version, full of energetic yellow-on-yellow brushwork, shows the flowers at every stage from bloom to wilt.',
+    technique:'Van Gogh used thick impasto strokes and newly available chrome-yellow pigments, working quickly to capture the flowers before they faded.',
+    context:'1888 was one of his most productive years. The Sunflowers became a symbol of gratitude and friendship, though his collaboration with Gauguin collapsed months later.',
+    qs:['Why did Van Gogh paint sunflowers for Gauguin?','What makes the yellow-on-yellow palette revolutionary?','How many versions of the Sunflowers exist?'],
+    meta:{Period:'1888',Material:'Oil on canvas',Size:'92×73cm',Location:'Room 43',Artist:'Vincent van Gogh'},source:'The National Gallery official',updated:'2026.05'},
+  lng4:{name:'The Crown Jewels',sub:'17th C onward · Tower of London',img:'https://picsum.photos/id/167/600/400',audioLen:'2:30',
+    overview:'A working collection of royal regalia guarded at the Tower of London, comprising more than 100 objects and over 23,000 gemstones — including the Imperial State Crown set with the Black Prince\'s Ruby, the Cullinan II diamond and St Edward\'s Sapphire.',
+    technique:'Most of the present regalia was remade after 1660, the medieval originals having been melted down during the Commonwealth. They are still used in coronations and state occasions today.',
+    context:'Coins of the realm were struck at the Tower Mint from Edward I until 1810; the Crown Jewels have been protected here by a garrison of soldiers for centuries.',
+    qs:['Why were the medieval Crown Jewels melted down?','Which famous stones sit in the Imperial State Crown?','How are the Jewels protected today?'],
+    meta:{Period:'Mostly post-1660',Objects:'100+',Gemstones:'23,000+',Location:'Jewel House',Care:'Historic Royal Palaces'},source:'Historic Royal Palaces official',updated:'2026.05'},
 };
-
 
 /* ════════════════════════════════════════════
    MULTI-CITY / MULTI-COUNTRY SYSTEM
@@ -1841,8 +1977,8 @@ function openCitySelector(){
    ONBOARDING (Language → Country → City → Interest)
 ════════════════════════════════════════════ */
 let obStep=0, obLang='EN', obCountry='kr', obCity='seoul', obInterest='history';
-function startOnboarding(){obStep=0;obLang=currentLang;renderOnboard();document.getElementById('onboard').classList.remove('hidden');document.getElementById('scan-fab')?.classList.add('hidden');}
-function skipOnboard(){document.getElementById('onboard').classList.add('hidden');document.getElementById('scan-fab')?.classList.remove('hidden');}
+function startOnboarding(){obStep=0;obLang=currentLang;renderOnboard();document.getElementById('onboard').classList.remove('hidden');}
+function skipOnboard(){document.getElementById('onboard').classList.add('hidden');if(!userPref)userPref='history';buildForYou();}
 function obDots(){return [0,1,2,3].map(i=>`<div class="ob-dot ${i<=obStep?'done':''}"></div>`).join('');}
 function renderOnboard(){
   document.getElementById('ob-dots').innerHTML=obDots();
@@ -1878,8 +2014,9 @@ function obNext(){
   if(obStep<3){obStep++;renderOnboard();return;}
   // finish
   if(CITIES[obCity]&&CITIES[obCity].active)setCity(obCity);
+  userPref=obInterest;
+  buildForYou();
   document.getElementById('onboard').classList.add('hidden');
-  document.getElementById('scan-fab')?.classList.remove('hidden');
   if(obInterest==='kids')setTimeout(()=>switchTab('kids'),350);
   setTimeout(fireConfetti,300);
 }
@@ -2201,8 +2338,12 @@ window.addEventListener('load',()=>{
   buildStampCard();
   buildGallerySection();
   buildMoreCities();
+  buildForYou();
+  seedVisits();
+  buildPassport();
   applyLang(currentLang);
   startOnboarding();
+  scheduleArrivalAlert();
 });
 
 /* Update all city-bound chrome (header pill, side menu, hero, stats, paywall) */
@@ -2255,6 +2396,7 @@ function buildTourPrograms(){
         </div>
       </div>
       <div class="tprog-body">
+        <div class="tour-verified"><span class="ss-verified">✓ ${currentLang==='KO'?'전문가 검증 정보':currentLang==='JA'?'専門家による検証':currentLang==='ZH'?'专家核实信息':currentLang==='ES'?'Datos verificados':currentLang==='FR'?'Infos vérifiées':'Expert-verified facts'}</span></div>
         <div class="tprog-desc">${tp.desc}</div>
         <div class="tprog-meta">
           <div class="tprog-meta-item">⏱ ${tp.duration}</div>
@@ -2369,6 +2511,102 @@ function filterHome(el,cat){
   document.querySelectorAll('#home-cats .cat-pill').forEach(p=>p.classList.remove('on'));
   el.classList.add('on');
   buildHomeList(cat==='all'?SPOTS:SPOTS.filter(s=>s.cat===cat));
+}
+
+/* ════════════════════════════════════════════
+   "FOR YOU" — location + interest aware recommendations
+════════════════════════════════════════════ */
+let userPref=null; // null until onboarding sets it; falls back to 'history'
+// interest → category affinity weights
+const INTEREST_AFFINITY={
+  history:{outdoor:1.0,indoor:1.0,food:.3},
+  food:   {food:1.0,outdoor:.5,indoor:.4},
+  kids:   {outdoor:.8,indoor:.9,food:.4},
+  trend:  {outdoor:.9,food:.8,indoor:.6},
+};
+function haversineKm(a,b){
+  const R=6371,dLat=(b[0]-a[0])*Math.PI/180,dLng=(b[1]-a[1])*Math.PI/180;
+  const la1=a[0]*Math.PI/180,la2=b[0]*Math.PI/180;
+  const h=Math.sin(dLat/2)**2+Math.cos(la1)*Math.cos(la2)*Math.sin(dLng/2)**2;
+  return R*2*Math.asin(Math.min(1,Math.sqrt(h)));
+}
+function recommendSpots(limit){
+  const c=CITIES[activeCity];if(!c||!SPOTS.length)return [];
+  const origin=c.user||c.center||[SPOTS[0].lat,SPOTS[0].lng];
+  const pref=userPref||'history';
+  const aff=INTEREST_AFFINITY[pref]||INTEREST_AFFINITY.history;
+  // popularity normalization
+  const pops=SPOTS.map(s=>parseFloat((''+s.today).replace(/[^0-9.]/g,''))*((''+s.today).includes('k')?1000:1)||0);
+  const maxPop=Math.max(1,...pops);
+  const scored=SPOTS.map((s,i)=>{
+    const km=haversineKm(origin,[s.lat,s.lng]);
+    const prox=Math.max(0,1-km/6);            // within ~6km gets credit
+    const interest=aff[s.cat]||.3;            // taste match (0–1)
+    const pop=pops[i]/maxPop;                  // social proof
+    // base blend
+    let score=prox*0.42 + interest*0.43 + pop*0.15;
+    // taste boost: strongly-matching spots within a walkable ~3km get a lift
+    if(interest>=0.8 && km<=3) score+=0.25*(1-km/3);
+    return {s,km,score,interest};
+  }).sort((a,b)=>b.score-a.score);
+  return scored.slice(0,limit||6);
+}
+function buildForYou(){
+  const sec=document.getElementById('foryou-sec');
+  const scroll=document.getElementById('foryou-scroll');
+  if(!sec||!scroll)return;
+  const recs=recommendSpots(6);
+  if(!recs.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  // localized title with current interest
+  const prefKey=userPref||'history';
+  const prefLabel=t('int_'+prefKey);
+  document.getElementById('foryou-title').innerHTML=`✨ ${t('foryou_title')} <span style="color:var(--txt3);font-weight:600;font-size:12px">· ${prefLabel}</span>`;
+  scroll.innerHTML=recs.map(({s,km})=>{
+    const tc=s.cat==='indoor'?'var(--accent2)':s.cat==='food'?'var(--orange)':'var(--blue)';
+    const tb=s.cat==='indoor'?'var(--accent-dim)':s.cat==='food'?'var(--orange-dim)':'var(--blue-dim)';
+    const typeLbl=s.cat==='indoor'?'🏛':s.cat==='food'?'🍽':'🌿';
+    const distLbl=km<1?`${Math.round(km*1000)}m`:`${km.toFixed(1)}km`;
+    const why=whyRecommended(s,km);
+    return `<div class="fy-card" onclick="openSpotDetail(${s.id})">
+      <div class="fy-card-img"><img src="${s.img}" alt=""><div class="fy-card-badge" style="background:${tb};color:${tc}">${typeLbl} ${distLbl}</div></div>
+      <div class="fy-card-body">
+        <div class="fy-card-name">${s.name}</div>
+        <div class="fy-card-why">${why}</div>
+        <div class="fy-card-foot"><span style="color:${tc};font-weight:700">+${s.pts} pts</span><span class="fy-card-go">${t('view')} →</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function whyRecommended(s,km){
+  const pref=userPref||'history';
+  const aff=INTEREST_AFFINITY[pref]||{};
+  const close=km<0.6;
+  const matchTaste=(aff[s.cat]||0)>=0.8;
+  if(close&&matchTaste)return `🎯 ${t('why_close_taste')}`;
+  if(close)return `📍 ${t('why_close')}`;
+  if(matchTaste)return `💚 ${t('why_taste')}`;
+  return `🔥 ${t('why_popular')}`;
+}
+function openPrefPicker(){
+  const old=document.getElementById('pref-modal');if(old)old.remove();
+  const ints=[['history','🏛'],['food','🍽'],['kids','🎮'],['trend','✨']];
+  const m=document.createElement('div');m.id='pref-modal';m.className='city-modal';
+  m.innerHTML=`<div class="city-sheet" style="max-height:auto">
+    <div class="city-sheet-grab"></div>
+    <div class="city-sheet-hdr"><div class="city-sheet-title">⚙️ ${t('pref_title')}</div>
+    <button class="city-sheet-x" onclick="document.getElementById('pref-modal').remove()">×</button></div>
+    <div class="city-sheet-body">
+      <div class="ob-grid">${ints.map(([k,e])=>`<div class="ob-opt ${(userPref||'history')===k?'sel':''}" onclick="setPref('${k}')"><div class="ob-opt-emoji">${e}</div><div class="ob-opt-name">${t('int_'+k)}</div><div class="ob-opt-sub">${t('int_'+k+'_sub')}</div></div>`).join('')}</div>
+    </div></div>`;
+  document.getElementById('phone').appendChild(m);
+  requestAnimationFrame(()=>m.classList.add('show'));
+}
+function setPref(k){
+  userPref=k;
+  buildForYou();
+  showToast('✨','<strong>'+t('pref_updated')+'</strong>');
+  const m=document.getElementById('pref-modal');if(m)setTimeout(()=>m.remove(),200);
 }
 
 /* ════════════════════════════════════════════
@@ -2534,6 +2772,16 @@ function openSpotDetail(id){
   document.getElementById('ss-pts').textContent='+'+s.pts;
   document.getElementById('ss-today').textContent=s.today;
   document.getElementById('ss-desc').textContent=s.desc;
+  // Blue Badge-style curiosity hook + verified-source credibility line
+  const descEl=document.getElementById('ss-desc');
+  let hookEl=document.getElementById('ss-hook');
+  if(!hookEl){hookEl=document.createElement('div');hookEl.id='ss-hook';hookEl.className='ss-hook';descEl.parentNode.insertBefore(hookEl,descEl);}
+  hookEl.style.display=s.hook?'flex':'none';
+  if(s.hook)hookEl.innerHTML=`<span class="ss-hook-ic">💡</span><span>${s.hook}</span>`;
+  let srcEl=document.getElementById('ss-source');
+  if(!srcEl){srcEl=document.createElement('div');srcEl.id='ss-source';srcEl.className='ss-source';descEl.parentNode.insertBefore(srcEl,descEl.nextSibling);}
+  if(s.source){srcEl.style.display='flex';srcEl.innerHTML=`<span class="ss-verified">✓ ${currentLang==='KO'?'검증됨':currentLang==='JA'?'検証済み':currentLang==='ZH'?'已核实':currentLang==='ES'?'Verificado':currentLang==='FR'?'Vérifié':'Verified'}</span><span class="ss-source-txt">${s.source}${s.updated?` · ${currentLang==='KO'?'업데이트':'Updated'} ${s.updated}`:''}</span>`;}
+  else srcEl.style.display='none';
   const fm=document.getElementById('ss-food-menu');
   if(s.isFood&&s.menu){
     fm.innerHTML=`<div class="food-menu-card"><div class="food-menu-title">${t('signature_menu')}</div>${s.menu.map(m=>`<div class="food-menu-item"><div class="fmi-emoji">${m.emoji}</div><div class="fmi-info"><div class="fmi-name">${m.name}</div><div class="fmi-desc">${m.desc}</div>${m.badge?`<div class="fmi-badge">${m.badge}</div>`:''}</div><div style="text-align:right"><div class="fmi-price">${m.price}</div></div></div>`).join('')}</div>`;
@@ -2561,18 +2809,29 @@ function openSpotDetail(id){
     aiQsEl.style.display='block';
     document.getElementById('ai-q-list').innerHTML=qs.map(q=>`<div class="ai-q"><div class="ai-q-dot"></div><div class="ai-q-text">${q}</div></div>`).join('');
   }else{audioBar.style.display='none';aiQsEl.style.display='none';}
-  // Update walk time
-  const distNum=parseFloat((s.dist||'').replace(/[^0-9.]/g,''))||0;
-  const walkMins=s.dist==='Indoor'?0:Math.max(2,Math.round(distNum*12));
+  // Update walk time — respect m vs km units (walking ≈ 80 m/min)
+  const distStr=(s.dist||'').toLowerCase();
+  const distNum=parseFloat(distStr.replace(/[^0-9.]/g,''))||0;
+  let meters=0;
+  if(distStr.includes('km')) meters=distNum*1000;
+  else if(distStr.includes('m')) meters=distNum; // "250m"
+  else meters=distNum*1000; // bare number → assume km
+  const walkMins=(s.dist==='Indoor'||distStr.includes('indoor'))?0:Math.max(1,Math.round(meters/80));
   const walkEl=document.getElementById('ss-walk-time');
-  if(walkEl)walkEl.textContent=s.dist==='Indoor'?'Indoor spot':`~${walkMins} min walk`;
+  const walkWord=currentLang==='KO'?'도보':currentLang==='JA'?'徒歩':currentLang==='ZH'?'步行':currentLang==='ES'?'a pie':currentLang==='FR'?'à pied':'min walk';
+  if(walkEl){
+    if(s.dist==='Indoor'||distStr.includes('indoor')) walkEl.textContent=currentLang==='KO'?'실내 스폿':'Indoor spot';
+    else if(currentLang==='KO') walkEl.textContent=`${walkWord} ~${walkMins}분`;
+    else if(currentLang==='JA') walkEl.textContent=`${walkWord} ~${walkMins}分`;
+    else if(currentLang==='ZH') walkEl.textContent=`${walkWord} ~${walkMins}分钟`;
+    else walkEl.textContent=`~${walkMins} ${walkWord}`;
+  }
   // Update maps button target
   const mapsBtn=document.getElementById('ss-nav-maps');
   if(mapsBtn)mapsBtn.onclick=()=>{const url=`https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}&travelmode=walking`;window.open(url,'_blank');};
   const cta=document.getElementById('ss-cta');
   cta.textContent=s.cta;cta.className='btn-primary';
   document.getElementById('spot-sheet').classList.add('show');
-  document.getElementById('scan-fab')?.classList.add('hidden');
   const drawerEl=document.getElementById('drawer');
   if(drawerEl)drawerEl.style.display='none';
   if(map){try{map.panTo([s.lat,s.lng],{animate:true,duration:.5});}catch(e){}}
@@ -2580,7 +2839,6 @@ function openSpotDetail(id){
 function closeSpot(){
   stopAudio();
   document.getElementById('spot-sheet').classList.remove('show');
-  document.getElementById('scan-fab')?.classList.remove('hidden');
   const drawer=document.getElementById('drawer');
   if(drawer){drawer.style.display='flex';}
   currentSpot=null;
@@ -2604,18 +2862,13 @@ function switchTab(id){
   if(id==='map'){initMap();refreshMapSpots();setTimeout(()=>{if(map)map.invalidateSize();},120);}
   if(id==='kids'){buildKidsList(KIDS_QUESTS);}
   if(id!=='map'){stopAudio();}
-  // Scan FAB: lift it above the map controls on the map view
-  const fab=document.getElementById('scan-fab');
-  if(fab)fab.classList.toggle('on-map',id==='map');
-  // Re-attach scroll listener for hide-on-scroll (tabbar + FAB together)
+  // Re-attach scroll listener for hide-on-scroll (tabbar)
   if(view){
     view.onscroll=function(){
-      const tabbar=document.getElementById('tabbar');
-      const fb=document.getElementById('scan-fab');
-      if(tabbar)tabbar.classList.add('hidden');
-      if(fb)fb.classList.add('hidden');
+      const tabbar=document.getElementById('tabbar');if(!tabbar)return;
+      tabbar.classList.add('hidden');
       clearTimeout(scrollHideTimer);
-      scrollHideTimer=setTimeout(()=>{if(tabbar)tabbar.classList.remove('hidden');if(fb)fb.classList.remove('hidden');},1200);
+      scrollHideTimer=setTimeout(()=>{tabbar.classList.remove('hidden');},1200);
     };
   }
 }
@@ -2660,12 +2913,9 @@ function openAR(spot){
   document.getElementById('ar-sim-btn').style.display='flex';
   arIdx=SPOTS.findIndex(sp=>sp.id===s.id);
   document.getElementById('ar-overlay').classList.add('show');
-  // hide the floating scan FAB while the AR camera is open
-  document.getElementById('scan-fab')?.classList.add('hidden');
 }
 function closeAR(){
   document.getElementById('ar-overlay').classList.remove('show');
-  document.getElementById('scan-fab')?.classList.remove('hidden');
 }
 function simAR(){
   const s=SPOTS[arIdx%SPOTS.length];
@@ -2766,17 +3016,129 @@ function showSuccess(reward,pts){
   fireConfetti();
   myScore+=pts;
   try{addStamp();}catch(e){}
+  try{if(currentSpot)markVisited(currentSpot);}catch(e){}
   document.getElementById('score-val').textContent=myScore;
   document.getElementById('my-pts-disp').textContent=myScore+' pts · '+Math.ceil(myScore/50)+' quests completed';
   document.getElementById('wallet-pts').textContent=myScore;
+  const sp=currentSpot;
   document.getElementById('q-card').innerHTML=`<div class="q-success">
     <div class="q-success-emoji">🎉</div>
     <div class="q-success-pts">+${pts}</div>
     <div class="q-success-sub">${t('points_earned')}</div>
     <div class="q-reward-pill">🎁 ${reward}</div>
-    <button class="btn-primary" onclick="closeQuest();switchTab('rewards')" style="margin-top:12px">${t('view_my_rewards')}</button>
+    <button class="btn-primary" onclick='openShareCard(${sp?JSON.stringify({name:sp.name,emoji:sp.emoji||"📍",pts:pts,cat:sp.cat}):"null"})' style="margin-top:12px">📸 ${t('share_achievement')}</button>
+    <button class="btn-secondary" onclick="closeQuest();switchTab('rewards')" style="margin-top:8px">${t('view_my_rewards')}</button>
   </div>`;
 }
+
+/* ════════════════════════════════════════════
+   VISITED TRACKING + DIGITAL PASSPORT
+════════════════════════════════════════════ */
+let visitedByCity={}; // {seoul:Set, london:Set}
+// demo seed: a couple already visited in Seoul
+function seedVisits(){visitedByCity={seoul:new Set([1,113]),london:new Set([1])};}
+function visitedSet(){if(!visitedByCity[activeCity])visitedByCity[activeCity]=new Set();return visitedByCity[activeCity];}
+function markVisited(spot){if(!spot)return;visitedSet().add(spot.id);buildPassport();}
+function buildPassport(){
+  const card=document.getElementById('passport-card');if(!card)return;
+  const set=visitedSet();
+  const total=SPOTS.length;
+  document.getElementById('passport-title').textContent='🛂 '+t('passport_title');
+  document.getElementById('passport-count').textContent=`${set.size} / ${total}`;
+  card.innerHTML=SPOTS.map(s=>{
+    const done=set.has(s.id);
+    const tc=s.cat==='indoor'?'var(--accent2)':s.cat==='food'?'var(--orange)':'var(--blue)';
+    return `<div class="pp-stamp ${done?'done':''}" onclick="openSpotDetail(${s.id})" title="${s.name}">
+      <div class="pp-stamp-emoji" style="${done?'':'opacity:.25'}">${s.emoji}</div>
+      ${done?`<div class="pp-stamp-check" style="background:${tc}">✓</div>`:''}
+    </div>`;
+  }).join('');
+  // completion celebration line
+  if(set.size>0&&set.size===total){
+    card.innerHTML+=`<div class="pp-complete">🏆 ${t('passport_complete')}</div>`;
+  }
+}
+
+/* ════════════════════════════════════════════
+   SHARE CARD (achievement)
+════════════════════════════════════════════ */
+function openShareCard(data){
+  if(!data){closeQuest();switchTab('rewards');return;}
+  let ov=document.getElementById('share-overlay');
+  if(!ov){ov=document.createElement('div');ov.id='share-overlay';ov.className='share-overlay';document.getElementById('phone').appendChild(ov);}
+  const tc=data.cat==='indoor'?'var(--accent2)':data.cat==='food'?'var(--orange)':'var(--blue)';
+  const set=visitedSet();
+  ov.innerHTML=`<div class="share-backdrop" onclick="closeShareCard()"></div>
+    <div class="share-sheet">
+      <div class="share-card" id="share-card-capture">
+        <div class="share-card-glow"></div>
+        <div class="share-card-top">
+          <div class="share-logo">Play<span>Spot</span></div>
+          <div class="share-city">${CITIES[activeCity].flag} ${cityName()}</div>
+        </div>
+        <div class="share-emoji">${data.emoji}</div>
+        <div class="share-label">${t('share_conquered')}</div>
+        <div class="share-spot">${data.name}</div>
+        <div class="share-pts-row">
+          <div class="share-pts"><div class="share-pts-v" style="color:${tc}">+${data.pts}</div><div class="share-pts-l">points</div></div>
+          <div class="share-pts"><div class="share-pts-v">${set.size}</div><div class="share-pts-l">${t('passport_title')}</div></div>
+          <div class="share-pts"><div class="share-pts-v">${myScore}</div><div class="share-pts-l">total</div></div>
+        </div>
+        <div class="share-foot">playspot.travel · ${new Date().toLocaleDateString()}</div>
+      </div>
+      <div class="share-actions">
+        <button class="share-btn primary" onclick="doShare('${data.name.replace(/'/g,"")}',${data.pts})">📤 ${t('share_now')}</button>
+        <button class="share-btn" onclick="closeShareCard()">${t('share_later')}</button>
+      </div>
+    </div>`;
+  requestAnimationFrame(()=>ov.classList.add('show'));
+}
+function closeShareCard(){const ov=document.getElementById('share-overlay');if(ov)ov.classList.remove('show');closeQuest();}
+function doShare(name,pts){
+  const text=`I just conquered ${name} on PlaySpot and earned +${pts} points! 🎉 #PlaySpot #${cityName().replace(/\s/g,'')}`;
+  try{
+    if(navigator.share){navigator.share({title:'PlaySpot',text:text,url:'https://playspot.travel'}).catch(()=>{});}
+    else if(navigator.clipboard){navigator.clipboard.writeText(text);showToast('📋','<strong>'+t('share_copied')+'</strong>');}
+    else showToast('📤','<strong>'+t('share_copied')+'</strong>');
+  }catch(e){showToast('📤','<strong>'+t('share_copied')+'</strong>');}
+  closeShareCard();
+}
+
+/* ════════════════════════════════════════════
+   GLOBAL ARRIVAL ALERT (proximity simulation)
+════════════════════════════════════════════ */
+let arrivalShown=false,arrivalTimer=null;
+function scheduleArrivalAlert(){
+  clearTimeout(arrivalTimer);
+  // simulate walking near a recommended, not-yet-visited spot after a short delay
+  arrivalTimer=setTimeout(()=>{
+    const recs=(typeof recommendSpots==='function')?recommendSpots(8):[];
+    const set=visitedSet();
+    const candidate=recs.map(r=>r.s).find(s=>!set.has(s.id));
+    if(candidate)fireArrivalAlert(candidate);
+  },6000);
+}
+function fireArrivalAlert(spot){
+  if(!spot)return;
+  let el=document.getElementById('arrival-alert');
+  if(!el){el=document.createElement('div');el.id='arrival-alert';el.className='arrival-alert';document.getElementById('phone').appendChild(el);}
+  const tc=spot.cat==='indoor'?'var(--accent2)':spot.cat==='food'?'var(--orange)':'var(--blue)';
+  const meters=Math.floor(Math.random()*25)+15; // 15–40m
+  el.innerHTML=`<div class="arr-ping" style="--c:${tc}"><span></span><span></span>${spot.emoji}</div>
+    <div class="arr-info">
+      <div class="arr-title">${t('arrival_title')}</div>
+      <div class="arr-name">${spot.name} · ${meters}m</div>
+    </div>
+    <button class="arr-go" style="background:${tc}" onclick="arrivalGo(${spot.id})">${t('arrival_go')}</button>
+    <button class="arr-x" onclick="dismissArrival()">×</button>`;
+  requestAnimationFrame(()=>el.classList.add('show'));
+  if(navigator.vibrate)try{navigator.vibrate(60);}catch(e){}
+  clearTimeout(arrivalTimer);
+  arrivalTimer=setTimeout(()=>dismissArrival(),9000); // auto-hide
+}
+function dismissArrival(){const el=document.getElementById('arrival-alert');if(el)el.classList.remove('show');}
+function arrivalGo(id){dismissArrival();openSpotDetail(id);}
+
 
 /* ════════════════════════════════════════════
    RANK
@@ -2835,7 +3197,7 @@ const I18N={
     spots_label:'Spots',points_label:'Points',duration_label:'Duration',spot_route:'Spot Route',navigate:'Navigate',completion_reward:'Completion Reward',
     ob_skip:'Skip',ob_lang_title:'Choose your<br><em>language</em>',ob_lang_sub:'You can change this anytime from the menu',ob_country_title:'Which country<br>will you <em>explore?</em>',ob_country_sub:'Pick a country to reveal its hidden spots and tours',ob_city_title:'Which city<br>will you <em>explore?</em>',ob_city_sub:'We\'ll prepare spots, tours & quests for your city',ob_interest_title:'What kind of<br><em>adventure?</em>',ob_interest_sub:'We\'ll surface matching content first',ob_next:'Next →',ob_start:'Start exploring! 🚀',
     int_history:'History & Culture',int_history_sub:'Heritage · Museums',int_food:'Food Tour',int_food_sub:'Local eats · Markets',int_kids:'Kids Quest',int_kids_sub:'Family · Children',int_trend:'Trending Spots',int_trend_sub:'Insta · Hot places',
-    coming_soon:'Coming soon',current_label:'Current ✓',change_city:'Change →',more_cities:'🌏 More Cities',more_cities_sub:"Your adventure doesn't end here.",stamp_title:'🏆 Today\'s Stamp Card',stamp_sub:'Collect 5 to earn a special reward!',gallery_scan_title:'Scan an Artifact',gallery_scan_sub:'Point camera — Gemini analyzes instantly',art_notes:'🎨 Art Notes',art_notes_sub:'Gallery AI analysis records',switched_to:'Switched to {city} mode!',lang_changed:'Language set to English'
+    coming_soon:'Coming soon',current_label:'Current ✓',change_city:'Change →',more_cities:'🌏 More Cities',more_cities_sub:"Your adventure doesn't end here.",stamp_title:'🏆 Today\'s Stamp Card',stamp_sub:'Collect 5 to earn a special reward!',gallery_scan_title:'Scan an Artifact',gallery_scan_sub:'Point camera — Gemini analyzes instantly',art_notes:'🎨 Art Notes',art_notes_sub:'Gallery AI analysis records',switched_to:'Switched to {city} mode!',lang_changed:'Language set to English',foryou_title:'For You · Nearby',why_close_taste:'Right by you & your vibe',why_close:'Just steps away',why_taste:'Matches your taste',why_popular:'Trending now',pref_title:'Tune your recommendations',pref_updated:'Recommendations updated!',share_achievement:'Share achievement',share_conquered:'I conquered',share_now:'Share now',share_later:'Maybe later',share_copied:'Copied to clipboard!',passport_title:'Passport',passport_complete:'All spots conquered — Master Explorer!',arrival_title:'📍 Spot nearby!',arrival_go:'View'
   },
   KO:{
     tab_home:'홈',tab_map:'지도',tab_scan:'스캔',tab_tours:'투어',tab_kids:'키즈',tab_rewards:'리워드',
@@ -2857,7 +3219,7 @@ const I18N={
     spots_label:'스폿',points_label:'포인트',duration_label:'소요',spot_route:'스폿 루트',navigate:'길찾기',completion_reward:'완료 리워드',
     ob_skip:'건너뛰기',ob_lang_title:'<em>언어</em>를<br>선택하세요',ob_lang_sub:'메뉴에서 언제든 변경할 수 있습니다',ob_country_title:'어느 나라를<br><em>탐험</em>할까요?',ob_country_sub:'국가를 선택하면 숨겨진 스폿과 투어를 보여드립니다',ob_city_title:'어떤 도시를<br><em>탐험</em>할까요?',ob_city_sub:'도시에 맞는 스폿·투어·퀘스트를 준비해드립니다',ob_interest_title:'어떤 탐험을<br><em>원하나요?</em>',ob_interest_sub:'관심사에 맞는 콘텐츠를 먼저 보여드립니다',ob_next:'다음 →',ob_start:'탐험 시작! 🚀',
     int_history:'역사 & 문화',int_history_sub:'유적지 · 박물관',int_food:'미식 투어',int_food_sub:'로컬 맛집 · 마켓',int_kids:'키즈 퀘스트',int_kids_sub:'어린이 · 가족',int_trend:'트렌드 스폿',int_trend_sub:'인스타 · 힙플레이스',
-    coming_soon:'준비 중',current_label:'현재 ✓',change_city:'변경 →',more_cities:'🌏 다른 도시 탐험',more_cities_sub:'탐험은 여기서 끝나지 않습니다.',stamp_title:'🏆 오늘의 스탬프 카드',stamp_sub:'5개 모으면 특별 리워드 획득!',gallery_scan_title:'유물 스캔하기',gallery_scan_sub:'카메라를 비추면 — Gemini가 즉시 분석합니다',art_notes:'🎨 아트 노트',art_notes_sub:'갤러리 AI 분석 기록',switched_to:'{city} 탐험 모드로 전환되었습니다!',lang_changed:'언어가 한국어로 설정되었습니다'
+    coming_soon:'준비 중',current_label:'현재 ✓',change_city:'변경 →',more_cities:'🌏 다른 도시 탐험',more_cities_sub:'탐험은 여기서 끝나지 않습니다.',stamp_title:'🏆 오늘의 스탬프 카드',stamp_sub:'5개 모으면 특별 리워드 획득!',gallery_scan_title:'유물 스캔하기',gallery_scan_sub:'카메라를 비추면 — Gemini가 즉시 분석합니다',art_notes:'🎨 아트 노트',art_notes_sub:'갤러리 AI 분석 기록',switched_to:'{city} 탐험 모드로 전환되었습니다!',lang_changed:'언어가 한국어로 설정되었습니다',foryou_title:'맞춤 추천 · 내 주변',why_close_taste:'가깝고 취향에 딱',why_close:'바로 근처',why_taste:'취향에 맞아요',why_popular:'지금 인기',pref_title:'추천 취향 설정',pref_updated:'추천이 업데이트됐어요!',share_achievement:'성과 공유하기',share_conquered:'내가 정복한 곳',share_now:'지금 공유',share_later:'나중에',share_copied:'클립보드에 복사됐어요!',passport_title:'여권',passport_complete:'모든 스폿 정복 — 마스터 탐험가!',arrival_title:'📍 근처에 스폿이 있어요!',arrival_go:'보기'
   },
   JA:{
     tab_home:'ホーム',tab_map:'マップ',tab_scan:'スキャン',tab_tours:'ツアー',tab_kids:'キッズ',tab_rewards:'特典',
@@ -2879,7 +3241,7 @@ const I18N={
     spots_label:'スポット',points_label:'ポイント',duration_label:'所要',spot_route:'スポットルート',navigate:'ナビ',completion_reward:'完了報酬',
     ob_skip:'スキップ',ob_lang_title:'<em>言語</em>を<br>選択してください',ob_lang_sub:'メニューからいつでも変更できます',ob_country_title:'どの国を<br><em>探索</em>しますか？',ob_country_sub:'国を選ぶと隠れたスポットとツアーが表示されます',ob_city_title:'どの都市を<br><em>探索</em>しますか？',ob_city_sub:'都市に合わせたスポット・ツアー・クエストを準備します',ob_interest_title:'どんな<br><em>冒険を？</em>',ob_interest_sub:'興味に合うコンテンツを優先表示します',ob_next:'次へ →',ob_start:'探索を始める！ 🚀',
     int_history:'歴史 & 文化',int_history_sub:'遺産 · 博物館',int_food:'グルメツアー',int_food_sub:'地元の味 · 市場',int_kids:'キッズクエスト',int_kids_sub:'家族 · 子供',int_trend:'トレンドスポット',int_trend_sub:'インスタ · 人気',
-    coming_soon:'近日公開',current_label:'現在 ✓',change_city:'変更 →',more_cities:'🌏 他の都市',more_cities_sub:'冒険はここで終わりません。',stamp_title:'🏆 今日のスタンプカード',stamp_sub:'5個集めて特別報酬をゲット！',gallery_scan_title:'遺物をスキャン',gallery_scan_sub:'カメラを向けて — Geminiが即座に分析',art_notes:'🎨 アートノート',art_notes_sub:'ギャラリーAI分析記録',switched_to:'{city}探索モードに切り替えました！',lang_changed:'言語を日本語に設定しました'
+    coming_soon:'近日公開',current_label:'現在 ✓',change_city:'変更 →',more_cities:'🌏 他の都市',more_cities_sub:'冒険はここで終わりません。',stamp_title:'🏆 今日のスタンプカード',stamp_sub:'5個集めて特別報酬をゲット！',gallery_scan_title:'遺物をスキャン',gallery_scan_sub:'カメラを向けて — Geminiが即座に分析',art_notes:'🎨 アートノート',art_notes_sub:'ギャラリーAI分析記録',switched_to:'{city}探索モードに切り替えました！',lang_changed:'言語を日本語に設定しました',foryou_title:'おすすめ · 近く',why_close_taste:'近くて好みにぴったり',why_close:'すぐ近く',why_taste:'好みに合います',why_popular:'今人気',pref_title:'おすすめを調整',pref_updated:'おすすめを更新しました！',share_achievement:'成果をシェア',share_conquered:'制覇しました',share_now:'今すぐシェア',share_later:'あとで',share_copied:'クリップボードにコピーしました！',passport_title:'パスポート',passport_complete:'全スポット制覇 — マスター探検家！',arrival_title:'📍 近くにスポット！',arrival_go:'見る'
   },
   ZH:{
     tab_home:'首页',tab_map:'地图',tab_scan:'扫描',tab_tours:'路线',tab_kids:'儿童',tab_rewards:'奖励',
@@ -2901,7 +3263,7 @@ const I18N={
     spots_label:'地点',points_label:'积分',duration_label:'时长',spot_route:'地点路线',navigate:'导航',completion_reward:'完成奖励',
     ob_skip:'跳过',ob_lang_title:'选择你的<br><em>语言</em>',ob_lang_sub:'可随时在菜单中更改',ob_country_title:'你想<em>探索</em><br>哪个国家？',ob_country_sub:'选择国家以发现隐藏地点和路线',ob_city_title:'你想<em>探索</em><br>哪座城市？',ob_city_sub:'我们将为你的城市准备地点、路线和任务',ob_interest_title:'想要哪种<br><em>冒险？</em>',ob_interest_sub:'优先展示符合你兴趣的内容',ob_next:'下一步 →',ob_start:'开始探索！ 🚀',
     int_history:'历史与文化',int_history_sub:'遗产 · 博物馆',int_food:'美食之旅',int_food_sub:'当地美食 · 市场',int_kids:'儿童任务',int_kids_sub:'家庭 · 儿童',int_trend:'热门地点',int_trend_sub:'Ins · 网红地',
-    coming_soon:'即将推出',current_label:'当前 ✓',change_city:'更换 →',more_cities:'🌏 更多城市',more_cities_sub:'你的冒险不止于此。',stamp_title:'🏆 今日集章卡',stamp_sub:'集齐5个赢取特别奖励！',gallery_scan_title:'扫描文物',gallery_scan_sub:'对准相机 — Gemini即刻分析',art_notes:'🎨 艺术笔记',art_notes_sub:'画廊AI分析记录',switched_to:'已切换到{city}探索模式！',lang_changed:'语言已设为中文'
+    coming_soon:'即将推出',current_label:'当前 ✓',change_city:'更换 →',more_cities:'🌏 更多城市',more_cities_sub:'你的冒险不止于此。',stamp_title:'🏆 今日集章卡',stamp_sub:'集齐5个赢取特别奖励！',gallery_scan_title:'扫描文物',gallery_scan_sub:'对准相机 — Gemini即刻分析',art_notes:'🎨 艺术笔记',art_notes_sub:'画廊AI分析记录',switched_to:'已切换到{city}探索模式！',lang_changed:'语言已设为中文',foryou_title:'为你推荐 · 附近',why_close_taste:'近又合你口味',why_close:'近在咫尺',why_taste:'符合你的喜好',why_popular:'正在热门',pref_title:'调整推荐',pref_updated:'推荐已更新！',share_achievement:'分享成就',share_conquered:'我征服了',share_now:'立即分享',share_later:'以后再说',share_copied:'已复制到剪贴板！',passport_title:'护照',passport_complete:'征服所有地点 — 探险大师！',arrival_title:'📍 附近有地点！',arrival_go:'查看'
   },
   ES:{
     tab_home:'Inicio',tab_map:'Mapa',tab_scan:'Escanear',tab_tours:'Tours',tab_kids:'Niños',tab_rewards:'Premios',
@@ -2923,7 +3285,7 @@ const I18N={
     spots_label:'Lugares',points_label:'Puntos',duration_label:'Duración',spot_route:'Ruta de Lugares',navigate:'Navegar',completion_reward:'Recompensa Final',
     ob_skip:'Saltar',ob_lang_title:'Elige tu<br><em>idioma</em>',ob_lang_sub:'Puedes cambiarlo en cualquier momento desde el menú',ob_country_title:'¿Qué país<br>vas a <em>explorar?</em>',ob_country_sub:'Elige un país para revelar sus lugares y tours ocultos',ob_city_title:'¿Qué ciudad<br>vas a <em>explorar?</em>',ob_city_sub:'Prepararemos lugares, tours y misiones para tu ciudad',ob_interest_title:'¿Qué tipo de<br><em>aventura?</em>',ob_interest_sub:'Mostraremos primero el contenido que coincida',ob_next:'Siguiente →',ob_start:'¡Empezar a explorar! 🚀',
     int_history:'Historia y Cultura',int_history_sub:'Patrimonio · Museos',int_food:'Tour Gastronómico',int_food_sub:'Comida local · Mercados',int_kids:'Misión Niños',int_kids_sub:'Familia · Niños',int_trend:'Lugares de Moda',int_trend_sub:'Insta · Lugares hot',
-    coming_soon:'Próximamente',current_label:'Actual ✓',change_city:'Cambiar →',more_cities:'🌏 Más Ciudades',more_cities_sub:'Tu aventura no termina aquí.',stamp_title:'🏆 Tarjeta de Sellos de Hoy',stamp_sub:'¡Reúne 5 para ganar un premio especial!',gallery_scan_title:'Escanear una Obra',gallery_scan_sub:'Apunta la cámara — Gemini analiza al instante',art_notes:'🎨 Notas de Arte',art_notes_sub:'Registros de análisis IA de galería',switched_to:'¡Cambiado al modo {city}!',lang_changed:'Idioma configurado a Español'
+    coming_soon:'Próximamente',current_label:'Actual ✓',change_city:'Cambiar →',more_cities:'🌏 Más Ciudades',more_cities_sub:'Tu aventura no termina aquí.',stamp_title:'🏆 Tarjeta de Sellos de Hoy',stamp_sub:'¡Reúne 5 para ganar un premio especial!',gallery_scan_title:'Escanear una Obra',gallery_scan_sub:'Apunta la cámara — Gemini analiza al instante',art_notes:'🎨 Notas de Arte',art_notes_sub:'Registros de análisis IA de galería',switched_to:'¡Cambiado al modo {city}!',lang_changed:'Idioma configurado a Español',foryou_title:'Para Ti · Cerca',why_close_taste:'Cerca y a tu estilo',why_close:'A pocos pasos',why_taste:'Coincide con tus gustos',why_popular:'Tendencia ahora',pref_title:'Ajusta tus recomendaciones',pref_updated:'¡Recomendaciones actualizadas!',share_achievement:'Compartir logro',share_conquered:'Conquisté',share_now:'Compartir ahora',share_later:'Quizás luego',share_copied:'¡Copiado al portapapeles!',passport_title:'Pasaporte',passport_complete:'¡Todos los lugares conquistados — Explorador Maestro!',arrival_title:'📍 ¡Lugar cerca!',arrival_go:'Ver'
   },
   FR:{
     tab_home:'Accueil',tab_map:'Carte',tab_scan:'Scanner',tab_tours:'Tours',tab_kids:'Enfants',tab_rewards:'Récomp.',
@@ -2945,7 +3307,7 @@ const I18N={
     spots_label:'Lieux',points_label:'Points',duration_label:'Durée',spot_route:'Itinéraire',navigate:'Naviguer',completion_reward:'Récompense Finale',
     ob_skip:'Passer',ob_lang_title:'Choisissez votre<br><em>langue</em>',ob_lang_sub:'Vous pouvez la changer à tout moment dans le menu',ob_country_title:'Quel pays<br>allez-vous <em>explorer ?</em>',ob_country_sub:'Choisissez un pays pour révéler ses lieux et tours cachés',ob_city_title:'Quelle ville<br>allez-vous <em>explorer ?</em>',ob_city_sub:'Nous préparerons lieux, tours et quêtes pour votre ville',ob_interest_title:'Quel type<br>d\'<em>aventure ?</em>',ob_interest_sub:'Nous afficherons d\'abord le contenu correspondant',ob_next:'Suivant →',ob_start:'Commencer l\'exploration ! 🚀',
     int_history:'Histoire & Culture',int_history_sub:'Patrimoine · Musées',int_food:'Tour Gastronomique',int_food_sub:'Cuisine locale · Marchés',int_kids:'Quête Enfants',int_kids_sub:'Famille · Enfants',int_trend:'Lieux Tendance',int_trend_sub:'Insta · Lieux hot',
-    coming_soon:'Bientôt',current_label:'Actuel ✓',change_city:'Changer →',more_cities:'🌏 Plus de Villes',more_cities_sub:'Votre aventure ne s\'arrête pas là.',stamp_title:'🏆 Carte de Tampons du Jour',stamp_sub:'Collectez-en 5 pour une récompense spéciale !',gallery_scan_title:'Scanner une Œuvre',gallery_scan_sub:'Pointez la caméra — Gemini analyse instantanément',art_notes:'🎨 Notes d\'Art',art_notes_sub:'Enregistrements d\'analyse IA de galerie',switched_to:'Passé en mode {city} !',lang_changed:'Langue définie sur Français'
+    coming_soon:'Bientôt',current_label:'Actuel ✓',change_city:'Changer →',more_cities:'🌏 Plus de Villes',more_cities_sub:'Votre aventure ne s\'arrête pas là.',stamp_title:'🏆 Carte de Tampons du Jour',stamp_sub:'Collectez-en 5 pour une récompense spéciale !',gallery_scan_title:'Scanner une Œuvre',gallery_scan_sub:'Pointez la caméra — Gemini analyse instantanément',art_notes:'🎨 Notes d\'Art',art_notes_sub:'Enregistrements d\'analyse IA de galerie',switched_to:'Passé en mode {city} !',lang_changed:'Langue définie sur Français',foryou_title:'Pour Vous · À proximité',why_close_taste:'Proche et à votre goût',why_close:'À deux pas',why_taste:'Correspond à vos goûts',why_popular:'Tendance',pref_title:'Ajustez vos recommandations',pref_updated:'Recommandations mises à jour !',share_achievement:'Partager',share_conquered:'J\'ai conquis',share_now:'Partager',share_later:'Plus tard',share_copied:'Copié dans le presse-papiers !',passport_title:'Passeport',passport_complete:'Tous les lieux conquis — Explorateur Maître !',arrival_title:'📍 Lieu à proximité !',arrival_go:'Voir'
   }
 };
 
@@ -2963,6 +3325,8 @@ function applyLang(code){
   var heroTag=document.getElementById('hero-near-tag');
   if(heroTag&&cc&&cc.spots){var near=cc.spots.filter(function(s){return s.near;}).length;var w=currentLang==='KO'?'개 근처':currentLang==='JA'?'件 近く':currentLang==='ZH'?'个 附近':currentLang==='ES'?'cerca':currentLang==='FR'?'à proximité':'nearby';heroTag.textContent='📍 '+cityName()+' · '+near+' '+w;}
   try{buildHomeList(SPOTS);}catch(e){}
+  try{buildForYou();}catch(e){}
+  try{buildPassport();}catch(e){}
   try{buildHomeProgramScroll();}catch(e){}
   try{buildTourPrograms();}catch(e){}
   try{buildKidsList(KIDS_QUESTS);}catch(e){}
@@ -2989,6 +3353,7 @@ function openGoogleMaps(){
    KIDS ZONE
 ════════════════════════════════════════════ */
 function buildKidsList(quests){
+  quests=quests||KIDS_QUESTS;
   const el=document.getElementById('kids-list');if(!el)return;
   el.innerHTML='';
   quests.forEach(q=>{
